@@ -34,11 +34,13 @@ Claude 외 도구(GPT·Gemini·Cursor 등)는 이 파일을 자동 로드하지 
 inbox/*.pdf                                    # 원본 PDF (사용자가 넣음)
   │  ── [인제스트: PDF 읽고 프론트매터+본문 추출] ──
   ▼
-.staging/<report_id>.json                      # 중간 산출물 (git 추적됨 — §6 참조)
+.staging/<report_id>.json                      # 증권사 리포트 중간 산출물
+.staging/earnings_<FY>_<분기>_<회사>.json      # 회사 실적·컨콜 패키지
   │  ── tools/build_indexes.py ──
   ▼
-reports/YYYY/<report_id>.md                    # 표준 MD (영속 DB, 커밋됨)
-index/{reports.jsonl,estimates.csv,stances.csv,industry_views.csv,actuals.csv,drivers.csv,demand_forecasts.csv,themes.csv}
+reports/YYYY/<report_id>.md                    # 증권사 리포트 표준 MD
+earnings/YYYY/<FY>_<분기>_<회사>.md             # 실적·컨콜 표준 MD
+index/{reports.jsonl,estimates.csv,stances.csv,industry_views.csv,actuals.csv,drivers.csv,guidance.csv,call_qa.jsonl,demand_forecasts.csv,themes.csv}
   │  ── tools/build_dashboard_data.py ──
   ▼
 projects/dashboard/data.json                   # 대시보드 데이터셋
@@ -73,6 +75,12 @@ docs/index.html                                # GitHub Pages 배포본
 
 절차가 이 6단계로 짧으므로 별도 INGEST.md는 두지 않는다. 규칙이 두꺼워지면 그때 분리.
 
+사용자가 실적 발표·컨퍼런스콜 자료를 인제스트해달라고 하면 증권사 리포트 절차와 섞지 않는다.
+`schema/earnings_template.md`를 읽고 원본을 `actuals/`에 둔 뒤,
+회사×분기별 `.staging/earnings_<FY>_<분기>_<회사>.json`을 만든다.
+각 `document_id`를 `--check-id`로 엄격 검증한 다음 같은 빌드 명령으로
+`earnings/`, `actuals.csv`, `drivers.csv`, `guidance.csv`, `call_qa.jsonl`을 함께 재생성한다.
+
 **이슈 태깅 주의(자주 헷갈리는 것)**: `AMPC`(미국 정부 IRA 생산세액공제)와 `OEM보상금`(완성차 고객사 수취 보상금 — 최소구매 미달·물량 미납·설비·JV 청산 등 일회성)은 **다른 이슈**다. 한 리포트가 둘 다 다루면 **각각 스탠스 행을 따로** 붙인다(1문장이 여러 이슈면 여러 행). 전체 이슈 통제어휘·구분 기준은 `schema/NORMALIZATION.md §6`.
 
 ## 5. 대시보드 재생성 + 웹 배포
@@ -98,6 +106,7 @@ git add docs && git commit -m "deploy: 대시보드 갱신" && git push
 - **원천 불가침**: `reports/`·`index/`는 분석 과정에서 절대 손으로 수정하지 않는다. 분석 결과는 `projects/<이름>/`에만 쓴다. 인덱스는 스크립트로만 재생성한다.
 - **표기 오류 교정은 스테이징이 아니라 코드에서**: 실적 확정 기간의 OP basis 교정은 `build_dashboard_data.py`의 `KNOWN_OP_BASIS`, metric 동의어는 `build_indexes.py`의 `METRIC_STD`, 수요 시리즈 분류는 `demand_curation.py`에서만 수정한다. 원본 인덱스는 건드리지 않는다.
 - **.staging/**: JSON 전부를 **git으로 추적한다**. staging이 MD·인덱스를 재생성하는 유일한 소스이므로, 없으면 `build_indexes.py`가 DB를 비운다(그래서 축소 재빌드는 자동 차단되고 `--force`로만 강행 가능). 여러 사람·여러 LLM이 나눠 인제스트할 때도 staging 공유가 필수다.
+- **실적·컨콜 분리**: 회사 IR·스크립트는 `schema/earnings_template.md`를 따라 회사×분기 1건으로 묶는다. 증권사 리포트 `body`나 `report_id` 규격에 억지로 넣지 않는다.
 - **inbox/·actuals/의 원본 PDF는 증권사 저작물이다.** 이 저장소는 공개(public)이므로 재배포 범위에 유의한다.
 - **Artifact 재게시**: 대시보드를 Claude Artifact로 올릴 때는 **반드시 기존 URL을 `url` 파라미터로 지정**한다(안 하면 새 URL이 발급됨).
 

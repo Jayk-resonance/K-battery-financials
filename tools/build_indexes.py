@@ -4,17 +4,19 @@
 사용법:
   python3 tools/build_indexes.py           # 검증 + 렌더 + 인덱스
   python3 tools/build_indexes.py --check   # 검증만 (파일 안 씀)
-  python3 tools/build_indexes.py --check-id <report_id>  # 지정 리포트 엄격 검증
+  python3 tools/build_indexes.py --check-id <id>  # 지정 리포트/실적 패키지 엄격 검증
   python3 tools/build_indexes.py --force   # DB 축소 안전장치 무시 (의도적 삭제 시에만)
 
 주의: .staging 을 유일한 소스로 index/ 와 reports/ 를 전량 덮어쓴다.
       staging 이 없거나 일부만 있으면 DB가 지워지므로, 리포트 수가 줄어드는
       재빌드는 자동으로 중단된다(--force 로만 강행).
 
-입력:  .staging/<report_id>.json (리포트), .staging/actuals_*.json (IR)
+입력:  .staging/<report_id>.json (리포트), .staging/actuals_*.json (구형 IR),
+       .staging/earnings_<FY>_<분기>_<회사>.json (표준 실적·컨콜 패키지)
 출력:  reports/<YYYY>/<report_id>.md
+       earnings/<YYYY>/<document_id>.md
        index/reports.jsonl, estimates.csv, stances.csv,
-       industry_views.csv, actuals.csv, drivers.csv
+       industry_views.csv, actuals.csv, drivers.csv, guidance.csv, call_qa.jsonl
 """
 import argparse, json, csv, os, sys, glob, re
 
@@ -24,6 +26,9 @@ SEG_STD = {"전사", "배터리합계", "소형", "중대형", "EV", "ESS", "전
 AMPC_BASIS = {"excl", "incl", "incl_unknown", "na"}
 PERIODS = {"FY", "1Q", "2Q", "3Q", "4Q"}
 OPINIONS = {"매수", "중립", "매도", None}
+SOURCE_KINDS = {"ir_deck", "press_release", "call_script", "prepared_remarks", "transcript"}
+GUIDANCE_DIRECTIONS = {"유지", "상향", "하향", "개선", "악화", "확대", "축소",
+                       "변경", "흑자전환", "목표", "기타"}
 
 COMPANY_STD = {"LG에너지솔루션": "LGES", "엘지에너지솔루션": "LGES", "LG Energy Solution": "LGES"}
 # metric 통제어휘 (NORMALIZATION.md §9). 대시보드는 매출/영업이익/AMPC 만 집계하므로
@@ -32,6 +37,8 @@ METRIC_STD = {"매출액": "매출", "AMPC(Tax Credit)": "AMPC",
               "지배주주순익": "지배주주순이익", "지배순이익": "지배주주순이익"}
 METRICS = {"매출", "영업이익", "AMPC", "순이익", "지배주주순이익", "출하량", "점유율"}
 BODY_KEYS = ("summary", "valuation", "segment_pl", "issue_comments", "risks", "quotes")
+EARNINGS_BODY_KEYS = ("summary", "actuals", "drivers", "ampc_oneoffs", "guidance",
+                      "capex_capacity_orders", "qa", "risks", "quotes")
 # stances.issue와 themes.theme의 집계 키. key_issues와 summary는 원문 세부 표현을 보존한다.
 ISSUES = {"LFP", "46파이", "ESS", "북미CAPEX", "수율", "AMPC", "OEM보상금",
           "파우치", "전고체", "밸류에이션", "소형전지", "유럽EV", "북미EV",
@@ -213,11 +220,169 @@ def render_md(r):
     return "\n".join(fm) + "\n" + "\n".join(body)
 
 
+def validate_earnings(e, staging_name):
+    eid = e.get("document_id", staging_name)
+    required = ["document_id", "document_type", "company", "fy", "period",
+                "announcement_date", "sources", "body", "guidance", "qa"]
+    for k in required:
+        if k not in e or e[k] is None or e[k] == "":
+            warn(eid, f"실적 패키지 필수 필드 누락: {k}")
+    if e.get("document_type") != "earnings_call":
+        warn(eid, f"document_type 비표준: {e.get('document_type')}")
+    if e.get("period") not in PERIODS - {"FY"}:
+        warn(eid, f"period 비표준: {e.get('period')}")
+    if not isinstance(e.get("fy"), int):
+        warn(eid, f"fy 비정수: {e.get('fy')}")
+    expected_name = f"earnings_{e.get('document_id')}.json"
+    if staging_name != expected_name:
+        warn(eid, f"스테이징 파일명 불일치: {staging_name} (기대: {expected_name})")
+
+    body = e.get("body")
+    if isinstance(body, dict):
+        for k in EARNINGS_BODY_KEYS:
+            if k not in body:
+                warn(eid, f"실적 body 필수 키 누락: {k}")
+            elif not has_content(body[k]):
+                warn(eid, f"실적 body 내용 없음: {k}")
+        for k in set(body) - set(EARNINGS_BODY_KEYS):
+            warn(eid, f"실적 body 비표준 키: {k}")
+    else:
+        warn(eid, "실적 body 형식 오류: 객체(JSON object)가 아님")
+
+    sources = e.get("sources")
+    if not isinstance(sources, list) or not sources:
+        warn(eid, "sources는 1건 이상의 배열이어야 함")
+    else:
+        for source in sources:
+            source_file = source.get("file") if isinstance(source, dict) else None
+            source_kind = source.get("kind") if isinstance(source, dict) else None
+            if source_kind not in SOURCE_KINDS:
+                warn(eid, f"sources.kind 비표준: {source_kind}")
+            if not source_file:
+                warn(eid, "sources.file 누락")
+            elif not os.path.exists(os.path.join(ROOT, "actuals", source_file)):
+                warn(eid, f"실적 원본 없음: actuals/{source_file}")
+
+    legacy_ref = e.get("legacy_fact_ref")
+    if legacy_ref:
+        ref_file = legacy_ref.get("file") if isinstance(legacy_ref, dict) else None
+        if not ref_file or not os.path.exists(os.path.join(STAGING, ref_file)):
+            warn(eid, f"legacy_fact_ref 원본 없음: {ref_file}")
+    else:
+        for k in ("actuals", "drivers"):
+            if k not in e:
+                warn(eid, f"신규 실적 패키지 필수 배열 누락: {k}")
+
+    row_required = {
+        "actuals": ("segment", "segment_std", "metric", "value", "unit", "ampc_basis"),
+        "drivers": ("segment_std", "summary"),
+        "guidance": ("topic", "horizon", "direction", "summary"),
+        "qa": ("topic", "question", "answer"),
+    }
+    for field in ("actuals", "drivers", "guidance", "qa"):
+        rows = e.get(field, [])
+        if not isinstance(rows, list):
+            warn(eid, f"{field} 형식 오류: 배열이 아님")
+            continue
+        for row in rows:
+            for k in row_required[field]:
+                if k not in row or not has_content(row[k]):
+                    warn(eid, f"{field} 필수 필드 누락: {k}")
+            if field == "actuals":
+                if row.get("segment_std") not in SEG_STD:
+                    warn(eid, f"actuals segment_std 비표준: {row.get('segment_std')}")
+                if not isinstance(row.get("value"), (int, float)):
+                    warn(eid, f"actuals value 비숫자: {row.get('value')}")
+                if row.get("ampc_basis") not in AMPC_BASIS:
+                    warn(eid, f"actuals ampc_basis 비표준: {row.get('ampc_basis')}")
+            if field == "guidance":
+                if row.get("direction") not in GUIDANCE_DIRECTIONS:
+                    warn(eid, f"guidance direction 비표준: {row.get('direction')}")
+                for k in ("value", "value_max"):
+                    if row.get(k) is not None and not isinstance(row[k], (int, float)):
+                        warn(eid, f"guidance {k} 비숫자: {row.get(k)}")
+            source_file = row.get("source_file")
+            if not source_file:
+                warn(eid, f"{field} source_file 누락")
+            elif not os.path.exists(os.path.join(ROOT, "actuals", source_file)):
+                warn(eid, f"{field} 원본 없음: actuals/{source_file}")
+            if row.get("page") is None and row.get("citation_status") != "legacy_unpaged":
+                warn(eid, f"{field} 원문 페이지 누락")
+
+
+def earnings_fact_rows(e, actuals_sets, field):
+    """표준 패키지 값 우선, 1Q26 회귀 패키지만 명시한 구형 파일을 참조한다."""
+    if field in e:
+        return e.get(field, [])
+    ref = e.get("legacy_fact_ref") or {}
+    for a in actuals_sets:
+        if a.get("_staging_file") != ref.get("file"):
+            continue
+        return [row for row in a.get(field, [])
+                if row.get("fy") == e.get("fy") and row.get("period") == e.get("period")]
+    return []
+
+
+def _cell(value):
+    return str("" if value is None else value).replace("|", "\\|").replace("\n", " ")
+
+
+def _md_table(headers, rows):
+    if not rows:
+        return "자료 없음"
+    lines = ["| " + " | ".join(headers) + " |",
+             "|" + "|".join("---" for _ in headers) + "|"]
+    lines.extend("| " + " | ".join(_cell(v) for v in row) + " |" for row in rows)
+    return "\n".join(lines)
+
+
+def render_earnings_md(e, actuals_sets):
+    actuals = earnings_fact_rows(e, actuals_sets, "actuals")
+    drivers = earnings_fact_rows(e, actuals_sets, "drivers")
+    guidance = e.get("guidance", [])
+    qa = e.get("qa", [])
+    b = e["body"]
+    fm = ["---", f"document_id: {e['document_id']}", "document_type: earnings_call",
+          f"company: {e['company']}", f"fy: {e['fy']}", f"period: {e['period']}",
+          f"announcement_date: {e['announcement_date']}", "sources:",
+          yflow(e.get("sources", []), ["kind", "file"]), "---"]
+    actual_rows = [[r.get("segment_std"), r.get("metric"), r.get("value"), r.get("unit"),
+                    r.get("ampc_basis", "na"), f"{r.get('source_file')} p.{r.get('page')}"]
+                   for r in actuals]
+    driver_rows = [[r.get("segment_std"), r.get("summary"),
+                    f"{r.get('source_file')} p.{r.get('page')}"] for r in drivers]
+    guidance_rows = [[r.get("topic"), r.get("horizon"), r.get("direction"),
+                      (f"{r.get('value')}~{r.get('value_max')}"
+                       if r.get("value_max") is not None else r.get("value")),
+                      r.get("unit"), r.get("summary"),
+                      f"{r.get('source_file')} p.{r.get('page') or '미기록'}"] for r in guidance]
+    qa_rows = [[r.get("topic"), r.get("question"), r.get("answer"),
+                f"{r.get('source_file')} p.{r.get('page') or '미기록'}"] for r in qa]
+    body = ["", "## 실적 핵심 요약", _bs(b.get("summary")),
+            "", "## 확정 실적",
+            _md_table(["부문", "지표", "값", "단위", "AMPC 기준", "출처"], actual_rows),
+            "", _bs(b.get("actuals")),
+            "", "## 사업부문별 실적 및 변동 원인",
+            _md_table(["부문", "변동 원인", "출처"], driver_rows),
+            "", _bs(b.get("drivers")),
+            "", "## AMPC·일회성 요인", _bs(b.get("ampc_oneoffs")),
+            "", "## 연간·분기 가이던스",
+            _md_table(["주제", "기간", "방향", "값", "단위", "내용", "출처"], guidance_rows),
+            "", _bs(b.get("guidance")),
+            "", "## CAPEX·생산능력·수주", _bs(b.get("capex_capacity_orders")),
+            "", "## 컨퍼런스콜 Q&A",
+            _md_table(["주제", "질문", "답변 요약", "출처"], qa_rows),
+            "", _bs(b.get("qa")),
+            "", "## 리스크 및 불확실성", _bs(b.get("risks")),
+            "", "## 원문 인용", _bs(b.get("quotes")), ""]
+    return "\n".join(fm) + "\n" + "\n".join(body)
+
+
 def main(check_only=False, force=False, strict_ids=None):
     warnings.clear()
     strict_ids = set(strict_ids or [])
     files = sorted(glob.glob(os.path.join(STAGING, "*.json")))
-    reports, actuals_sets = [], []
+    reports, actuals_sets, earnings_packages = [], [], []
     for p in files:
         name = os.path.basename(p)
         if name == "manifest.json":
@@ -227,7 +392,11 @@ def main(check_only=False, force=False, strict_ids=None):
         except json.JSONDecodeError as ex:
             warn(name, f"JSON 파싱 실패: {ex}")
             continue
-        if name.startswith("actuals_"):
+        if name.startswith("earnings_"):
+            earnings_packages.append(d)
+            validate_earnings(d, name)
+        elif name.startswith("actuals_"):
+            d["_staging_file"] = name
             actuals_sets.append(d)
         elif name.startswith("viewnarr_") or "report_id" not in d:
             continue  # 파생 산출물(서술 등)은 리포트가 아님
@@ -258,14 +427,16 @@ def main(check_only=False, force=False, strict_ids=None):
             warn(r["report_id"], f"원본 PDF 없음: inbox/{r['source_file']}")
         validate(r)
 
-    for rid in sorted(strict_ids - have):
-        warn(rid, "엄격 검사 대상 report_id의 스테이징 JSON 없음")
+    earnings_ids = {e.get("document_id") for e in earnings_packages}
+    for rid in sorted(strict_ids - have - earnings_ids):
+        warn(rid, "엄격 검사 대상 ID의 스테이징 JSON 없음")
 
     ids = [r["report_id"] for r in reports]
     if len(ids) != len(set(ids)):
         warn("GLOBAL", "report_id 중복 존재")
 
     print(f"리포트 {len(reports)}건, actuals 세트 {len(actuals_sets)}건, "
+          f"실적 패키지 {len(earnings_packages)}건, "
           f"누락 {len(missing)}건, 경고 {len(warnings)}건")
     if strict_ids:
         strict_warnings = warnings_for(strict_ids)
@@ -277,6 +448,14 @@ def main(check_only=False, force=False, strict_ids=None):
         for w in warnings:
             print(" ", w)
         return 1 if missing else 0
+
+    earnings_warnings = warnings_for(earnings_ids)
+    if earnings_warnings:
+        print(f"\n[중단] 실적·컨콜 패키지 검증 실패: 경고 {len(earnings_warnings)}건")
+        for w in earnings_warnings:
+            print(" ", w)
+        print("  index/·reports/·earnings/를 덮어쓰지 않고 종료합니다.")
+        return 4
 
     # --- 안전장치: 재빌드가 기존 DB를 축소시키면 중단 ---
     # 이 스크립트는 .staging 을 유일한 소스로 삼아 index/ 를 전량 덮어쓴다.
@@ -310,6 +489,12 @@ def main(check_only=False, force=False, strict_ids=None):
         os.makedirs(d, exist_ok=True)
         with open(os.path.join(d, r["report_id"] + ".md"), "w", encoding="utf-8") as f:
             f.write(render_md(r))
+
+    for e in earnings_packages:
+        d = os.path.join(ROOT, "earnings", str(e["fy"]))
+        os.makedirs(d, exist_ok=True)
+        with open(os.path.join(d, e["document_id"] + ".md"), "w", encoding="utf-8") as f:
+            f.write(render_earnings_md(e, actuals_sets))
 
     idx = os.path.join(ROOT, "index")
 
@@ -397,6 +582,13 @@ def main(check_only=False, force=False, strict_ids=None):
                             row.get("segment"), row.get("segment_std"),
                             row.get("metric"), row.get("value"), row.get("unit"),
                             row.get("ampc_basis", "na"),
+                             row.get("source_file"), row.get("page")])
+        for e in earnings_packages:
+            for row in e.get("actuals", []):
+                w.writerow([e["company"], e["fy"], e["period"],
+                            row.get("segment"), row.get("segment_std"),
+                            row.get("metric"), row.get("value"), row.get("unit"),
+                            row.get("ampc_basis", "na"),
                             row.get("source_file"), row.get("page")])
     with open(os.path.join(idx, "drivers.csv"), "w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
@@ -406,7 +598,36 @@ def main(check_only=False, force=False, strict_ids=None):
             for row in a.get("drivers", []):
                 w.writerow([a["company"], row.get("fy"), row.get("period"),
                             row.get("segment_std"), row.get("summary"),
+                             row.get("source_file"), row.get("page")])
+        for e in earnings_packages:
+            for row in e.get("drivers", []):
+                w.writerow([e["company"], e["fy"], e["period"],
+                            row.get("segment_std"), row.get("summary"),
                             row.get("source_file"), row.get("page")])
+
+    # --- guidance.csv + call_qa.jsonl ---
+    with open(os.path.join(idx, "guidance.csv"), "w", encoding="utf-8", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["document_id", "company", "fy", "period", "topic", "horizon",
+                    "direction", "value", "value_max", "unit", "summary", "source_file",
+                    "source_page", "citation_status"])
+        for e in earnings_packages:
+            for row in e.get("guidance", []):
+                w.writerow([e["document_id"], e["company"], e["fy"], e["period"],
+                            row.get("topic"), row.get("horizon"), row.get("direction"),
+                            row.get("value"), row.get("value_max"), row.get("unit"), row.get("summary"),
+                            row.get("source_file"), row.get("page"),
+                            row.get("citation_status", "verified")])
+    with open(os.path.join(idx, "call_qa.jsonl"), "w", encoding="utf-8") as f:
+        for e in earnings_packages:
+            for row in e.get("qa", []):
+                out = {"document_id": e["document_id"], "company": e["company"],
+                       "fy": e["fy"], "period": e["period"],
+                       "topic": row.get("topic"), "question": row.get("question"),
+                       "answer": row.get("answer"), "source_file": row.get("source_file"),
+                       "source_page": row.get("page"),
+                       "citation_status": row.get("citation_status", "verified")}
+                f.write(json.dumps(out, ensure_ascii=False) + "\n")
 
     print("렌더 완료. 경고 목록:")
     for w_ in warnings:
@@ -417,8 +638,8 @@ def main(check_only=False, force=False, strict_ids=None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="스테이징 JSON에서 표준 MD와 인덱스를 생성합니다.")
     parser.add_argument("--check", action="store_true", help="검증만 수행하고 파일을 쓰지 않습니다.")
-    parser.add_argument("--check-id", action="append", default=[], metavar="REPORT_ID",
-                        help="지정 report_id만 엄격 검증합니다. 여러 번 지정할 수 있습니다.")
+    parser.add_argument("--check-id", action="append", default=[], metavar="ID",
+                        help="지정 report_id 또는 document_id만 엄격 검증합니다. 여러 번 지정할 수 있습니다.")
     parser.add_argument("--force", action="store_true", help="DB 축소 안전장치를 무시합니다.")
     args = parser.parse_args()
     sys.exit(main(args.check or bool(args.check_id), args.force, args.check_id))

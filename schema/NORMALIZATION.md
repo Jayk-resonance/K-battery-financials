@@ -134,10 +134,13 @@
 
 `FY`(연간) 또는 `1Q`~`4Q`(분기), `fy`는 회계연도. 추출 범위: 분기는 1Q25 이후, 연간은 FY2024~FY2028. 리포트 발간일 기준 이미 발표된 분기 값은 애널리스트가 인용한 실적(사실상 actual)이며, 미발표 분기는 추정치다 — 발간일(date)과 대상 기간을 대조해 구분한다.
 
-## 4. Actuals (정답지) 분리
+## 4. Actuals·컨퍼런스콜 (정답지) 분리
 
 - 회사 IR 자료 원본: `actuals/` (LGES 실적설명회·스크립트, 삼성SDI IR)
-- 추출 결과: `index/actuals.csv` — 컨센서스 적중률 계산의 기준값
+- 신규 분기 추출 원천: `.staging/earnings_<FY>_<분기>_<회사>.json` — 회사×분기 1건
+- 표준 형식: `schema/earnings_template.md`
+- 생성 결과: `earnings/YYYY/*.md`, `index/actuals.csv`, `drivers.csv`, `guidance.csv`, `call_qa.jsonl`
+- `actuals.csv`는 컨센서스 적중률 계산의 기준값이다. 가이던스와 Q&A는 actual 숫자와 섞지 않는다.
 - SK온은 IR 미보유 → 애널리스트 리포트에 인용된 발표 실적의 중앙값을 사실상 actual로 사용하고 출처를 명시한다.
 
 ## 5. 투자의견 표준화

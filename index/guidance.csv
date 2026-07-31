@@ -1,0 +1,5 @@
+document_id,company,fy,period,topic,horizon,direction,value,value_max,unit,summary,source_file,source_page,citation_status
+2026_1Q_LGES,LGES,2026,1Q,회계기준 변경,2026 1Q 이후,변경,,,,북미 JV 외 고객판매분 생산보조금을 매출의 기타수익으로 병합 표시하고 과거 실적을 재작성해 비교 공시.,26_1Q_Script.pdf,,legacy_unpaged
+2026_1Q_LGES,LGES,2026,1Q,2분기 매출·손익,2026 2Q,개선,10,,% 이상,"전사 매출은 전분기 대비 최소 10% 이상 성장, 생산보조금 제외 기준 전사 흑자전환을 목표.",26_1Q_Script.pdf,,legacy_unpaged
+2026_1Q_LGES,LGES,2026,1Q,연간 매출 성장률,2026 FY,유지,15,20,% 이상,유럽 중저가 제품과 원통형 전략 고객 매출 확대를 근거로 연초 제시한 15~20% 이상 성장 가이던스를 재확인.,26_1Q_Script.pdf,,legacy_unpaged
+2026_1Q_LGES,LGES,2026,1Q,북미 ESS 생산능력,2026 연말,확대,50,,GWh 이상,테네시 UC 2기 EV 라인의 일부 ESS 전환을 포함해 북미 5개 생산거점에서 50GWh 이상 Capa 확보 목표.,26_1Q_Script.pdf,,legacy_unpaged
