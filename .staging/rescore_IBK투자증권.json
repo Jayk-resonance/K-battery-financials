@@ -1,0 +1,51 @@
+{"house":"IBK투자증권","patches":[
+  {"report_id":"2023-09-12_IBK투자증권_산업",
+   "stances":[
+     {"issue":"북미 CAPA/AMPC 수혜 및 글로벌 셀 점유율","company":"LGES","old_score":2,"new_score":7},
+     {"issue":"프리미엄 배터리(P5) 중심 수익성 개선","company":"삼성SDI","old_score":1,"new_score":4},
+     {"issue":"Hyundai-Kia 의존도 및 성장 정체","company":"SK온","old_score":-1,"new_score":-6}
+   ]},
+  {"report_id":"2024-02-26_IBK투자증권_산업",
+   "stances":[
+     {"issue":"북미 배터리 물량 확대 및 CAPA 경쟁력","company":"LGES","old_score":2,"new_score":7},
+     {"issue":"실적 저점 통과 및 밸류에이션","company":"삼성SDI","old_score":1,"new_score":4}
+   ]},
+  {"report_id":"2026-04-02_IBK투자증권_삼성SDI",
+   "stances":[
+     {"issue":"북미EV","company":"삼성SDI","old_score":-1,"new_score":-2},
+     {"issue":"유럽EV","company":"삼성SDI","old_score":2,"new_score":7},
+     {"issue":"ESS","company":"삼성SDI","old_score":2,"new_score":7},
+     {"issue":"AMPC","company":"삼성SDI","old_score":1,"new_score":5},
+     {"issue":"북미CAPEX","company":"삼성SDI","old_score":1,"new_score":3},
+     {"issue":"소형전지","company":"삼성SDI","old_score":1,"new_score":5},
+     {"issue":"밸류에이션","company":"삼성SDI","old_score":2,"new_score":7}
+   ]},
+  {"report_id":"2026-04-08_IBK투자증권_LGES",
+   "stances":[
+     {"issue":"AMPC","company":"LG에너지솔루션","old_score":-1,"new_score":-4},
+     {"issue":"ESS","company":"LG에너지솔루션","old_score":0,"new_score":0},
+     {"issue":"북미EV","company":"LG에너지솔루션","old_score":-1,"new_score":-3},
+     {"issue":"유럽EV","company":"LG에너지솔루션","old_score":-1,"new_score":-3},
+     {"issue":"배터리판매량","company":"LG에너지솔루션","old_score":-1,"new_score":-4},
+     {"issue":"북미CAPEX","company":"LG에너지솔루션","old_score":0,"new_score":-2}
+   ]},
+  {"report_id":"2026-05-04_IBK투자증권_LGES",
+   "stances":[
+     {"issue":"AMPC","company":"LG에너지솔루션","old_score":1,"new_score":-2},
+     {"issue":"ESS","company":"LG에너지솔루션","old_score":2,"new_score":7},
+     {"issue":"북미CAPEX","company":"LG에너지솔루션","old_score":0,"new_score":1},
+     {"issue":"46파이","company":"LG에너지솔루션","old_score":2,"new_score":6},
+     {"issue":"소형전지","company":"LG에너지솔루션","old_score":1,"new_score":4},
+     {"issue":"북미EV","company":"LG에너지솔루션","old_score":-1,"new_score":-3},
+     {"issue":"유럽EV","company":"LG에너지솔루션","old_score":1,"new_score":4},
+     {"issue":"밸류에이션","company":"LG에너지솔루션","old_score":1,"new_score":3}
+   ]},
+  {"report_id":"2026-05-04_IBK투자증권_SK온",
+   "stances":[
+     {"issue":"밸류에이션","company":"SK이노베이션","old_score":2,"new_score":8}
+   ]},
+  {"report_id":"2026-05-14_IBK투자증권_SK온",
+   "stances":[
+     {"issue":"배터리판매량","company":"SK온","old_score":1,"new_score":4}
+   ]}
+]}

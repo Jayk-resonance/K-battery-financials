@@ -1,0 +1,14 @@
+# 이 폴더의 JSON은 git으로 추적한다.
+#
+# 이유: staging JSON이 표준 MD·인덱스를 재생성하는 유일한 소스다.
+#   build_indexes.py 는 .staging/*.json 을 읽어 reports/·index/ 를 전량 재생성하므로,
+#   staging이 없는 클론에서 실행하면 인덱스가 비워진다.
+#   또 여러 사람·여러 LLM이 나눠 인제스트하려면 staging 공유가 필수다.
+#
+# 파일 종류: <report_id>.json(리포트) / actuals_*.json(회사 IR)
+#           viewnarr_*.json·rescore_*.json(파생 산출물, build_indexes가 자동 스킵)
+#
+# JSON 외 임시 파일만 무시한다.
+*
+!.gitignore
+!*.json

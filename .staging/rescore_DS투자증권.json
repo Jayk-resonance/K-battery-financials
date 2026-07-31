@@ -1,0 +1,11 @@
+{"house":"DS투자증권","patches":[
+  {"report_id":"2026-05-04_DS투자증권_LGES",
+   "stances":[
+     {"issue":"소형전지","company":"LG에너지솔루션","old_score":2,"new_score":5},
+     {"issue":"46파이","company":"LG에너지솔루션","old_score":2,"new_score":7},
+     {"issue":"ESS","company":"LG에너지솔루션","old_score":1,"new_score":3},
+     {"issue":"북미EV","company":"LG에너지솔루션","old_score":-1,"new_score":-5},
+     {"issue":"AMPC","company":"LG에너지솔루션","old_score":-1,"new_score":-5},
+     {"issue":"전고체","company":"LG에너지솔루션","old_score":1,"new_score":3}
+   ]}
+]}

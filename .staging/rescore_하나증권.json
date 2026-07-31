@@ -1,0 +1,56 @@
+{"house":"하나증권","patches":[
+  {"report_id":"2025-05-16_하나증권_산업",
+   "stances":[
+     {"issue":"밸류에이션/목표주가","company":"LGES","old_score":0,"new_score":0},
+     {"issue":"밸류에이션/목표주가","company":"삼성SDI","old_score":-1,"new_score":-4}
+   ]},
+  {"report_id":"2026-02-23_하나증권_SK온",
+   "stances":[
+     {"issue":"북미CAPEX","company":"SK온","old_score":1,"new_score":5},
+     {"issue":"밸류에이션","company":"SK온","old_score":-1,"new_score":-4}
+   ]},
+  {"report_id":"2026-03-16_하나증권_산업",
+   "stances":[
+     {"issue":"ESS/전력중개사업","company":"LGES","old_score":2,"new_score":5},
+     {"issue":"ESS 라인업","company":"삼성SDI","old_score":2,"new_score":5},
+     {"issue":"ESS/BBU","company":"SK온","old_score":1,"new_score":4},
+     {"issue":"전고체 개발","company":"LGES","old_score":1,"new_score":4},
+     {"issue":"전고체 개발","company":"SK온","old_score":1,"new_score":4},
+     {"issue":"각형 기술 경쟁력","company":"삼성SDI","old_score":2,"new_score":6}
+   ]},
+  {"report_id":"2026-04-06_하나증권_산업",
+   "stances":[
+     {"issue":"ESS 고성장 및 EV 기대치 저하에 따른 밸류에이션 매력","company":"LGES","old_score":2,"new_score":6},
+     {"issue":"ESS 성장축 이동에 따른 실적·밸류에이션 견조","company":"삼성SDI","old_score":2,"new_score":5},
+     {"issue":"조지아 1공장 가동 잠정 중단 및 흑연 조달계약 해지","company":"SK온","old_score":-1,"new_score":-5},
+     {"issue":"캐나다 넥스트스타 에너지 합작법인 지분 인수 조기 마무리","company":"LGES","old_score":1,"new_score":3}
+   ]},
+  {"report_id":"2026-04-08_하나증권_LGES",
+   "stances":[
+     {"issue":"북미EV","company":"LG에너지솔루션","old_score":-2,"new_score":-6},
+     {"issue":"ESS","company":"LG에너지솔루션","old_score":2,"new_score":5},
+     {"issue":"AMPC","company":"LG에너지솔루션","old_score":-1,"new_score":-4},
+     {"issue":"밸류에이션","company":"LG에너지솔루션","old_score":1,"new_score":4}
+   ]},
+  {"report_id":"2026-05-04_하나증권_LGES",
+   "stances":[
+     {"issue":"ESS","company":"LG에너지솔루션","old_score":-1,"new_score":-4},
+     {"issue":"AMPC","company":"LG에너지솔루션","old_score":1,"new_score":4},
+     {"issue":"북미CAPEX","company":"LG에너지솔루션","old_score":-1,"new_score":-4},
+     {"issue":"밸류에이션","company":"LG에너지솔루션","old_score":2,"new_score":6}
+   ]},
+  {"report_id":"2026-05-14_하나증권_SK온",
+   "stances":[
+     {"issue":"ESS","company":"SK온","old_score":2,"new_score":7},
+     {"issue":"AMPC","company":"SK온","old_score":1,"new_score":4},
+     {"issue":"배터리판매량","company":"SK온","old_score":1,"new_score":4}
+   ]},
+  {"report_id":"2026-06-08_하나증권_산업",
+   "stances":[
+     {"issue":"유럽EV","company":"LGES","old_score":2,"new_score":6},
+     {"issue":"AMPC","company":"LGES","old_score":2,"new_score":5},
+     {"issue":"AMPC","company":"삼성SDI","old_score":2,"new_score":5},
+     {"issue":"AMPC","company":"SK온","old_score":2,"new_score":5},
+     {"issue":"나트륨이온","company":"LGES","old_score":1,"new_score":3}
+   ]}
+]}

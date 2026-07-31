@@ -1,0 +1,44 @@
+{"house":"상상인증권","patches":[
+  {"report_id":"2024-10-21_상상인증권_산업",
+   "stances":[
+     {"issue":"밸류에이션","company":"2차전지 산업","old_score":0,"new_score":0},
+     {"issue":"중국경쟁","company":"CATL","old_score":2,"new_score":5},
+     {"issue":"관세","company":"K배터리","old_score":1,"new_score":4},
+     {"issue":"ESS","company":"K배터리","old_score":-1,"new_score":-4},
+     {"issue":"유럽EV","company":"삼성SDI","old_score":0,"new_score":0},
+     {"issue":"북미EV","company":"삼성SDI","old_score":1,"new_score":5},
+     {"issue":"배터리판매량","company":"포스코퓨처엠","old_score":1,"new_score":5},
+     {"issue":"로봇","company":"Tesla","old_score":0,"new_score":0}
+   ]},
+  {"report_id":"2026-01-29_상상인증권_SK온",
+   "stances":[
+     {"issue":"북미EV","company":"SK온","old_score":-1,"new_score":-5},
+     {"issue":"ESS","company":"SK온","old_score":1,"new_score":3},
+     {"issue":"유럽EV","company":"SK온","old_score":1,"new_score":2},
+     {"issue":"배터리판매량","company":"SK온","old_score":-1,"new_score":-5}
+   ]},
+  {"report_id":"2026-04-01_상상인증권_삼성SDI",
+   "stances":[
+     {"issue":"ESS","company":"삼성SDI","old_score":2,"new_score":6},
+     {"issue":"AMPC","company":"삼성SDI","old_score":2,"new_score":6},
+     {"issue":"북미CAPEX","company":"삼성SDI","old_score":1,"new_score":3},
+     {"issue":"전고체","company":"삼성SDI","old_score":1,"new_score":3},
+     {"issue":"유럽EV","company":"삼성SDI","old_score":-1,"new_score":-3},
+     {"issue":"소형전지","company":"삼성SDI","old_score":0,"new_score":0}
+   ]},
+  {"report_id":"2026-04-07_상상인증권_삼성SDI",
+   "stances":[
+     {"issue":"ESS","company":"삼성SDI","old_score":2,"new_score":8},
+     {"issue":"북미CAPEX","company":"삼성SDI","old_score":1,"new_score":4},
+     {"issue":"AMPC","company":"삼성SDI","old_score":1,"new_score":3},
+     {"issue":"북미EV","company":"삼성SDI","old_score":-1,"new_score":-4},
+     {"issue":"중국경쟁","company":"삼성SDI","old_score":1,"new_score":3},
+     {"issue":"밸류에이션","company":"삼성SDI","old_score":2,"new_score":8}
+   ]},
+  {"report_id":"2026-05-08_상상인증권_삼성SDI",
+   "stances":[
+     {"issue":"ESS","company":"삼성SDI","old_score":2,"new_score":7},
+     {"issue":"유럽EV","company":"삼성SDI","old_score":1,"new_score":4},
+     {"issue":"밸류에이션","company":"삼성SDI","old_score":2,"new_score":7}
+   ]}
+]}

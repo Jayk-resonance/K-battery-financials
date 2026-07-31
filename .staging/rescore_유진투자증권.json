@@ -1,0 +1,54 @@
+{"house":"유진투자증권","patches":[
+  {"report_id":"2023-11-21_유진투자증권_산업",
+   "stances":[
+     {"issue":"밸류에이션·최선호주","company":"SK온","old_score":2,"new_score":6},
+     {"issue":"기술 경쟁력","company":"SK온","old_score":2,"new_score":4},
+     {"issue":"판매전망 보수화","company":"LGES","old_score":1,"new_score":2},
+     {"issue":"LFP 기술개발","company":"LGES","old_score":1,"new_score":2},
+     {"issue":"LFP 기술개발","company":"삼성SDI","old_score":1,"new_score":-2},
+     {"issue":"생산 공정 전환","company":"LGES","old_score":0,"new_score":0}
+   ]},
+  {"report_id":"2024-05-20_유진투자증권_산업",
+   "stances":[]},
+  {"report_id":"2025-11-24_유진투자증권_산업",
+   "stances":[
+     {"issue":"ESS","company":"K배터리","old_score":2,"new_score":5},
+     {"issue":"중국경쟁","company":"K배터리","old_score":-2,"new_score":-6},
+     {"issue":"유럽EV","company":"K배터리","old_score":2,"new_score":5},
+     {"issue":"북미EV","company":"K배터리","old_score":-1,"new_score":-4},
+     {"issue":"LFP","company":"에코프로비엠","old_score":1,"new_score":3},
+     {"issue":"AMPC","company":"K배터리","old_score":1,"new_score":4},
+     {"issue":"ESS","company":"솔루스첨단소재","old_score":1,"new_score":3},
+     {"issue":"ESS","company":"상아프론테크","old_score":2,"new_score":5},
+     {"issue":"ESS","company":"신흥에스이씨","old_score":2,"new_score":5},
+     {"issue":"밸류에이션","company":"후성","old_score":2,"new_score":6}
+   ]},
+  {"report_id":"2026-05-06_유진투자증권_LGES",
+   "stances":[
+     {"issue":"밸류에이션","company":"LG에너지솔루션","old_score":2,"new_score":7},
+     {"issue":"ESS","company":"LG에너지솔루션","old_score":2,"new_score":6},
+     {"issue":"46파이","company":"LG에너지솔루션","old_score":1,"new_score":3},
+     {"issue":"AMPC","company":"LG에너지솔루션","old_score":-1,"new_score":-4},
+     {"issue":"북미CAPEX","company":"LG에너지솔루션","old_score":1,"new_score":4},
+     {"issue":"북미EV","company":"LG에너지솔루션","old_score":-1,"new_score":-2},
+     {"issue":"유럽EV","company":"LG에너지솔루션","old_score":1,"new_score":2},
+     {"issue":"소형전지","company":"LG에너지솔루션","old_score":2,"new_score":4},
+     {"issue":"파우치","company":"LG에너지솔루션","old_score":-2,"new_score":-5}
+   ]},
+  {"report_id":"2026-05-14_유진투자증권_SK온",
+   "stances":[
+     {"issue":"밸류에이션","company":"SK이노베이션","old_score":2,"new_score":7},
+     {"issue":"AMPC","company":"SK온","old_score":1,"new_score":3},
+     {"issue":"유럽EV","company":"SK온","old_score":2,"new_score":5},
+     {"issue":"배터리판매량","company":"SK온","old_score":1,"new_score":5},
+     {"issue":"북미EV","company":"SK온","old_score":-1,"new_score":-2},
+     {"issue":"ESS","company":"SK온","old_score":1,"new_score":4},
+     {"issue":"북미CAPEX","company":"SK온","old_score":1,"new_score":4}
+   ]},
+  {"report_id":"2026-05-17_유진투자증권_산업",
+   "stances":[
+     {"issue":"미국 BESS용 LFP 배터리 생산능력 확대 및 공급계약 성과","company":"LGES","old_score":2,"new_score":6},
+     {"issue":"전고체 배터리 양산 준비 선두","company":"삼성SDI","old_score":2,"new_score":6},
+     {"issue":"LFP·파우치형 ESS 시장 진입 및 BESS 다각화","company":"SK온","old_score":1,"new_score":4}
+   ]}
+]}

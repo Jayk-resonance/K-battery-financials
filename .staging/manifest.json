@@ -1,0 +1,1127 @@
+[
+ {
+  "report_id": "2026-07-03_BNK투자증권_SK온",
+  "file": "BNK투자증권_SK이노베이션_윤활유 최대 실적으로 SK온 실적 및 현금흐름 개선_20260703.pdf",
+  "house": "BNK투자증권",
+  "date": "2026-07-03",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 7
+ },
+ {
+  "report_id": "2026-04-08_DB증권_LGES",
+  "file": "DB증권_LG에너지솔루션_1Q26 잠정실적 AMPC가 매출로_20260408.pdf",
+  "house": "DB증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-04-01_DB증권_삼성SDI",
+  "file": "DB증권_삼성SDI_1Q26 컨센서스 상회 전망_20260401.pdf",
+  "house": "DB증권",
+  "date": "2026-04-01",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-04-08_IBK투자증권_LGES",
+  "file": "IBK투자증권_LG에너지솔루션_1Q26 잠정 실적 코멘트_20260408.pdf",
+  "house": "IBK투자증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 2
+ },
+ {
+  "report_id": "2026-04-02_IBK투자증권_삼성SDI",
+  "file": "IBK투자증권_삼성SDI_이제 호재가 터질 시기_20260402.pdf",
+  "house": "IBK투자증권",
+  "date": "2026-04-02",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2023-09-12_IBK투자증권_산업",
+  "file": "IBK투자증권_전자장비와기기_배터리 World War_20230912.pdf",
+  "house": "IBK투자증권",
+  "date": "2023-09-12",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 136
+ },
+ {
+  "report_id": "2024-02-26_IBK투자증권_산업",
+  "file": "IBK투자증권_전자장비와기기_역대급 북미 배터리 설계사_20240226.pdf",
+  "house": "IBK투자증권",
+  "date": "2024-02-26",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 116
+ },
+ {
+  "report_id": "2026-06-18_KB증권_LGES",
+  "file": "KB증권_LG에너지솔루션_1~5월 국내 EV 판매 +122% YoY 급등은 긍정적_20260618.pdf",
+  "house": "KB증권",
+  "date": "2026-06-18",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 9
+ },
+ {
+  "report_id": "2026-02-26_KB증권_LGES",
+  "file": "KB증권_LG에너지솔루션_2026년 미국 사업 ESS가 EV 미국 출하량 뛰어넘을 것_20260226.pdf",
+  "house": "KB증권",
+  "date": "2026-02-26",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 9
+ },
+ {
+  "report_id": "2026-06-04_KB증권_LGES",
+  "file": "KB증권_LG에너지솔루션_투자포인트 ③ EV 정상화, ④ 2027년 FCF 흑자전환 시작_20260604.pdf",
+  "house": "KB증권",
+  "date": "2026-06-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 10
+ },
+ {
+  "report_id": "2026-06-18_KB증권_SK온",
+  "file": "KB증권_SK이노베이션_국내 EV 판매 호조로, 배터리 판매량 +5~10% 추가 예상_20260618.pdf",
+  "house": "KB증권",
+  "date": "2026-06-18",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 12
+ },
+ {
+  "report_id": "2026-04-09_LS증권_LGES",
+  "file": "LS증권_LG에너지솔루션_1분기 잠정 실적 기대치 하회, 회계기준 변경_20260409.pdf",
+  "house": "LS증권",
+  "date": "2026-04-09",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 8
+ },
+ {
+  "report_id": "2026-06-02_LS증권_LGES",
+  "file": "LS증권_LG에너지솔루션_4월 EV향 data, DTE 수주 및 미국 ESS_20260602.pdf",
+  "house": "LS증권",
+  "date": "2026-06-02",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 18
+ },
+ {
+  "report_id": "2026-06-15_LS증권_SK온",
+  "file": "LS증권_SK이노베이션_업데이트 노트_20260615.pdf",
+  "house": "LS증권",
+  "date": "2026-06-15",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 17
+ },
+ {
+  "report_id": "2026-06-29_LS증권_SK온",
+  "file": "LS증권_SK이노베이션_파우치 Only 부메랑, WACC보다 낮은 ROIC_20260629.pdf",
+  "house": "LS증권",
+  "date": "2026-06-29",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 16
+ },
+ {
+  "report_id": "2026-06-05_LS증권_삼성SDI",
+  "file": "LS증권_삼성SDI_4월 EV향 data, 역성장 지속 우려_20260605.pdf",
+  "house": "LS증권",
+  "date": "2026-06-05",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 14
+ },
+ {
+  "report_id": "2026-04-08_NH투자증권_LGES",
+  "file": "NH투자증권_LG에너지솔루션_1Q26 실적 저점 확인_20260408.pdf",
+  "house": "NH투자증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 9
+ },
+ {
+  "report_id": "2026-05-28_NH투자증권_LGES",
+  "file": "NH투자증권_LG에너지솔루션_ESS 수주가 쏟아질 예정_20260528.pdf",
+  "house": "NH투자증권",
+  "date": "2026-05-28",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 2
+ },
+ {
+  "report_id": "2026-06-25_NH투자증권_LGES",
+  "file": "NH투자증권_LG에너지솔루션_점진적인 개선세_20260625.pdf",
+  "house": "NH투자증권",
+  "date": "2026-06-25",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 9
+ },
+ {
+  "report_id": "2026-03-23_NH투자증권_LGES",
+  "file": "NH투자증권_LG에너지솔루션_테슬라 유럽 판매 회복에 대비할 필요_20260323.pdf",
+  "house": "NH투자증권",
+  "date": "2026-03-23",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 9
+ },
+ {
+  "report_id": "2026-06-25_NH투자증권_삼성SDI",
+  "file": "NH투자증권_삼성SDI_릴레이 수주_20260625.pdf",
+  "house": "NH투자증권",
+  "date": "2026-06-25",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 8
+ },
+ {
+  "report_id": "2026-03-23_NH투자증권_삼성SDI",
+  "file": "NH투자증권_삼성SDI_적자폭 축소 기대_20260323.pdf",
+  "house": "NH투자증권",
+  "date": "2026-03-23",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 8
+ },
+ {
+  "report_id": "2026-06-09_SK증권_삼성SDI",
+  "file": "SK증권_삼성SDI_저점은 지났다, 회복의 축은 ESS소형_20260609.pdf",
+  "house": "SK증권",
+  "date": "2026-06-09",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 7
+ },
+ {
+  "report_id": "2025-06-10_SK증권_산업",
+  "file": "SK증권_전자장비와기기_K-배터리, 네 가지 위기와 미래 승부수_20250610.pdf",
+  "house": "SK증권",
+  "date": "2025-06-10",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 64
+ },
+ {
+  "report_id": "2023-05-23_SK증권_산업",
+  "file": "SK증권_전자장비와기기_배터리 패러다임의 변화 (feat. IT 탐방왕이 바라본 2차전지)_20230523.pdf",
+  "house": "SK증권",
+  "date": "2023-05-23",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 142
+ },
+ {
+  "report_id": "2025-11-24_SK증권_산업",
+  "file": "SK증권_전자제품_[2026년 연간전망] ESS 배터리의 빛과 그림자_20251124.pdf",
+  "house": "SK증권",
+  "date": "2025-11-24",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 25
+ },
+ {
+  "report_id": "2026-04-08_iM증권_LGES",
+  "file": "iM증권_LG에너지솔루션_1Q26 저점으로 ESS 중심 실적 회복세 전망_20260408.pdf",
+  "house": "iM증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-06-30_iM증권_LGES",
+  "file": "iM증권_LG에너지솔루션_ESS의 가파른 성장세 본격화_20260630.pdf",
+  "house": "iM증권",
+  "date": "2026-06-30",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 7
+ },
+ {
+  "report_id": "2026-06-16_iM증권_SK온",
+  "file": "iM증권_SK이노베이션_미국 TerraPower 방문 후기  중장기 SMR 경쟁력에 대한 소고_20260616.pdf",
+  "house": "iM증권",
+  "date": "2026-06-16",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 8
+ },
+ {
+  "report_id": "2026-06-30_iM증권_삼성SDI",
+  "file": "iM증권_삼성SDI_밸류에이션 부담 완화, 비중 확대 시점_20260630.pdf",
+  "house": "iM증권",
+  "date": "2026-06-30",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2025-07-25_iM증권_산업",
+  "file": "iM증권_전자장비와기기_미국 ESS 산업 구조 변화의 시작(한국 배터리 산업의 제2의 서막)_20250725.pdf",
+  "house": "iM증권",
+  "date": "2025-07-25",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 20
+ },
+ {
+  "report_id": "2026-03-30_교보증권_LGES",
+  "file": "교보증권_LG에너지솔루션_1Q26 Preview 컨센서스 소폭 하회_20260330.pdf",
+  "house": "교보증권",
+  "date": "2026-03-30",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-04-08_교보증권_LGES",
+  "file": "교보증권_LG에너지솔루션_1Q26 잠정실적_20260408.pdf",
+  "house": "교보증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 2
+ },
+ {
+  "report_id": "2026-03-30_교보증권_삼성SDI",
+  "file": "교보증권_삼성SDI_1Q26 Preview 컨센서스 소폭 상회_20260330.pdf",
+  "house": "교보증권",
+  "date": "2026-03-30",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-04-08_교보증권_삼성SDI",
+  "file": "교보증권_삼성SDI_1Q26 Preview_20260408.pdf",
+  "house": "교보증권",
+  "date": "2026-04-08",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-04-08_다올투자증권_LGES",
+  "file": "다올투자증권_LG에너지솔루션_1Q26 잠정실적 발표 시작은 다소 아쉬운_20260408.pdf",
+  "house": "다올투자증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 2
+ },
+ {
+  "report_id": "2026-06-18_다올투자증권_LGES",
+  "file": "다올투자증권_LG에너지솔루션_2Q26 Preview 좋아지기 시작_20260618.pdf",
+  "house": "다올투자증권",
+  "date": "2026-06-18",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-03-25_다올투자증권_LGES",
+  "file": "다올투자증권_LG에너지솔루션_ESS 모멘텀 지속, EV 방향성 점차 개선_20260325.pdf",
+  "house": "다올투자증권",
+  "date": "2026-03-25",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2025-11-19_다올투자증권_산업",
+  "file": "다올투자증권_전자장비와기기_AI가 쏘아올린 ESS 시장의 개화와 한국의 배터리_20251119.pdf",
+  "house": "다올투자증권",
+  "date": "2025-11-19",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 45
+ },
+ {
+  "report_id": "2023-07-06_대신증권_산업",
+  "file": "대신증권_전자장비와기기_K배터리 목표시총 400조_20230706.pdf",
+  "house": "대신증권",
+  "date": "2023-07-06",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 120
+ },
+ {
+  "report_id": "2026-04-08_메리츠증권_LGES",
+  "file": "메리츠증권_LG에너지솔루션_1Q26P 잠정실적 발표_20260408.pdf",
+  "house": "메리츠증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-07-02_메리츠증권_LGES",
+  "file": "메리츠증권_LG에너지솔루션_중대형 전지 부진은 고민거리_20260702.pdf",
+  "house": "메리츠증권",
+  "date": "2026-07-02",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-03-18_미래에셋증권_LGES",
+  "file": "미래에셋증권_LG에너지솔루션_26년 ESS 추정치 추가 상향 조정_20260318.pdf",
+  "house": "미래에셋증권",
+  "date": "2026-03-18",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2026-05-26_미래에셋증권_LGES",
+  "file": "미래에셋증권_LG에너지솔루션_각형 전환 본격화. 46 원통형 선두 주자_20260526.pdf",
+  "house": "미래에셋증권",
+  "date": "2026-05-26",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-03-18_미래에셋증권_삼성SDI",
+  "file": "미래에셋증권_삼성SDI_26년 영업 흑자 전환 예상_20260318.pdf",
+  "house": "미래에셋증권",
+  "date": "2026-03-18",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2026-06-26_미래에셋증권_삼성SDI",
+  "file": "미래에셋증권_삼성SDI_2Q26, 7개 분기만의 영업흑자 전환 예상_20260626.pdf",
+  "house": "미래에셋증권",
+  "date": "2026-06-26",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2026-04-08_삼성증권_LGES",
+  "file": "삼성증권_LG에너지솔루션_1Q26 잠정 실적 - 예상치 부합_20260408.pdf",
+  "house": "삼성증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 7
+ },
+ {
+  "report_id": "2026-03-11_삼성증권_LGES",
+  "file": "삼성증권_LG에너지솔루션_1등은 로봇도 잘한다_20260311.pdf",
+  "house": "삼성증권",
+  "date": "2026-03-11",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-06-17_삼성증권_LGES",
+  "file": "삼성증권_LG에너지솔루션_2H26 Outlook - 대규모 ESS 수주 본격화_20260617.pdf",
+  "house": "삼성증권",
+  "date": "2026-06-17",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 7
+ },
+ {
+  "report_id": "2026-03-11_삼성증권_삼성SDI",
+  "file": "삼성증권_삼성SDI_연간 턴어라운드 기대 유효_20260311.pdf",
+  "house": "삼성증권",
+  "date": "2026-03-11",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-06-11_삼성증권_삼성SDI",
+  "file": "삼성증권_삼성SDI_예상보다 빠른 3분기 흑자 전환 기대_20260611.pdf",
+  "house": "삼성증권",
+  "date": "2026-06-11",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2025-03-21_삼성증권_산업",
+  "file": "삼성증권_자동차_Beyond Chasm 로봇의 심장, 배터리_20250321.pdf",
+  "house": "삼성증권",
+  "date": "2025-03-21",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 79
+ },
+ {
+  "report_id": "2025-10-23_삼성증권_산업",
+  "file": "삼성증권_전자장비와기기_2차전지 산업 분석 11편 - AI 데이터센터와 배터리_20251023.pdf",
+  "house": "삼성증권",
+  "date": "2025-10-23",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 39
+ },
+ {
+  "report_id": "2026-01-29_상상인증권_SK온",
+  "file": "상상인증권_SK이노베이션_배터리사업 부진, 그러나 개선 준비 중_20260129.pdf",
+  "house": "상상인증권",
+  "date": "2026-01-29",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-04-01_상상인증권_삼성SDI",
+  "file": "상상인증권_삼성SDI_1Q26 Preview - 북미거점 ESS 생산, 하반기 흑자전환 기대_20260401.pdf",
+  "house": "상상인증권",
+  "date": "2026-04-01",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2026-04-07_상상인증권_삼성SDI",
+  "file": "상상인증권_삼성SDI_북미ESS 성장 반영, 중장기 이익전망 상향_20260407.pdf",
+  "house": "상상인증권",
+  "date": "2026-04-07",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2024-10-21_상상인증권_산업",
+  "file": "상상인증권_자동차_2025년 연간 전망 완성차와 배터리에 기대할 수 있는 것_20241021.pdf",
+  "house": "상상인증권",
+  "date": "2024-10-21",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 74
+ },
+ {
+  "report_id": "2026-04-08_신영증권_LGES",
+  "file": "신영증권_LG에너지솔루션_1분기 잠정 실적 코멘트_20260408.pdf",
+  "house": "신영증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 2
+ },
+ {
+  "report_id": "2026-03-31_신영증권_LGES",
+  "file": "신영증권_LG에너지솔루션_하방은 제한적, ESS가 이끄는 2026년_20260331.pdf",
+  "house": "신영증권",
+  "date": "2026-03-31",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2026-03-25_신영증권_삼성SDI",
+  "file": "신영증권_삼성SDI_황화물계 전고체 전지 시장 선점 효과 기대_20260325.pdf",
+  "house": "신영증권",
+  "date": "2026-03-25",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-04-08_신한투자증권_LGES",
+  "file": "신한투자증권_LG에너지솔루션_LG에너지솔루션 1Q26 잠정실적 발표_20260408.pdf",
+  "house": "신한투자증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 2
+ },
+ {
+  "report_id": "2026-04-02_신한투자증권_LGES",
+  "file": "신한투자증권_LG에너지솔루션_우려보다 기대를_20260402.pdf",
+  "house": "신한투자증권",
+  "date": "2026-04-02",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 7
+ },
+ {
+  "report_id": "2026-06-24_유안타증권_LGES",
+  "file": "유안타증권_LG에너지솔루션_미국 ESS 현지화의 최대 수혜_20260624.pdf",
+  "house": "유안타증권",
+  "date": "2026-06-24",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-04-09_유안타증권_LGES",
+  "file": "유안타증권_LG에너지솔루션_영업이익 기준 컨센서스 하회 실적 기록_20260409.pdf",
+  "house": "유안타증권",
+  "date": "2026-04-09",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-06-24_유안타증권_삼성SDI",
+  "file": "유안타증권_삼성SDI_ESS 전 라인업 중심으로 외형성장 지속_20260624.pdf",
+  "house": "유안타증권",
+  "date": "2026-06-24",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-04-02_유안타증권_삼성SDI",
+  "file": "유안타증권_삼성SDI_하반기 흑전 + ESS 중심 수주 확대 기대_20260402.pdf",
+  "house": "유안타증권",
+  "date": "2026-04-02",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2025-04-02_유안타증권_산업",
+  "file": "유안타증권_전자장비와기기_파고들다 II. 46시리즈와 전고체 배터리_20250402.pdf",
+  "house": "유안타증권",
+  "date": "2025-04-02",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 60
+ },
+ {
+  "report_id": "2024-05-20_유진투자증권_산업",
+  "file": "유진투자증권_복합유틸리티_산업재 D(ata)PT - 「나트륨이온배터리, 게임체인저가 될 것인가」_20240520.pdf",
+  "house": "유진투자증권",
+  "date": "2024-05-20",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 102
+ },
+ {
+  "report_id": "2025-11-24_유진투자증권_산업",
+  "file": "유진투자증권_전자장비와기기_2026 연간전망 2026년 희망의 K배터리 밸류체인_20251124.pdf",
+  "house": "유진투자증권",
+  "date": "2025-11-24",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 73
+ },
+ {
+  "report_id": "2026-05-17_유진투자증권_산업",
+  "file": "유진투자증권_전자장비와기기_2H26 OUTLOOK 화려한 배터리 테마주 장세 시작_20260517.pdf",
+  "house": "유진투자증권",
+  "date": "2026-05-17",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 101
+ },
+ {
+  "report_id": "2023-11-21_유진투자증권_산업",
+  "file": "유진투자증권_전자장비와기기_배터리 2024 OUTLOOK TREND SETTER_20231121.pdf",
+  "house": "유진투자증권",
+  "date": "2023-11-21",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 71
+ },
+ {
+  "report_id": "2026-04-08_키움증권_LGES",
+  "file": "키움증권_LG에너지솔루션_1Q26 잠정 실적 리뷰 컨센서스 대비 매출은 상회, 영업이익은 하회_20260408.pdf",
+  "house": "키움증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-03-24_키움증권_LGES",
+  "file": "키움증권_LG에너지솔루션_휴머노이드 배터리 공급 확대_20260324.pdf",
+  "house": "키움증권",
+  "date": "2026-03-24",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-03-24_키움증권_삼성SDI",
+  "file": "키움증권_삼성SDI_전고체 전지 모멘텀 기대_20260324.pdf",
+  "house": "키움증권",
+  "date": "2026-03-24",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-06-15_핀릿_삼성SDI",
+  "file": "핀릿_삼성SDI_배터리주가 아니라 로봇 심장주로 봐야 하는 이유_20260615.pdf",
+  "house": "핀릿",
+  "date": "2026-06-15",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-04-08_하나증권_LGES",
+  "file": "하나증권_LG에너지솔루션_EV 부진 지속_20260408.pdf",
+  "house": "하나증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-02-23_하나증권_SK온",
+  "file": "하나증권_SK이노베이션_더 이상 정유 Up-Cycle에서 소외되지 않는다_20260223.pdf",
+  "house": "하나증권",
+  "date": "2026-02-23",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2026-04-06_하나증권_산업",
+  "file": "하나증권_전자장비와기기_Weekly 이배속  ESS 성장 지속, 기대감 없는 EV의 반등_20260406.pdf",
+  "house": "하나증권",
+  "date": "2026-04-06",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 29
+ },
+ {
+  "report_id": "2025-05-16_하나증권_산업",
+  "file": "하나증권_전자장비와기기_배터리 징비록_20250516.pdf",
+  "house": "하나증권",
+  "date": "2025-05-16",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 57
+ },
+ {
+  "report_id": "2026-06-08_하나증권_산업",
+  "file": "하나증권_전자장비와기기_배터리 투자자가 준비해야 하는 3가지_20260608.pdf",
+  "house": "하나증권",
+  "date": "2026-06-08",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 30
+ },
+ {
+  "report_id": "2026-03-16_하나증권_산업",
+  "file": "하나증권_전자장비와기기_인터배터리가 투자자에게 주는 함의_20260316.pdf",
+  "house": "하나증권",
+  "date": "2026-03-16",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 53
+ },
+ {
+  "report_id": "2026-04-08_한화투자증권_LGES",
+  "file": "한화투자증권_LG에너지솔루션_1Q26 잠정실적 코멘트 - EV 부진을 ESS로 빠르게 메우는 중_20260408.pdf",
+  "house": "한화투자증권",
+  "date": "2026-04-08",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-03-24_한화투자증권_LGES",
+  "file": "한화투자증권_LG에너지솔루션_미국 ESS와 유럽 IAA로 회복 가시성 증가_20260324.pdf",
+  "house": "한화투자증권",
+  "date": "2026-03-24",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-03-24_한화투자증권_삼성SDI",
+  "file": "한화투자증권_삼성SDI_EV 공백 메우는 ESS, IAA 수혜로 더해지는 기대감_20260324.pdf",
+  "house": "한화투자증권",
+  "date": "2026-03-24",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-04-09_흥국증권_LGES",
+  "file": "흥국증권_LG에너지솔루션_ESS 성장 과도기_20260409.pdf",
+  "house": "흥국증권",
+  "date": "2026-04-09",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2026-04-08_흥국증권_삼성SDI",
+  "file": "흥국증권_삼성SDI_ESS 생산 체제 안정화_20260408.pdf",
+  "house": "흥국증권",
+  "date": "2026-04-08",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2025-02-03_흥국증권_산업",
+  "file": "흥국증권_전자장비와기기_2025년 미리보기 전열 재정비(ft.4680 배터리 로드맵)_20250203.pdf",
+  "house": "흥국증권",
+  "date": "2025-02-03",
+  "coverage": "산업",
+  "report_type": "산업",
+  "pages": 46
+ },
+ {
+  "report_id": "2026-05-04_DB증권_LGES",
+  "file": "DB증권_LG에너지솔루션_원통형 전지 활약에 주목_20260504.pdf",
+  "house": "DB증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-05-04_DS투자증권_LGES",
+  "file": "DS투자증권_LG에너지솔루션_소형전지에 관심 필요_20260504.pdf",
+  "house": "DS투자증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-05-04_IBK투자증권_LGES",
+  "file": "IBK투자증권_LG에너지솔루션_매 분기 성장 예정_20260504.pdf",
+  "house": "IBK투자증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-05-04_IBK투자증권_SK온",
+  "file": "IBK투자증권_SK이노베이션_공급 충격의 누적이 시작됐다_20260504.pdf",
+  "house": "IBK투자증권",
+  "date": "2026-05-04",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-05-14_IBK투자증권_SK온",
+  "file": "IBK투자증권_SK이노베이션_올해 1분기 영업이익, 2조원 상회_20260514.pdf",
+  "house": "IBK투자증권",
+  "date": "2026-05-14",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-05-13_KB증권_SK온",
+  "file": "KB증권_SK이노베이션_호르무즈 영향으로, 9개 사업부 모두 대폭 증익!_20260513.pdf",
+  "house": "KB증권",
+  "date": "2026-05-13",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 9
+ },
+ {
+  "report_id": "2026-05-12_LS증권_LGES",
+  "file": "LS증권_LG에너지솔루션_낮아지는 눈높이_20260512.pdf",
+  "house": "LS증권",
+  "date": "2026-05-12",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-05-12_LS증권_삼성SDI",
+  "file": "LS증권_삼성SDI_상대적으로 양호한 포지션 대비 높은 가격_20260512.pdf",
+  "house": "LS증권",
+  "date": "2026-05-12",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-05-04_NH투자증권_LGES",
+  "file": "NH투자증권_LG에너지솔루션_하반기부터 질적 개선_20260504.pdf",
+  "house": "NH투자증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 9
+ },
+ {
+  "report_id": "2026-05-11_iM증권_LGES",
+  "file": "iM증권_LG에너지솔루션_ESS 수주가 다 찼다_20260511.pdf",
+  "house": "iM증권",
+  "date": "2026-05-11",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-05-14_iM증권_SK온",
+  "file": "iM증권_SK이노베이션_국내 정유사들 중에서 차별화되는 포인트 2가지_20260514.pdf",
+  "house": "iM증권",
+  "date": "2026-05-14",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 8
+ },
+ {
+  "report_id": "2026-05-11_iM증권_SK온",
+  "file": "iM증권_SK이노베이션_전 사업부에서 누리는 고유가 + ESS 확대 기회_20260511.pdf",
+  "house": "iM증권",
+  "date": "2026-05-11",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 9
+ },
+ {
+  "report_id": "2026-05-11_iM증권_삼성SDI",
+  "file": "iM증권_삼성SDI_AIDC향 ESS의 중장기적인 성장성 확보_20260511.pdf",
+  "house": "iM증권",
+  "date": "2026-05-11",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-05-04_교보증권_LGES",
+  "file": "교보증권_LG에너지솔루션_1Q26 Review ESS 체질 전환 가속화_20260504.pdf",
+  "house": "교보증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-05-04_다올투자증권_LGES",
+  "file": "다올투자증권_LG에너지솔루션_1Q26 Review 업황은 턴 했다_20260504.pdf",
+  "house": "다올투자증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 7
+ },
+ {
+  "report_id": "2026-05-06_대신증권_LGES",
+  "file": "대신증권_LG에너지솔루션_꽉 차 있는 수주 창고_20260506.pdf",
+  "house": "대신증권",
+  "date": "2026-05-06",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 8
+ },
+ {
+  "report_id": "2026-05-06_대신증권_삼성SDI",
+  "file": "대신증권_삼성SDI_안정성에 성장성까지!_20260506.pdf",
+  "house": "대신증권",
+  "date": "2026-05-06",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 8
+ },
+ {
+  "report_id": "2026-05-04_메리츠증권_LGES",
+  "file": "메리츠증권_LG에너지솔루션_기회 요인_20260504.pdf",
+  "house": "메리츠증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-05-14_메리츠증권_SK온",
+  "file": "메리츠증권_SK이노베이션_1Q26 Review 예상치 상회_20260514.pdf",
+  "house": "메리츠증권",
+  "date": "2026-05-14",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-05-04_미래에셋증권_LGES",
+  "file": "미래에셋증권_LG에너지솔루션_실적 바닥 통과 구간에 일어난 전쟁_20260504.pdf",
+  "house": "미래에셋증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2026-05-26_미래에셋증권_삼성SDI",
+  "file": "미래에셋증권_삼성SDI_자금력, 점유율 회복, 실적 회복의 3박자_20260526.pdf",
+  "house": "미래에셋증권",
+  "date": "2026-05-26",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-05-21_버핏연구소_삼성SDI",
+  "file": "버핏연구소_삼성SDI_이차전지 최악 업황 지나고 ESS 쑥쑥_20260521.pdf",
+  "house": "버핏연구소",
+  "date": "2026-05-21",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 9
+ },
+ {
+  "report_id": "2026-05-08_상상인증권_삼성SDI",
+  "file": "상상인증권_삼성SDI_xEV 와 ESS 향 매출 동반성장을 기대_20260508.pdf",
+  "house": "상상인증권",
+  "date": "2026-05-08",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2026-05-04_신영증권_LGES",
+  "file": "신영증권_LG에너지솔루션_2분기부터 재차 증익 구간 진입_20260504.pdf",
+  "house": "신영증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-05-04_신한투자증권_LGES",
+  "file": "신한투자증권_LG에너지솔루션_1분기가 저점_20260504.pdf",
+  "house": "신한투자증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 7
+ },
+ {
+  "report_id": "2026-05-14_신한투자증권_SK온",
+  "file": "신한투자증권_SK이노베이션_예견된 정유 호실적_20260514.pdf",
+  "house": "신한투자증권",
+  "date": "2026-05-14",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 7
+ },
+ {
+  "report_id": "2026-05-06_유안타증권_LGES",
+  "file": "유안타증권_LG에너지솔루션_불확실성 해소된 현 시점 투자매력도 높음_20260506.pdf",
+  "house": "유안타증권",
+  "date": "2026-05-06",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 3
+ },
+ {
+  "report_id": "2026-05-22_유안타증권_SK온",
+  "file": "유안타증권_SK이노베이션_국민 에너지 기업으로 재평가 되어야…_20260522.pdf",
+  "house": "유안타증권",
+  "date": "2026-05-22",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 8
+ },
+ {
+  "report_id": "2026-05-06_유안타증권_삼성SDI",
+  "file": "유안타증권_삼성SDI_남아있는 모멘텀, 올해 셀 Top Pick 유지_20260506.pdf",
+  "house": "유안타증권",
+  "date": "2026-05-06",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-05-06_유진투자증권_LGES",
+  "file": "유진투자증권_LG에너지솔루션_ESS + 4680이 견인하는 실적_20260506.pdf",
+  "house": "유진투자증권",
+  "date": "2026-05-06",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 11
+ },
+ {
+  "report_id": "2026-05-14_유진투자증권_SK온",
+  "file": "유진투자증권_SK이노베이션_풀가동으로 전략 전환_20260514.pdf",
+  "house": "유진투자증권",
+  "date": "2026-05-14",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 8
+ },
+ {
+  "report_id": "2026-05-04_키움증권_LGES",
+  "file": "키움증권_LG에너지솔루션_북미 ESS CAPA 역량에 주목할 필요_20260504.pdf",
+  "house": "키움증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 7
+ },
+ {
+  "report_id": "2026-05-28_키움증권_삼성SDI",
+  "file": "키움증권_삼성SDI_실적은 최악의 구간을 지나가는 시점_20260528.pdf",
+  "house": "키움증권",
+  "date": "2026-05-28",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-05-04_하나증권_LGES",
+  "file": "하나증권_LG에너지솔루션_주가 하방 압력 제한적_20260504.pdf",
+  "house": "하나증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-05-14_하나증권_SK온",
+  "file": "하나증권_SK이노베이션_단기 실적 변동성 vs. 중장기 호황_20260514.pdf",
+  "house": "하나증권",
+  "date": "2026-05-14",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2026-05-04_한화투자증권_LGES",
+  "file": "한화투자증권_LG에너지솔루션_ESS의 가파른 성장과 46-Series 가세, 확실한 턴어라운드 진입_20260504.pdf",
+  "house": "한화투자증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 5
+ },
+ {
+  "report_id": "2026-05-14_한화투자증권_SK온",
+  "file": "한화투자증권_SK이노베이션_에너지 안보 시대, 전통에너지 가치 재평가_20260514.pdf",
+  "house": "한화투자증권",
+  "date": "2026-05-14",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-05-04_현대차증권_LGES",
+  "file": "현대차증권_LG에너지솔루션_아쉬운 1분기. 하지만, 방향성은 유효_20260504.pdf",
+  "house": "현대차증권",
+  "date": "2026-05-04",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 7
+ }
+]

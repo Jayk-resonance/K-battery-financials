@@ -1,0 +1,12 @@
+{"house":"현대차증권","patches":[
+  {"report_id":"2026-05-04_현대차증권_LGES",
+   "stances":[
+     {"issue":"ESS","company":"LG에너지솔루션","old_score":-1,"new_score":-4},
+     {"issue":"AMPC","company":"LG에너지솔루션","old_score":2,"new_score":5},
+     {"issue":"북미CAPEX","company":"LG에너지솔루션","old_score":1,"new_score":3},
+     {"issue":"북미EV","company":"LG에너지솔루션","old_score":1,"new_score":2},
+     {"issue":"유럽EV","company":"LG에너지솔루션","old_score":1,"new_score":2},
+     {"issue":"소형전지","company":"LG에너지솔루션","old_score":2,"new_score":5},
+     {"issue":"밸류에이션","company":"LG에너지솔루션","old_score":1,"new_score":7}
+   ]}
+]}

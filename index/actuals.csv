@@ -1,0 +1,218 @@
+company,fy,period,segment,segment_std,metric,value,unit,ampc_basis,source_file,source_page
+LGES,2023,연간,전사,전사,매출,33745,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2023,연간,전사,전사,영업이익,2163,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2023,연간,전사,전사,영업이익_AMPC제외,1486,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2023,연간,전사,전사,EBITDA,4450,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2023,연간,전사,전사,당기순이익,1638,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2023,연간,전사,전사,AMPC,677,십억원,na,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,1Q,전사,전사,매출,6129,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,1Q,전사,전사,영업이익,157,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,1Q,전사,전사,영업이익_AMPC제외,-32,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,1Q,전사,전사,EBITDA,816,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,1Q,전사,전사,당기순이익,212,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,1Q,전사,전사,AMPC,189,십억원,na,251Q_LGES_business_performance_KOR.pdf,5
+LGES,2024,2Q,전사,전사,매출,6162,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,2Q,전사,전사,영업이익,195,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,2Q,전사,전사,영업이익_AMPC제외,-252,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,2Q,전사,전사,EBITDA,930,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,2Q,전사,전사,당기순이익,-24,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,2Q,전사,전사,AMPC,448,십억원,na,252Q_LGES_business_performance_KOR.pdf,5
+LGES,2024,3Q,전사,전사,매출,6878,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,3Q,전사,전사,영업이익,448,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,3Q,전사,전사,영업이익_AMPC제외,-18,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,3Q,전사,전사,EBITDA,1241,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,3Q,전사,전사,당기순이익,561,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,3Q,전사,전사,AMPC,466,십억원,na,25_3Q_LGES_business_performance_KOR.pdf,5
+LGES,2024,4Q,전사,전사,매출,6451,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,4Q,전사,전사,영업이익,-226,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,4Q,전사,전사,영업이익_AMPC제외,-603,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,4Q,전사,전사,EBITDA,633,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,4Q,전사,전사,당기순이익,-411,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,4Q,전사,전사,AMPC,377,십억원,na,251Q_LGES_business_performance_KOR.pdf,5
+LGES,2024,4Q,전사,전사,CAPEX,-3642,십억원,na,251Q_LGES_business_performance_KOR.pdf,15
+LGES,2024,연간,전사,전사,매출,25620,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,연간,전사,전사,영업이익,575,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,연간,전사,전사,영업이익_AMPC제외,-905,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,연간,전사,전사,EBITDA,3621,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,연간,전사,전사,당기순이익,339,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,연간,전사,전사,AMPC,1480,십억원,na,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2024,연간,전사,전사,CAPEX,-12547,십억원,na,251Q_LGES_business_performance_KOR.pdf,15
+LGES,2025,1Q,전사,전사,매출,6265,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,1Q,전사,전사,매출_AMPC포함(재작성),6723,십억원,incl,26_1Q_LGES_business_performance_F_KR.pdf,13
+LGES,2025,1Q,전사,전사,영업이익,375,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,1Q,전사,전사,영업이익_AMPC제외,-83,십억원,excl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,1Q,전사,전사,EBITDA,1232,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,1Q,전사,전사,당기순이익,227,십억원,incl,251Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,1Q,전사,전사,AMPC,458,십억원,na,251Q_LGES_business_performance_KOR.pdf,5
+LGES,2025,1Q,전사,전사,CAPEX,-3014,십억원,na,251Q_LGES_business_performance_KOR.pdf,7
+LGES,2025,2Q,전사,전사,매출,5565,십억원,excl,252Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,2Q,전사,전사,매출_AMPC포함(재작성),6056,십억원,incl,26_1Q_LGES_business_performance_F_KR.pdf,13
+LGES,2025,2Q,전사,전사,영업이익,492,십억원,incl,252Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,2Q,전사,전사,영업이익_AMPC제외,1,십억원,excl,252Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,2Q,전사,전사,EBITDA,1375,십억원,incl,252Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,2Q,전사,전사,당기순이익,91,십억원,incl,252Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,2Q,전사,전사,AMPC,491,십억원,na,252Q_LGES_business_performance_KOR.pdf,5
+LGES,2025,2Q,전사,전사,CAPEX,-2717,십억원,na,252Q_LGES_business_performance_KOR.pdf,7
+LGES,2025,3Q,전사,전사,매출,5700,십억원,excl,25_3Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,3Q,전사,전사,매출_AMPC포함(재작성),6065,십억원,incl,26_1Q_LGES_business_performance_F_KR.pdf,13
+LGES,2025,3Q,전사,전사,영업이익,601,십억원,incl,25_3Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,3Q,전사,전사,영업이익_AMPC제외,236,십억원,excl,25_3Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,3Q,전사,전사,EBITDA,1519,십억원,incl,25_3Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,3Q,전사,전사,당기순이익,536,십억원,incl,25_3Q_LGES_business_performance_KOR.pdf,13
+LGES,2025,3Q,전사,전사,AMPC,366,십억원,na,25_3Q_LGES_business_performance_KOR.pdf,5
+LGES,2025,3Q,전사,전사,CAPEX,-2171,십억원,na,25_3Q_LGES_business_performance_KOR.pdf,7
+LGES,2025,4Q,전사,전사,매출,6141,십억원,excl,25_4Q_LGES_business_performance_F_KR.pdf,14
+LGES,2025,4Q,전사,전사,매출_AMPC포함(재작성),6474,십억원,incl,26_1Q_LGES_business_performance_F_KR.pdf,13
+LGES,2025,4Q,전사,전사,영업이익,-122,십억원,incl,25_4Q_LGES_business_performance_F_KR.pdf,14
+LGES,2025,4Q,전사,전사,영업이익_AMPC제외,-455,십억원,excl,25_4Q_LGES_business_performance_F_KR.pdf,14
+LGES,2025,4Q,전사,전사,EBITDA,913,십억원,incl,25_4Q_LGES_business_performance_F_KR.pdf,14
+LGES,2025,4Q,전사,전사,당기순이익,-772,십억원,incl,25_4Q_LGES_business_performance_F_KR.pdf,14
+LGES,2025,4Q,전사,전사,AMPC,333,십억원,na,25_4Q_LGES_business_performance_F_KR.pdf,6
+LGES,2025,4Q,전사,전사,CAPEX,-2515,십억원,na,25_4Q_LGES_business_performance_F_KR.pdf,8
+LGES,2025,연간,전사,전사,매출,23672,십억원,excl,25_4Q_LGES_business_performance_F_KR.pdf,14
+LGES,2025,연간,전사,전사,매출_AMPC포함(재작성),25319,십억원,incl,26_1Q_LGES_business_performance_F_KR.pdf,13
+LGES,2025,연간,전사,전사,영업이익,1346,십억원,incl,25_4Q_LGES_business_performance_F_KR.pdf,14
+LGES,2025,연간,전사,전사,영업이익_AMPC제외,-301,십억원,excl,25_4Q_LGES_business_performance_F_KR.pdf,14
+LGES,2025,연간,전사,전사,EBITDA,5037,십억원,incl,25_4Q_LGES_business_performance_F_KR.pdf,14
+LGES,2025,연간,전사,전사,당기순이익,81,십억원,incl,25_4Q_LGES_business_performance_F_KR.pdf,14
+LGES,2025,연간,전사,전사,AMPC,1647,십억원,na,26_1Q_LGES_business_performance_F_KR.pdf,13
+LGES,2025,연간,전사,전사,CAPEX,-10417,십억원,na,25_4Q_LGES_business_performance_F_KR.pdf,8
+LGES,2025,연간,자동차전지,자동차전지(원통형46시리즈),수주잔고,300,GWh,na,25_4Q_LGES_business_performance_F_KR.pdf,5
+LGES,2025,연간,ESS,ESS,수주잔고,140,GWh,na,25_4Q_LGES_business_performance_F_KR.pdf,5
+LGES,2026,1Q,전사,전사,매출,6555,십억원,incl,26_1Q_LGES_business_performance_F_KR.pdf,13
+LGES,2026,1Q,전사,전사,영업이익,-208,십억원,incl,26_1Q_LGES_business_performance_F_KR.pdf,13
+LGES,2026,1Q,전사,전사,영업이익_AMPC제외,-398,십억원,excl,26_1Q_LGES_business_performance_F_KR.pdf,13
+LGES,2026,1Q,전사,전사,EBITDA,887,십억원,incl,26_1Q_LGES_business_performance_F_KR.pdf,13
+LGES,2026,1Q,전사,전사,당기순이익,-944,십억원,incl,26_1Q_LGES_business_performance_F_KR.pdf,13
+LGES,2026,1Q,전사,전사,AMPC,190,십억원,na,26_1Q_LGES_business_performance_F_KR.pdf,5
+LGES,2026,1Q,전사,전사,CAPEX,-1648,십억원,na,26_1Q_LGES_business_performance_F_KR.pdf,7
+LGES,2026,1Q,자동차전지,자동차전지(원통형46시리즈),수주잔고,440,GWh,na,26_1Q_LGES_business_performance_F_KR.pdf,9
+SK온,2025,1Q,배터리,배터리합계,매출,1605.4,십억원,na,SK이노베이션_실적발표_1Q25 국문_F.pdf,13
+SK온,2025,1Q,배터리,배터리합계,영업이익,-299.3,십억원,incl_unknown,SK이노베이션_실적발표_1Q25 국문_F.pdf,13
+SK온,2025,1Q,SK온(합병법인),SK온합병법인기준,매출,8740.7,십억원,na,SK이노베이션_실적발표_1Q25 국문_F.pdf,13
+SK온,2025,1Q,SK온(합병법인),SK온합병법인기준,영업이익,-163.3,십억원,incl_unknown,SK이노베이션_실적발표_1Q25 국문_F.pdf,13
+SK온,2025,2Q,배터리,배터리합계,매출,2107.7,십억원,na,SK이노베이션_실적발표_2Q25 국문_F.pdf,13
+SK온,2025,2Q,배터리,배터리합계,영업이익,-66.4,십억원,incl_unknown,SK이노베이션_실적발표_2Q25 국문_F.pdf,13
+SK온,2025,2Q,SK온(합병법인),SK온합병법인기준,매출,8834.2,십억원,na,SK이노베이션_실적발표_2Q25 국문_F.pdf,13
+SK온,2025,2Q,SK온(합병법인),SK온합병법인기준,영업이익,60.9,십억원,incl_unknown,SK이노베이션_실적발표_2Q25 국문_F.pdf,13
+SK온,2025,3Q,배터리,배터리합계,매출,1807.9,십억원,na,SK이노베이션_실적발표_3Q25 국문.pdf,13
+SK온,2025,3Q,배터리,배터리합계,영업이익,-124.8,십억원,incl_unknown,SK이노베이션_실적발표_3Q25 국문.pdf,13
+SK온,2025,3Q,SK온(합병법인),SK온합병법인기준,매출,9315.8,십억원,na,SK이노베이션_실적발표_3Q25 국문.pdf,13
+SK온,2025,3Q,SK온(합병법인),SK온합병법인기준,영업이익,17.9,십억원,incl_unknown,SK이노베이션_실적발표_3Q25 국문.pdf,13
+SK온,2025,4Q,배터리,배터리합계,매출,1457.2,십억원,na,SK이노베이션_실적발표_4Q25 국문 (1).pdf,16
+SK온,2025,4Q,배터리,배터리합계,영업이익,-441.4,십억원,incl_unknown,SK이노베이션_실적발표_4Q25 국문 (1).pdf,16
+SK온,2025,4Q,SK온(합병법인),SK온합병법인기준,영업이익,-189.7,십억원,incl_unknown,SK이노베이션_실적발표_4Q25 국문 (1).pdf,16
+SK온,2026,1Q,배터리,배터리합계,매출,1791.2,십억원,na,SK이노베이션_실적발표_1Q26_0513_final.pdf,6
+SK온,2026,1Q,배터리,배터리합계,영업이익,-349.2,십억원,incl_unknown,SK이노베이션_실적발표_1Q26_0513_final.pdf,6
+SK온,2026,1Q,SK온(합병법인),SK온합병법인기준,영업이익,-145.1,십억원,incl_unknown,SK이노베이션_실적발표_1Q26_0513_final.pdf,6
+SK온,2025,4Q,배터리,배터리합계,매출(1Q26자료 재작성치),1457.2,십억원,na,SK이노베이션_실적발표_1Q26_0513_final.pdf,6
+SK온,2025,4Q,배터리,배터리합계,영업이익(1Q26자료 재작성치),-440.8,십억원,incl_unknown,SK이노베이션_실적발표_1Q26_0513_final.pdf,6
+SK이노베이션,2025,1Q,연결전사,전사,매출,21146.6,십억원,na,SK이노베이션_실적발표_1Q25 국문_F.pdf,6
+SK이노베이션,2025,1Q,연결전사,전사,영업이익,-44.6,십억원,na,SK이노베이션_실적발표_1Q25 국문_F.pdf,6
+SK이노베이션,2025,1Q,소재,"소재(SKIET, 내부거래 제거 기준)",매출,23.8,십억원,na,SK이노베이션_실적발표_1Q25 국문_F.pdf,14
+SK이노베이션,2025,1Q,소재,"소재(SKIET, 내부거래 제거 기준)",영업이익,-54.8,십억원,na,SK이노베이션_실적발표_1Q25 국문_F.pdf,14
+SK이노베이션,2025,2Q,연결전사,전사,매출,19306.6,십억원,na,SK이노베이션_실적발표_2Q25 국문_F.pdf,6
+SK이노베이션,2025,2Q,연결전사,전사,영업이익,-417.6,십억원,na,SK이노베이션_실적발표_2Q25 국문_F.pdf,6
+SK이노베이션,2025,2Q,소재,"소재(SKIET, 내부거래 제거 기준)",매출,19.5,십억원,na,SK이노베이션_실적발표_2Q25 국문_F.pdf,14
+SK이노베이션,2025,2Q,소재,"소재(SKIET, 내부거래 제거 기준)",영업이익,-53.7,십억원,na,SK이노베이션_실적발표_2Q25 국문_F.pdf,14
+SK이노베이션,2025,3Q,연결전사,전사,매출,20533.2,십억원,na,SK이노베이션_실적발표_3Q25 국문.pdf,6
+SK이노베이션,2025,3Q,연결전사,전사,영업이익,573.5,십억원,na,SK이노베이션_실적발표_3Q25 국문.pdf,6
+SK이노베이션,2025,3Q,소재,"소재(SKIET, 내부거래 제거 기준)",매출,23.5,십억원,na,SK이노베이션_실적발표_3Q25 국문.pdf,14
+SK이노베이션,2025,3Q,소재,"소재(SKIET, 내부거래 제거 기준)",영업이익,-50.1,십억원,na,SK이노베이션_실적발표_3Q25 국문.pdf,14
+SK이노베이션,2025,4Q,연결전사,전사,매출,19671.3,십억원,na,SK이노베이션_실적발표_4Q25 국문 (1).pdf,9
+SK이노베이션,2025,4Q,연결전사,전사,영업이익,294.7,십억원,na,SK이노베이션_실적발표_4Q25 국문 (1).pdf,9
+SK이노베이션,2025,4Q,연결전사,전사,영업외손익,-4657.3,십억원,na,SK이노베이션_실적발표_4Q25 국문 (1).pdf,9
+SK이노베이션,2025,4Q,소재,"소재(SKIET, 내부거래 제거 기준)",매출,17.2,십억원,na,SK이노베이션_실적발표_4Q25 국문 (1).pdf,17
+SK이노베이션,2025,4Q,소재,"소재(SKIET, 내부거래 제거 기준)",영업이익,-75.2,십억원,na,SK이노베이션_실적발표_4Q25 국문 (1).pdf,17
+SK이노베이션,2026,1Q,연결전사,전사,매출,24212.1,십억원,na,SK이노베이션_실적발표_1Q26_0513_final.pdf,5
+SK이노베이션,2026,1Q,연결전사,전사,영업이익,2162.2,십억원,na,SK이노베이션_실적발표_1Q26_0513_final.pdf,5
+SK이노베이션,2026,1Q,소재,"SKIET(법인 연결기준, 1Q26부터 표 산정방식 변경)",매출,35.9,십억원,na,SK이노베이션_실적발표_1Q26_0513_final.pdf,6
+SK이노베이션,2026,1Q,소재,"SKIET(법인 연결기준, 1Q26부터 표 산정방식 변경)",영업이익,-73.2,십억원,na,SK이노베이션_실적발표_1Q26_0513_final.pdf,6
+삼성SDI,2024,1Q,전사,전사,매출,4816.2,십억원,na,2025.1Q_IR_Final_K.pdf,3
+삼성SDI,2024,1Q,전사,전사,영업이익,249.1,십억원,na,2025.1Q_IR_Final_K.pdf,3
+삼성SDI,2024,1Q,전사,전사,세전이익,273.3,십억원,na,2025.1Q_IR_Final_K.pdf,3
+삼성SDI,2024,1Q,전사,전사,당기순이익,286.7,십억원,na,2025.1Q_IR_Final_K.pdf,3
+삼성SDI,2024,1Q,전지,배터리합계,매출,4581.8,십억원,na,2025.1Q_IR_Final_K.pdf,4
+삼성SDI,2024,1Q,전지,배터리합계,영업이익,214.5,십억원,na,2025.1Q_IR_Final_K.pdf,4
+삼성SDI,2024,1Q,전자재료,전자재료,매출,234.4,십억원,na,2025.1Q_IR_Final_K.pdf,4
+삼성SDI,2024,1Q,전자재료,전자재료,영업이익,34.6,십억원,na,2025.1Q_IR_Final_K.pdf,4
+삼성SDI,2024,2Q,전사,전사,매출,4085.9,십억원,na,2025.2Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,2Q,전사,전사,영업이익,241.0,십억원,na,2025.2Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,2Q,전사,전사,세전이익,334.7,십억원,na,2025.2Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,2Q,전사,전사,당기순이익,301.2,십억원,na,2025.2Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,2Q,전지,배터리합계,매출,3872.9,십억원,na,2025.2Q_IR_Final_Kr.pdf,4
+삼성SDI,2024,2Q,전지,배터리합계,영업이익,208.1,십억원,na,2025.2Q_IR_Final_Kr.pdf,4
+삼성SDI,2024,2Q,전자재료,전자재료,매출,213.0,십억원,na,2025.2Q_IR_Final_Kr.pdf,4
+삼성SDI,2024,2Q,전자재료,전자재료,영업이익,32.9,십억원,na,2025.2Q_IR_Final_Kr.pdf,4
+삼성SDI,2024,3Q,전사,전사,매출,3935.7,십억원,na,2025.3Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,3Q,전사,전사,영업이익,129.9,십억원,na,2025.3Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,3Q,전사,전사,세전이익,266.5,십억원,na,2025.3Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,3Q,전사,전사,당기순이익,230.4,십억원,na,2025.3Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,3Q,전지,배터리합계,매출,3672.2,십억원,na,2025.3Q_IR_Final_Kr.pdf,4
+삼성SDI,2024,3Q,전지,배터리합계,영업이익,63.5,십억원,na,2025.3Q_IR_Final_Kr.pdf,4
+삼성SDI,2024,3Q,전자재료,전자재료,매출,263.5,십억원,na,2025.3Q_IR_Final_Kr.pdf,4
+삼성SDI,2024,3Q,전자재료,전자재료,영업이익,66.4,십억원,na,2025.3Q_IR_Final_Kr.pdf,4
+삼성SDI,2024,4Q,전사,전사,매출,3754.5,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,4Q,전사,전사,영업이익,-256.7,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,4Q,전사,전사,세전이익,-347.2,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,4Q,전사,전사,당기순이익,-242.7,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,4Q,전지,배터리합계,매출,3564.5,십억원,na,2025.1Q_IR_Final_K.pdf,4
+삼성SDI,2024,4Q,전지,배터리합계,영업이익,-268.3,십억원,na,2025.1Q_IR_Final_K.pdf,4
+삼성SDI,2024,4Q,전자재료,전자재료,매출,190.0,십억원,na,2025.1Q_IR_Final_K.pdf,4
+삼성SDI,2024,4Q,전자재료,전자재료,영업이익,11.6,십억원,na,2025.1Q_IR_Final_K.pdf,4
+삼성SDI,2025,1Q,전사,전사,매출,3176.8,십억원,na,2025.1Q_IR_Final_K.pdf,3
+삼성SDI,2025,1Q,전사,전사,영업이익,-434.1,십억원,na,2025.1Q_IR_Final_K.pdf,3
+삼성SDI,2025,1Q,전사,전사,세전이익,-357.1,십억원,na,2025.1Q_IR_Final_K.pdf,3
+삼성SDI,2025,1Q,전사,전사,당기순이익,-216.0,십억원,na,2025.1Q_IR_Final_K.pdf,3
+삼성SDI,2025,1Q,전지,배터리합계,매출,2980.9,십억원,na,2025.1Q_IR_Final_K.pdf,4
+삼성SDI,2025,1Q,전지,배터리합계,영업이익,-452.4,십억원,na,2025.1Q_IR_Final_K.pdf,4
+삼성SDI,2025,1Q,전자재료,전자재료,매출,195.9,십억원,na,2025.1Q_IR_Final_K.pdf,4
+삼성SDI,2025,1Q,전자재료,전자재료,영업이익,18.3,십억원,na,2025.1Q_IR_Final_K.pdf,4
+삼성SDI,2025,2Q,전사,전사,매출,3179.4,십억원,na,2025.2Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,2Q,전사,전사,영업이익,-397.8,십억원,na,2025.2Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,2Q,전사,전사,세전이익,-341.0,십억원,na,2025.2Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,2Q,전사,전사,당기순이익,-166.7,십억원,na,2025.2Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,2Q,전지,배터리합계,매출,2961.2,십억원,na,2025.2Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,2Q,전지,배터리합계,영업이익,-430.8,십억원,na,2025.2Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,2Q,전자재료,전자재료,매출,218.2,십억원,na,2025.2Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,2Q,전자재료,전자재료,영업이익,33.0,십억원,na,2025.2Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,3Q,전사,전사,매출,3051.8,십억원,na,2025.3Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,3Q,전사,전사,영업이익,-591.3,십억원,na,2025.3Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,3Q,전사,전사,세전이익,-429.6,십억원,na,2025.3Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,3Q,전사,전사,당기순이익,5.7,십억원,na,2025.3Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,3Q,전지,배터리합계,매출,2820.0,십억원,na,2025.3Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,3Q,전지,배터리합계,영업이익,-630.1,십억원,na,2025.3Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,3Q,전자재료,전자재료,매출,231.8,십억원,na,2025.3Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,3Q,전자재료,전자재료,영업이익,38.8,십억원,na,2025.3Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,4Q,전사,전사,매출,3858.7,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,4Q,전사,전사,영업이익,-299.2,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,4Q,전사,전사,세전이익,-236.4,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,4Q,전사,전사,당기순이익,-207.8,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,4Q,전지,배터리합계,매출,3622.0,십억원,na,2025.4Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,4Q,전지,배터리합계,영업이익,-338.5,십억원,na,2025.4Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,4Q,전자재료,전자재료,매출,236.7,십억원,na,2025.4Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,4Q,전자재료,전자재료,영업이익,39.3,십억원,na,2025.4Q_IR_Final_Kr.pdf,4
+삼성SDI,2024,FY,전사,전사,매출,16592.2,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,FY,전사,전사,영업이익,363.3,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,FY,전사,전사,세전이익,527.3,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,FY,전사,전사,당기순이익,575.5,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2024,FY,전지,배터리합계,매출,15691.2,십억원,na,2025.4Q_IR_Final_Kr.pdf,4
+삼성SDI,2024,FY,전지,배터리합계,영업이익,217.7,십억원,na,2025.4Q_IR_Final_Kr.pdf,4
+삼성SDI,2024,FY,전자재료,전자재료,매출,901.0,십억원,na,2025.4Q_IR_Final_Kr.pdf,4
+삼성SDI,2024,FY,전자재료,전자재료,영업이익,145.6,십억원,na,2025.4Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,FY,전사,전사,매출,13266.7,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,FY,전사,전사,영업이익,-1722.4,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,FY,전사,전사,세전이익,-1364.0,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,FY,전사,전사,당기순이익,-584.9,십억원,na,2025.4Q_IR_Final_Kr.pdf,3
+삼성SDI,2025,FY,전지,배터리합계,매출,12384.1,십억원,na,2025.4Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,FY,전지,배터리합계,영업이익,-1851.9,십억원,na,2025.4Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,FY,전자재료,전자재료,매출,882.6,십억원,na,2025.4Q_IR_Final_Kr.pdf,4
+삼성SDI,2025,FY,전자재료,전자재료,영업이익,129.5,십억원,na,2025.4Q_IR_Final_Kr.pdf,4
+삼성SDI,2026,1Q,전사,전사,매출,3576.4,십억원,na,2026.1Q_IR_Final_Kr.pdf,3
+삼성SDI,2026,1Q,전사,전사,영업이익,-155.6,십억원,na,2026.1Q_IR_Final_Kr.pdf,3
+삼성SDI,2026,1Q,전사,전사,세전이익,-43.4,십억원,na,2026.1Q_IR_Final_Kr.pdf,3
+삼성SDI,2026,1Q,전사,전사,당기순이익,56.1,십억원,na,2026.1Q_IR_Final_Kr.pdf,3
+삼성SDI,2026,1Q,전지,배터리합계,매출,3354.4,십억원,na,2026.1Q_IR_Final_Kr.pdf,4
+삼성SDI,2026,1Q,전지,배터리합계,영업이익,-176.6,십억원,na,2026.1Q_IR_Final_Kr.pdf,4
+삼성SDI,2026,1Q,전자재료,전자재료,매출,222.0,십억원,na,2026.1Q_IR_Final_Kr.pdf,4
+삼성SDI,2026,1Q,전자재료,전자재료,영업이익,21.0,십억원,na,2026.1Q_IR_Final_Kr.pdf,4

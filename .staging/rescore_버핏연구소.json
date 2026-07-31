@@ -1,0 +1,11 @@
+{"house":"버핏연구소","patches":[
+  {"report_id":"2026-05-21_버핏연구소_삼성SDI",
+   "stances":[
+     {"issue":"유럽EV","company":"삼성SDI","old_score":2,"new_score":6},
+     {"issue":"ESS","company":"삼성SDI","old_score":2,"new_score":5},
+     {"issue":"소형전지","company":"삼성SDI","old_score":1,"new_score":4},
+     {"issue":"북미CAPEX","company":"삼성SDI","old_score":1,"new_score":5},
+     {"issue":"중국경쟁","company":"삼성SDI","old_score":-1,"new_score":3},
+     {"issue":"밸류에이션","company":"삼성SDI","old_score":1,"new_score":2}
+   ]}
+]}

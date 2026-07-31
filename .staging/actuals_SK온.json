@@ -1,0 +1,39 @@
+{
+  "company": "SK온",
+  "source": "SK이노베이션 실적발표 자료 (1Q25~1Q26)",
+  "note": "5개 IR 자료 전체(1Q25,2Q25,3Q25,4Q25,1Q26)를 pdftotext -layout 및 원문 이미지로 대조 확인. AMPC(첨단제조생산세액공제) 관련 언급/각주는 5개 자료 어디에도 존재하지 않음(전수 grep 결과 0건) -> 배터리 영업이익 수치에 AMPC가 포함되어 있는지 여부를 원문에서 특정할 수 없어 전 분기 ampc_basis='incl_unknown'으로 처리함(LGES 자료와 달리 SK이노베이션 IR자료는 AMPC를 별도 disclosure하지 않음).",
+  "actuals": [
+    {"fy":2025,"period":"1Q","segment":"배터리","segment_std":"배터리합계","metric":"매출","value":1605.4,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_1Q25 국문_F.pdf","page":13},
+    {"fy":2025,"period":"1Q","segment":"배터리","segment_std":"배터리합계","metric":"영업이익","value":-299.3,"unit":"십억원","ampc_basis":"incl_unknown","source_file":"SK이노베이션_실적발표_1Q25 국문_F.pdf","page":13},
+    {"fy":2025,"period":"1Q","segment":"SK온(합병법인)","segment_std":"SK온합병법인기준","metric":"매출","value":8740.7,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_1Q25 국문_F.pdf","page":13,"note":"SK온·SKTI·SK엔텀 합병법인 실적으로 계열 내부거래 미제거, 배터리합계(연결/내부거래 제거)와 다른 기준"},
+    {"fy":2025,"period":"1Q","segment":"SK온(합병법인)","segment_std":"SK온합병법인기준","metric":"영업이익","value":-163.3,"unit":"십억원","ampc_basis":"incl_unknown","source_file":"SK이노베이션_실적발표_1Q25 국문_F.pdf","page":13},
+
+    {"fy":2025,"period":"2Q","segment":"배터리","segment_std":"배터리합계","metric":"매출","value":2107.7,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_2Q25 국문_F.pdf","page":13},
+    {"fy":2025,"period":"2Q","segment":"배터리","segment_std":"배터리합계","metric":"영업이익","value":-66.4,"unit":"십억원","ampc_basis":"incl_unknown","source_file":"SK이노베이션_실적발표_2Q25 국문_F.pdf","page":13},
+    {"fy":2025,"period":"2Q","segment":"SK온(합병법인)","segment_std":"SK온합병법인기준","metric":"매출","value":8834.2,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_2Q25 국문_F.pdf","page":13},
+    {"fy":2025,"period":"2Q","segment":"SK온(합병법인)","segment_std":"SK온합병법인기준","metric":"영업이익","value":60.9,"unit":"십억원","ampc_basis":"incl_unknown","source_file":"SK이노베이션_실적발표_2Q25 국문_F.pdf","page":13,"note":"합병법인 기준 최초 분기 흑자전환"},
+
+    {"fy":2025,"period":"3Q","segment":"배터리","segment_std":"배터리합계","metric":"매출","value":1807.9,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_3Q25 국문.pdf","page":13},
+    {"fy":2025,"period":"3Q","segment":"배터리","segment_std":"배터리합계","metric":"영업이익","value":-124.8,"unit":"십억원","ampc_basis":"incl_unknown","source_file":"SK이노베이션_실적발표_3Q25 국문.pdf","page":13},
+    {"fy":2025,"period":"3Q","segment":"SK온(합병법인)","segment_std":"SK온합병법인기준","metric":"매출","value":9315.8,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_3Q25 국문.pdf","page":13},
+    {"fy":2025,"period":"3Q","segment":"SK온(합병법인)","segment_std":"SK온합병법인기준","metric":"영업이익","value":17.9,"unit":"십억원","ampc_basis":"incl_unknown","source_file":"SK이노베이션_실적발표_3Q25 국문.pdf","page":13},
+
+    {"fy":2025,"period":"4Q","segment":"배터리","segment_std":"배터리합계","metric":"매출","value":1457.2,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_4Q25 국문 (1).pdf","page":16},
+    {"fy":2025,"period":"4Q","segment":"배터리","segment_std":"배터리합계","metric":"영업이익","value":-441.4,"unit":"십억원","ampc_basis":"incl_unknown","source_file":"SK이노베이션_실적발표_4Q25 국문 (1).pdf","page":16,"note":"전분기(-124.8) 대비 대폭 확대. 별도 자산손상 금액은 본 IR자료(배터리 사업 페이지)에 명시되어 있지 않음"},
+    {"fy":2025,"period":"4Q","segment":"SK온(합병법인)","segment_std":"SK온합병법인기준","metric":"영업이익","value":-189.7,"unit":"십억원","ampc_basis":"incl_unknown","source_file":"SK이노베이션_실적발표_4Q25 국문 (1).pdf","page":16,"note":"이 분기부터 SK엔무브(’25.11.1부 합병)도 합병법인 범위에 포함. 4Q25 IR자료에는 합병법인 기준 매출액 별도 표시 없음"},
+
+    {"fy":2026,"period":"1Q","segment":"배터리","segment_std":"배터리합계","metric":"매출","value":1791.2,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_1Q26_0513_final.pdf","page":6,"note":"1Q26부터 '사업별 실적' 대신 '회사별 실적'(법인 기준) 표로 개편, 표상 명칭은 'SK온'"},
+    {"fy":2026,"period":"1Q","segment":"배터리","segment_std":"배터리합계","metric":"영업이익","value":-349.2,"unit":"십억원","ampc_basis":"incl_unknown","source_file":"SK이노베이션_실적발표_1Q26_0513_final.pdf","page":6},
+    {"fy":2026,"period":"1Q","segment":"SK온(합병법인)","segment_std":"SK온합병법인기준","metric":"영업이익","value":-145.1,"unit":"십억원","ampc_basis":"incl_unknown","source_file":"SK이노베이션_실적발표_1Q26_0513_final.pdf","page":6,"note":"각주에 '배터리 사업(합병법인 기준 당기 영업이익: -1,451억원)'으로만 기재, 매출액은 별도 미기재"},
+
+    {"fy":2025,"period":"4Q","segment":"배터리","segment_std":"배터리합계","metric":"매출(1Q26자료 재작성치)","value":1457.2,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_1Q26_0513_final.pdf","page":6,"note":"비교치, 1Q26 자료의 'SK온' 행 기준. 4Q25 원자료(1457.2)와 매출액은 동일"},
+    {"fy":2025,"period":"4Q","segment":"배터리","segment_std":"배터리합계","metric":"영업이익(1Q26자료 재작성치)","value":-440.8,"unit":"십억원","ampc_basis":"incl_unknown","source_file":"SK이노베이션_실적발표_1Q26_0513_final.pdf","page":6,"note":"4Q25 자료 원 발표치(-441.4)와 소폭 상이 -> 1Q26 자료에서 소급 재작성됨(4Q25 자료의 '당사 일부 사업 중단 및 매각 결정에 따른 소급 작성' 각주와 일관)"}
+  ],
+  "drivers": [
+    {"fy":2025,"period":"1Q","segment_std":"배터리합계","summary":"전기차 시장 불확실성에도 불구 미국 중심의 Global 판매량 증가로 영업손익 개선(영업손실 축소: -359.4→-299.3십억원). 2Q 전망: 美 관세 정책發 시장 둔화 우려에도 북미 현대차向 판매량 증가로 성장 기대","source_file":"SK이노베이션_실적발표_1Q25 국문_F.pdf","page":13},
+    {"fy":2025,"period":"2Q","segment_std":"배터리합계","summary":"북미 공장 가동률 확대 등을 통해 美 수요 증가에 적시 대응, SK온 통합법인(합병법인 기준) 흑자 전환(60.9십억원). 배터리사업(연결) 기준도 적자폭 대폭 축소(-299.3→-66.4십억원). 3Q 전망: 美 정책 영향 불확실성 및 신규 SOP(양산개시) 초기 부담 우려","source_file":"SK이노베이션_실적발표_2Q25 국문_F.pdf","page":13},
+    {"fy":2025,"period":"3Q","segment_std":"배터리합계","summary":"OEM 하계 휴가 및 美 EV 구매보조금 폐지 영향 등으로 배터리 판매량이 감소하며 영업이익 하락(합병법인 기준 60.9→17.9십억원, 배터리사업 기준 -66.4→-124.8십억원). 4Q 전망: 美 수요 부진/신규 공장 초기 비용 부담으로 실적 둔화 전망되나 ESS 사업 강화로 포트폴리오 확대 추진","source_file":"SK이노베이션_실적발표_3Q25 국문.pdf","page":13},
+    {"fy":2025,"period":"4Q","segment_std":"배터리합계","summary":"美 EV 구매보조금 폐지 영향 지속 및 유럽 물량 확대에도 불구하고 북미 배터리 판매량 감소로 영업이익 큰 폭 하락(배터리사업 기준 -124.8→-441.4십억원, 영업이익률 -6.9%→-30.3%; 합병법인 기준 17.9→-189.7십억원). ※ 배터리 사업 페이지 자체에는 자산손상 등 일회성 항목이 금액으로 명시되어 있지 않음. 다만 전사 경영실적 현황 표(p.9)에서 연결 영업외손익이 -497.0(3Q25)→-4,657.3십억원(4Q25)으로 QoQ -4,160.3십억원 악화되며 세전이익이 -4,362.6십억원으로 급락 -> 규모상 대규모 일회성(손상 등으로 추정되는) 항목이 존재하는 것으로 보이나, 본 IR자료는 이를 배터리 부문 등 사업부별로 구분/명시하지 않음(자산손상이라는 표현 자체가 자료 내 어디에도 등장하지 않음, 전사 grep 결과 0건). 회사는 '26년 전망'에서 Portfolio Rebalancing 및 SK온 북미/중국 JV 구조 재편(BlueOval SK 테네시 공장 독자운영 전환 등, capacity 127→45GWh·가동 2025→2028로 축소 기재)을 언급, 정황상 관련 가능성은 있으나 원문에 인과관계나 금액이 명시되어 있지 않아 단정하지 않음","source_file":"SK이노베이션_실적발표_4Q25 국문 (1).pdf","page":"9,16"},
+    {"fy":2026,"period":"1Q","segment_std":"배터리합계","summary":"북미 판매량 소폭 증가, 유럽/아시아 물량 일부 회복으로 전분기 대비 영업적자 감소(-440.8→-349.2십억원, 합병법인 기준 -189.7→-145.1십억원). 2Q26 전망: 유럽 현지생산 장려정책/보조금에 따른 우호적 환경, 북미 ESS 수주 확대 목표에 따른 배터리 중장기 수익성 개선 기대","source_file":"SK이노베이션_실적발표_1Q26_0513_final.pdf","page":7}
+  ]
+}

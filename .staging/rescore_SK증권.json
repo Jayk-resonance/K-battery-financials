@@ -1,0 +1,45 @@
+{"house":"SK증권","patches":[
+  {"report_id":"2023-05-23_SK증권_산업",
+   "stances":[
+     {"issue":"LFP","company":"LG에너지솔루션","old_score":1,"new_score":3},
+     {"issue":"LFP","company":"SK온","old_score":2,"new_score":5},
+     {"issue":"LFP","company":"삼성SDI","old_score":1,"new_score":3},
+     {"issue":"AMPC","company":"LG에너지솔루션","old_score":2,"new_score":6},
+     {"issue":"AMPC","company":"삼성SDI","old_score":0,"new_score":-4},
+     {"issue":"AMPC","company":"SK온","old_score":2,"new_score":7},
+     {"issue":"ESS","company":"삼성SDI","old_score":2,"new_score":6},
+     {"issue":"ESS","company":"LG에너지솔루션","old_score":1,"new_score":3},
+     {"issue":"북미CAPEX","company":"LG에너지솔루션","old_score":2,"new_score":6},
+     {"issue":"북미CAPEX","company":"삼성SDI","old_score":0,"new_score":-4},
+     {"issue":"미중분쟁","company":"삼성전자(수혜)","old_score":1,"new_score":4},
+     {"issue":"밸류에이션","company":"LG에너지솔루션","old_score":-1,"new_score":-4},
+     {"issue":"밸류에이션","company":"코스모신소재","old_score":-1,"new_score":-5},
+     {"issue":"배터리판매량","company":"산업전체","old_score":2,"new_score":8},
+     {"issue":"파우치","company":"LG에너지솔루션","old_score":1,"new_score":4}
+   ]},
+  {"report_id":"2025-06-10_SK증권_산업",
+   "stances":[
+     {"issue":"북미CAPEX","company":"LG에너지솔루션","old_score":-1,"new_score":-5},
+     {"issue":"유럽EV","company":"삼성SDI","old_score":-1,"new_score":-5},
+     {"issue":"LFP","company":"삼성SDI","old_score":-1,"new_score":-3},
+     {"issue":"북미CAPEX","company":"SK온","old_score":-2,"new_score":-6},
+     {"issue":"중국경쟁","company":"K배터리 3사","old_score":-2,"new_score":-7},
+     {"issue":"밸류에이션","company":"K배터리 3사","old_score":-2,"new_score":-4}
+   ]},
+  {"report_id":"2025-11-24_SK증권_산업",
+   "stances":[
+     {"issue":"북미EV","company":"한국배터리3사","old_score":-2,"new_score":-7},
+     {"issue":"중국경쟁","company":"한국배터리3사","old_score":-2,"new_score":-6},
+     {"issue":"ESS","company":"한국배터리3사","old_score":1,"new_score":2},
+     {"issue":"ESS","company":"롯데에너지머티리얼즈","old_score":2,"new_score":7}
+   ]},
+  {"report_id":"2026-06-09_SK증권_삼성SDI",
+   "stances":[
+     {"issue":"ESS","company":"삼성SDI","old_score":2,"new_score":6},
+     {"issue":"AMPC","company":"삼성SDI","old_score":2,"new_score":6},
+     {"issue":"소형전지","company":"삼성SDI","old_score":1,"new_score":5},
+     {"issue":"전고체","company":"삼성SDI","old_score":-1,"new_score":-2},
+     {"issue":"밸류에이션","company":"삼성SDI","old_score":2,"new_score":6},
+     {"issue":"북미CAPEX","company":"삼성SDI","old_score":1,"new_score":5}
+   ]}
+]}

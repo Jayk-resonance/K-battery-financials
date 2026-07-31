@@ -1,0 +1,40 @@
+{
+  "company": "SK이노베이션",
+  "source": "SK이노베이션 실적발표 자료 (1Q25~1Q26 국문)",
+  "note": "연결 전사 매출/영업이익 및 소재(SKIET) 부문(배터리와 구분되는 별도 사업부문). 배터리 부문 상세는 별도 파일(actuals_SK온.json) 참조.",
+  "actuals": [
+    {"fy":2025,"period":"1Q","segment":"연결전사","segment_std":"전사","metric":"매출","value":21146.6,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_1Q25 국문_F.pdf","page":6},
+    {"fy":2025,"period":"1Q","segment":"연결전사","segment_std":"전사","metric":"영업이익","value":-44.6,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_1Q25 국문_F.pdf","page":6},
+    {"fy":2025,"period":"1Q","segment":"소재","segment_std":"소재(SKIET, 내부거래 제거 기준)","metric":"매출","value":23.8,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_1Q25 국문_F.pdf","page":14},
+    {"fy":2025,"period":"1Q","segment":"소재","segment_std":"소재(SKIET, 내부거래 제거 기준)","metric":"영업이익","value":-54.8,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_1Q25 국문_F.pdf","page":14},
+
+    {"fy":2025,"period":"2Q","segment":"연결전사","segment_std":"전사","metric":"매출","value":19306.6,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_2Q25 국문_F.pdf","page":6},
+    {"fy":2025,"period":"2Q","segment":"연결전사","segment_std":"전사","metric":"영업이익","value":-417.6,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_2Q25 국문_F.pdf","page":6},
+    {"fy":2025,"period":"2Q","segment":"소재","segment_std":"소재(SKIET, 내부거래 제거 기준)","metric":"매출","value":19.5,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_2Q25 국문_F.pdf","page":14},
+    {"fy":2025,"period":"2Q","segment":"소재","segment_std":"소재(SKIET, 내부거래 제거 기준)","metric":"영업이익","value":-53.7,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_2Q25 국문_F.pdf","page":14,"note":"각주: SKIET 연결기준(그룹 내부거래 미제거) 2Q25 매출 828억원/영업이익 -538억원(영업이익률 -65.0%)"},
+
+    {"fy":2025,"period":"3Q","segment":"연결전사","segment_std":"전사","metric":"매출","value":20533.2,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_3Q25 국문.pdf","page":6},
+    {"fy":2025,"period":"3Q","segment":"연결전사","segment_std":"전사","metric":"영업이익","value":573.5,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_3Q25 국문.pdf","page":6},
+    {"fy":2025,"period":"3Q","segment":"소재","segment_std":"소재(SKIET, 내부거래 제거 기준)","metric":"매출","value":23.5,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_3Q25 국문.pdf","page":14},
+    {"fy":2025,"period":"3Q","segment":"소재","segment_std":"소재(SKIET, 내부거래 제거 기준)","metric":"영업이익","value":-50.1,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_3Q25 국문.pdf","page":14,"note":"각주: SKIET 연결기준 3Q25 매출 791억원/영업이익 -472억원(영업이익률 -59.7%)"},
+
+    {"fy":2025,"period":"4Q","segment":"연결전사","segment_std":"전사","metric":"매출","value":19671.3,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_4Q25 국문 (1).pdf","page":9},
+    {"fy":2025,"period":"4Q","segment":"연결전사","segment_std":"전사","metric":"영업이익","value":294.7,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_4Q25 국문 (1).pdf","page":9},
+    {"fy":2025,"period":"4Q","segment":"연결전사","segment_std":"전사","metric":"영업외손익","value":-4657.3,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_4Q25 국문 (1).pdf","page":9,"note":"전분기(-497.0) 대비 QoQ -4,160.3십억원 악화. 세전이익 -4,362.6십억원(전분기 88.7십억원 대비 -4,451.3). 원인 세부내역/사업부별 배분은 본 IR자료에 명시되어 있지 않음(자산손상이라는 단어 자체가 자료 내 미등장, 전수 검색 0건). 재무제표 현황(p.9)에서 연결 유무형자산이 연초 대비 -9,795.4십억원 감소, '당사 일부 사업 중단 및 매각 결정에 따라 소급 작성' 각주 존재"},
+    {"fy":2025,"period":"4Q","segment":"소재","segment_std":"소재(SKIET, 내부거래 제거 기준)","metric":"매출","value":17.2,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_4Q25 국문 (1).pdf","page":17},
+    {"fy":2025,"period":"4Q","segment":"소재","segment_std":"소재(SKIET, 내부거래 제거 기준)","metric":"영업이익","value":-75.2,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_4Q25 국문 (1).pdf","page":17,"note":"각주: SKIET 연결기준 4Q25 매출 419억원/영업이익 -757억원(영업이익률 -180.7%)"},
+
+    {"fy":2026,"period":"1Q","segment":"연결전사","segment_std":"전사","metric":"매출","value":24212.1,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_1Q26_0513_final.pdf","page":5},
+    {"fy":2026,"period":"1Q","segment":"연결전사","segment_std":"전사","metric":"영업이익","value":2162.2,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_1Q26_0513_final.pdf","page":5},
+    {"fy":2026,"period":"1Q","segment":"소재","segment_std":"SKIET(법인 연결기준, 1Q26부터 표 산정방식 변경)","metric":"매출","value":35.9,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_1Q26_0513_final.pdf","page":6,"note":"1Q26 자료는 '사업별 실적'(내부거래 제거) 대신 '회사별 실적'(법인 기준) 표로 개편되어 'SK아이이테크놀로지' 법인 실적을 표시. 과거 분기 '소재' 세그먼트(내부거래 제거) 수치와 산정 기준이 달라 직접 비교 시 유의 필요"},
+    {"fy":2026,"period":"1Q","segment":"소재","segment_std":"SKIET(법인 연결기준, 1Q26부터 표 산정방식 변경)","metric":"영업이익","value":-73.2,"unit":"십억원","ampc_basis":"na","source_file":"SK이노베이션_실적발표_1Q26_0513_final.pdf","page":6}
+  ],
+  "drivers": [
+    {"fy":2025,"period":"1Q","segment_std":"소재(SKIET, 내부거래 제거 기준)","summary":"판매 증가, 전분기 일회성 비용 기저 등 영향으로 영업손실 194억원 개선(-74.2→-54.8십억원)","source_file":"SK이노베이션_실적발표_1Q25 국문_F.pdf","page":14},
+    {"fy":2025,"period":"2Q","segment_std":"소재(SKIET, 내부거래 제거 기준)","summary":"판매 물량 확대 효과로 영업손실 11억원 축소(-54.8→-53.7십억원)","source_file":"SK이노베이션_실적발표_2Q25 국문_F.pdf","page":14},
+    {"fy":2025,"period":"3Q","segment_std":"소재(SKIET, 내부거래 제거 기준)","summary":"원가절감 등 영향으로 영업손실 36억원 축소(-53.7→-50.1십억원)","source_file":"SK이노베이션_실적발표_3Q25 국문.pdf","page":14},
+    {"fy":2025,"period":"4Q","segment_std":"소재(SKIET, 내부거래 제거 기준)","summary":"美 전기차 보조금 폐지에 따른 영향으로 매출 감소, 북미向 물량 감소 및 연말 재고조정에 따른 전분기 대비 매출액 감소, 영업손실 확대(-50.1→-75.2십억원)","source_file":"SK이노베이션_실적발표_4Q25 국문 (1).pdf","page":17},
+    {"fy":2025,"period":"4Q","segment_std":"전사","summary":"석유(중동/아프리카 가동량 증가 등 영향은 3Q에 이어 유가하락 효과), E&S(SMP 하락) 등 사업부는 등락이 있었으나, 전사 세전이익을 무너뜨린 핵심 요인은 영업외손익 급격한 악화(QoQ -4,160.3십억원)임. 회사는 이를 별도 항목명(예: 자산손상차손, 지분법손실 등)으로 특정해 공시하지 않았으며, '(*) 당사 일부 사업 중단 및 매각 결정에 따라 해당 사업실적 소급하여 작성' 각주만 존재. 2026년 중점 추진과제에서 SK온 중국·미국 JV 구조 재편(SKOJ 지분 100%, BlueOval SK 테네시 공장 독자운영/생산능력 127→45GWh로 축소·가동시기 2025→2028로 연기)을 언급하여 정황상 배터리 관련 대규모 조정 가능성을 시사하나, 금액과 인과관계를 원문에서 직접 확인할 수 없음","source_file":"SK이노베이션_실적발표_4Q25 국문 (1).pdf","page":9},
+    {"fy":2026,"period":"1Q","segment_std":"전사","summary":"중동발 유가 상승에 따른 일회성 재고관련이익(SK에너지)으로 영업이익 급증(295.3→2,162.2십억원). 배터리(SK온)는 소폭 개선에 그침","source_file":"SK이노베이션_실적발표_1Q26_0513_final.pdf","page":7}
+  ]
+}

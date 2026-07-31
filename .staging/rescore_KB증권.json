@@ -1,0 +1,34 @@
+{"house":"KB증권","patches":[
+  {"report_id":"2026-02-26_KB증권_LGES",
+   "stances":[
+     {"issue":"ESS","company":"LGES","old_score":2,"new_score":8},
+     {"issue":"북미CAPEX","company":"LGES","old_score":2,"new_score":7},
+     {"issue":"관세","company":"LGES","old_score":1,"new_score":4},
+     {"issue":"북미EV","company":"LGES","old_score":-1,"new_score":-6},
+     {"issue":"AMPC","company":"LGES","old_score":1,"new_score":4}
+   ]},
+  {"report_id":"2026-05-13_KB증권_SK온",
+   "stances":[
+     {"issue":"유럽EV","company":"SK온","old_score":1,"new_score":2},
+     {"issue":"AMPC","company":"SK온","old_score":1,"new_score":0}
+   ]},
+  {"report_id":"2026-06-04_KB증권_LGES",
+   "stances":[
+     {"issue":"ESS","company":"LG에너지솔루션","old_score":2,"new_score":7},
+     {"issue":"46파이","company":"LG에너지솔루션","old_score":2,"new_score":7},
+     {"issue":"북미CAPEX","company":"LG에너지솔루션","old_score":2,"new_score":8},
+     {"issue":"북미EV","company":"LG에너지솔루션","old_score":1,"new_score":4},
+     {"issue":"유럽EV","company":"LG에너지솔루션","old_score":1,"new_score":3},
+     {"issue":"AMPC","company":"LG에너지솔루션","old_score":1,"new_score":4},
+     {"issue":"밸류에이션","company":"LG에너지솔루션","old_score":2,"new_score":7}
+   ]},
+  {"report_id":"2026-06-18_KB증권_LGES",
+   "stances":[
+     {"issue":"배터리판매량","company":"LGES","old_score":2,"new_score":6},
+     {"issue":"북미EV","company":"LGES","old_score":1,"new_score":4}
+   ]},
+  {"report_id":"2026-06-18_KB증권_SK온",
+   "stances":[
+     {"issue":"배터리판매량","company":"SK온","old_score":2,"new_score":6}
+   ]}
+]}

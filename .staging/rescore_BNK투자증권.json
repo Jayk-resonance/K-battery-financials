@@ -1,0 +1,10 @@
+{"house":"BNK투자증권","patches":[
+  {"report_id":"2026-07-03_BNK투자증권_SK온",
+   "stances":[
+     {"issue":"ESS","company":"SK온","old_score":2,"new_score":5},
+     {"issue":"LFP","company":"SK온","old_score":1,"new_score":4},
+     {"issue":"유럽EV","company":"SK온","old_score":1,"new_score":3},
+     {"issue":"북미CAPEX","company":"SK온","old_score":1,"new_score":2},
+     {"issue":"밸류에이션","company":"SK이노베이션","old_score":2,"new_score":7}
+   ]}
+]}

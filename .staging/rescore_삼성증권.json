@@ -1,0 +1,58 @@
+{"house":"삼성증권","patches":[
+  {"report_id":"2025-03-21_삼성증권_산업",
+   "stances":[
+     {"issue":"46시리즈·Tesla 공급 선점","company":"LGES","old_score":1,"new_score":4},
+     {"issue":"미국/유럽 고객사 수요 및 정책 불확실성","company":"LGES","old_score":-1,"new_score":-7},
+     {"issue":"현대차그룹과의 로봇 전용 배터리 공동개발","company":"삼성SDI","old_score":2,"new_score":5},
+     {"issue":"2분기 고객사 수요 회복","company":"삼성SDI","old_score":1,"new_score":4}
+   ]},
+  {"report_id":"2025-10-23_삼성증권_산업",
+   "stances":[
+     {"issue":"미국 ESS 시장 점유율 확대 수혜","company":"LGES","old_score":2,"new_score":6},
+     {"issue":"미국 ESS 시장 점유율 확대 수혜","company":"삼성SDI","old_score":1,"new_score":4},
+     {"issue":"미국 ESS 시장 점유율 확대 수혜","company":"SK온","old_score":0,"new_score":0}
+   ]},
+  {"report_id":"2026-03-11_삼성증권_LGES",
+   "stances":[
+     {"issue":"로봇","company":"LG에너지솔루션","old_score":2,"new_score":5},
+     {"issue":"46파이","company":"LG에너지솔루션","old_score":1,"new_score":3},
+     {"issue":"중국경쟁","company":"LG에너지솔루션","old_score":1,"new_score":3}
+   ]},
+  {"report_id":"2026-03-11_삼성증권_삼성SDI",
+   "stances":[
+     {"issue":"ESS","company":"삼성SDI","old_score":2,"new_score":6},
+     {"issue":"AMPC","company":"삼성SDI","old_score":1,"new_score":3},
+     {"issue":"LFP","company":"삼성SDI","old_score":1,"new_score":3},
+     {"issue":"전고체","company":"삼성SDI","old_score":1,"new_score":2},
+     {"issue":"로봇","company":"삼성SDI","old_score":1,"new_score":2},
+     {"issue":"북미CAPEX","company":"삼성SDI","old_score":1,"new_score":4},
+     {"issue":"소형전지","company":"삼성SDI","old_score":1,"new_score":3},
+     {"issue":"밸류에이션","company":"삼성SDI","old_score":1,"new_score":7}
+   ]},
+  {"report_id":"2026-04-08_삼성증권_LGES",
+   "stances":[
+     {"issue":"ESS","company":"LG에너지솔루션","old_score":2,"new_score":6},
+     {"issue":"북미CAPEX","company":"LG에너지솔루션","old_score":1,"new_score":4},
+     {"issue":"LFP","company":"LG에너지솔루션","old_score":1,"new_score":3},
+     {"issue":"북미EV","company":"LG에너지솔루션","old_score":1,"new_score":5},
+     {"issue":"중국경쟁","company":"LG에너지솔루션","old_score":1,"new_score":5},
+     {"issue":"AMPC","company":"LG에너지솔루션","old_score":0,"new_score":0},
+     {"issue":"밸류에이션","company":"LG에너지솔루션","old_score":1,"new_score":3}
+   ]},
+  {"report_id":"2026-06-11_삼성증권_삼성SDI",
+   "stances":[
+     {"issue":"북미CAPEX","company":"삼성SDI","old_score":1,"new_score":3},
+     {"issue":"ESS","company":"삼성SDI","old_score":2,"new_score":5},
+     {"issue":"유럽EV","company":"삼성SDI","old_score":1,"new_score":4},
+     {"issue":"소형전지","company":"삼성SDI","old_score":1,"new_score":4},
+     {"issue":"AMPC","company":"삼성SDI","old_score":1,"new_score":3},
+     {"issue":"밸류에이션","company":"삼성SDI","old_score":0,"new_score":-3}
+   ]},
+  {"report_id":"2026-06-17_삼성증권_LGES",
+   "stances":[
+     {"issue":"ESS","company":"LG에너지솔루션","old_score":2,"new_score":7},
+     {"issue":"북미EV","company":"LG에너지솔루션","old_score":1,"new_score":2},
+     {"issue":"AMPC","company":"LG에너지솔루션","old_score":0,"new_score":0},
+     {"issue":"밸류에이션","company":"LG에너지솔루션","old_score":1,"new_score":3}
+   ]}
+]}

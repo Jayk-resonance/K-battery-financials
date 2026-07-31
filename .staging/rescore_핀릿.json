@@ -1,0 +1,10 @@
+{"house":"핀릿","patches":[
+  {"report_id":"2026-06-15_핀릿_삼성SDI",
+   "stances":[
+     {"issue":"로봇","company":"삼성SDI","old_score":2,"new_score":7},
+     {"issue":"ESS","company":"삼성SDI","old_score":1,"new_score":5},
+     {"issue":"AMPC","company":"삼성SDI","old_score":1,"new_score":5},
+     {"issue":"전고체","company":"삼성SDI","old_score":1,"new_score":5},
+     {"issue":"밸류에이션","company":"삼성SDI","old_score":0,"new_score":2}
+   ]}
+]}
