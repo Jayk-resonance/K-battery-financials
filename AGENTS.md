@@ -44,11 +44,12 @@ K-배터리 3사(LG에너지솔루션·삼성SDI·SK온) 증권사 리포트를 
 
 ```bash
 # 1) PDF → .staging/<report_id>.json  (형식: schema/template.md 부록)
-python3 tools/build_indexes.py --check    # 2) 검증만 (파일 안 씀) — 경고 확인
-python3 tools/build_indexes.py            # 3) 표준 MD + 인덱스 재생성
-python3 tools/build_dashboard_data.py     # 4) 대시보드 데이터 ([STALE] 경고 확인)
-python3 tools/assemble_dashboard.py       # 5) 자립형 dashboard.html
-python3 tools/deploy_pages.py             # 6) docs/index.html (Pages 배포본)
+python3 tools/build_indexes.py --check-id <report_id>  # 2) 신규 ID 엄격 검증 — 경고 0건 필수
+python3 tools/build_indexes.py --check    # 3) 전체 DB 회귀 검증 (파일 안 씀)
+python3 tools/build_indexes.py            # 4) 표준 MD + 인덱스 재생성
+python3 tools/build_dashboard_data.py     # 5) 대시보드 데이터 ([STALE] 경고 확인)
+python3 tools/assemble_dashboard.py       # 6) 자립형 dashboard.html
+python3 tools/deploy_pages.py             # 7) docs/index.html (Pages 배포본)
 git add -A && git commit -m "..." && git push
 ```
 

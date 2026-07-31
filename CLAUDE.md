@@ -62,9 +62,14 @@ docs/index.html                                # GitHub Pages 배포본
    `report_id,date,house,analyst,coverage,report_type,opinion,target_price,prev_target_price,key_issues,estimates,stances,industry_views,top_picks,body`.
    - 애매한 경계 케이스(스탠스 점수, 세그먼트 매핑, AMPC 표기)는 **유사한 기존 MD를 대조**해 일관성을 맞춘다.
    - 모든 숫자에 `page`를 남긴다 (감사 추적).
-4. `python3 tools/build_indexes.py --check` 로 검증만 먼저 돌린다 (파일 안 씀).
-5. 통과하면 `python3 tools/build_indexes.py` 로 MD 렌더 + 인덱스 재빌드.
-6. 대시보드까지 갱신이 필요하면: `python3 tools/build_dashboard_data.py && python3 tools/assemble_dashboard.py`.
+4. 각 신규 리포트를 `python3 tools/build_indexes.py --check-id <report_id>` 로 엄격 검증한다
+   (파일 안 씀). 신규 ID의 경고가 1건이라도 있으면 종료코드 1로 실패하므로 먼저 수정한다.
+   여러 건이면 `--check-id`를 반복 지정한다.
+   이 절차를 빠뜨려도 실제 재빌드 전에 신규 ID 경고를 다시 검사해 자동 중단한다.
+5. `python3 tools/build_indexes.py --check` 로 전체 DB 회귀 검증을 확인한다.
+   기존 레거시 경고와 신규 리포트 합격 판정은 분리하며, 신규 ID는 반드시 대상 경고 0건이어야 한다.
+6. 통과하면 `python3 tools/build_indexes.py` 로 MD 렌더 + 인덱스 재빌드.
+7. 대시보드까지 갱신이 필요하면: `python3 tools/build_dashboard_data.py && python3 tools/assemble_dashboard.py`.
 
 절차가 이 6단계로 짧으므로 별도 INGEST.md는 두지 않는다. 규칙이 두꺼워지면 그때 분리.
 
