@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "document_id": "2026_2Q_LGES",
+  "document_type": "earnings_call",
+  "company": "LGES",
+  "fy": 2026,
+  "period": "2Q",
+  "announcement_date": "2026-07-30",
+  "sources": [
+    {"kind": "ir_deck", "file": "26_2Q_LGES_business_performance_F_KR.pdf"},
+    {"kind": "call_script", "file": "26_2Q_Script.pdf"}
+  ],
+  "actuals": [
+    {
+      "segment": "전사",
+      "segment_std": "전사",
+      "metric": "매출",
+      "value": 7560,
+      "unit": "십억원",
+      "ampc_basis": "incl",
+      "source_file": "26_2Q_LGES_business_performance_F_KR.pdf",
+      "page": 13,
+      "note": "2026년 회계 표시 변경에 따라 북미 생산 보조금 효과가 매출에 포함됨"
+    },
+    {
+      "segment": "전사",
+      "segment_std": "전사",
+      "metric": "영업이익",
+      "value": 113,
+      "unit": "십억원",
+      "ampc_basis": "incl",
+      "source_file": "26_2Q_LGES_business_performance_F_KR.pdf",
+      "page": 13
+    },
+    {
+      "segment": "전사",
+      "segment_std": "전사",
+      "metric": "영업이익_AMPC제외",
+      "value": -128,
+      "unit": "십억원",
+      "ampc_basis": "excl",
+      "source_file": "26_2Q_LGES_business_performance_F_KR.pdf",
+      "page": 13,
+      "note": "영업이익 113십억원에서 북미 생산 보조금 241십억원을 차감한 계산값"
+    },
+    {
+      "segment": "전사",
+      "segment_std": "전사",
+      "metric": "EBITDA",
+      "value": 1330,
+      "unit": "십억원",
+      "ampc_basis": "incl",
+      "source_file": "26_2Q_LGES_business_performance_F_KR.pdf",
+      "page": 13
+    },
+    {
+      "segment": "전사",
+      "segment_std": "전사",
+      "metric": "세전이익",
+      "value": -128,
+      "unit": "십억원",
+      "ampc_basis": "na",
+      "source_file": "26_2Q_LGES_business_performance_F_KR.pdf",
+      "page": 13
+    },
+    {
+      "segment": "전사",
+      "segment_std": "전사",
+      "metric": "당기순이익",
+      "value": -329,
+      "unit": "십억원",
+      "ampc_basis": "na",
+      "source_file": "26_2Q_LGES_business_performance_F_KR.pdf",
+      "page": 13
+    },
+    {
+      "segment": "전사",
+      "segment_std": "전사",
+      "metric": "AMPC",
+      "value": 241,
+      "unit": "십억원",
+      "ampc_basis": "na",
+      "source_file": "26_2Q_LGES_business_performance_F_KR.pdf",
+      "page": 13
+    },
+    {
+      "segment": "전사",
+      "segment_std": "전사",
+      "metric": "CAPEX",
+      "value": -1041,
+      "unit": "십억원",
+      "ampc_basis": "na",
+      "source_file": "26_2Q_LGES_business_performance_F_KR.pdf",
+      "page": 7
+    }
+  ],
+  "drivers": [
+    {
+      "segment_std": "전사",
+      "summary": "유럽향 EV 파우치 공급 확대, 전략 고객향 원통형 수요, 북미 ESS Capa의 순차 가동으로 매출이 전분기 대비 15% 증가했다. 고수익 원통형 Mix와 유럽 가동률 개선, 북미 ESS 물량 확대에 따른 고정비 부담 완화로 영업이익이 흑자 전환했다.",
+      "source_file": "26_2Q_LGES_business_performance_F_KR.pdf",
+      "page": 5
+    },
+    {
+      "segment_std": "EV",
+      "summary": "북미 EV 수요 약세는 이어졌지만 유럽 고전압 미드니켈과 아시아 하이니켈 제품 물량이 전분기 대비 두 자릿수 이상 성장해 매출이 증가했다.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 1
+    },
+    {
+      "segment_std": "소형",
+      "summary": "전략 고객의 신규 EV 모델 판매 호조로 2170 출하가 견조했고, 46시리즈 출하량이 전분기 대비 60% 이상 증가해 매출이 확대됐다.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 1
+    },
+    {
+      "segment_std": "ESS",
+      "summary": "북미 생산거점의 순차 가동과 유럽 전력망 프로젝트 출하 본격화로 매출이 전분기 대비 약 30% 성장했다. 생산 보조금은 ESS 출하 확대 영향으로 전분기 대비 27% 증가했다.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 2
+    }
+  ],
+  "guidance": [
+    {
+      "topic": "3분기 출하량",
+      "horizon": "2026 3Q",
+      "direction": "확대",
+      "value": 50,
+      "value_max": null,
+      "unit": "% 이상 QoQ",
+      "summary": "북미 신규 Capa 가동 확대를 바탕으로 전분기 대비 최소 50% 이상의 출하량 증가를 예상.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 6
+    },
+    {
+      "topic": "3분기 전사 매출",
+      "horizon": "2026 3Q",
+      "direction": "확대",
+      "value": 20,
+      "value_max": null,
+      "unit": "% 이상 QoQ",
+      "summary": "북미 JV 생산 재개, 유럽 미드니켈 물량 성장과 원통형 공급을 근거로 전분기 대비 20% 이상 성장을 전망.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 6
+    },
+    {
+      "topic": "연간 전사 매출 성장률",
+      "horizon": "2026 FY",
+      "direction": "유지",
+      "value": 20,
+      "value_max": null,
+      "unit": "% 이상 YoY",
+      "summary": "ESS와 원통형의 하반기 물량 성장을 근거로 연초 제시한 20% 이상 성장 가이던스를 충분히 달성 가능하다고 재확인.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 7
+    },
+    {
+      "topic": "ESS AMPC 제외 수익성",
+      "horizon": "2026 4Q",
+      "direction": "흑자전환",
+      "value": null,
+      "value_max": null,
+      "unit": null,
+      "summary": "북미 5개 신규 Site의 생산 안정화와 물량 효과가 극대화되는 4분기를 기점으로 IRA 생산 보조금 효과를 제외하고도 ESS 수익성 확보를 목표.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 7
+    },
+    {
+      "topic": "북미 ESS 생산능력",
+      "horizon": "2026 연말",
+      "direction": "확대",
+      "value": 50,
+      "value_max": null,
+      "unit": "GWh 이상",
+      "summary": "GM JV 2기와 혼다 JV의 ESS 라인 가동을 포함해 연말까지 북미 생산 Capa 50GWh 이상 확보 계획.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 3
+    }
+  ],
+  "qa": [
+    {
+      "topic": "3분기·연간 실적 전망",
+      "question": "3분기와 하반기 실적 방향 및 연간 가이던스 달성 가능성은?",
+      "answer": "3분기 출하량은 50% 이상, 전사 매출은 20% 이상 전분기 대비 성장할 것으로 전망했다. 초기 ESS Ramp-up 비용은 남지만 북미 JV 재개와 폴란드 물량 확대를 통해 수익성을 개선하고 연간 매출 20% 이상 성장 가이던스를 달성 가능하다고 판단했다.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 6
+    },
+    {
+      "topic": "북미 ESS 경쟁",
+      "question": "중국 경쟁사의 미국 ESS 시장 진입과 경쟁 심화에 어떻게 대응하는가?",
+      "answer": "PFE 규제로 중국 업체의 AMPC·ITC 확보가 어려워 시장 확대는 제한적일 것으로 봤다. 회사는 현지 공급능력 확대, LFP 각형·소듐전지 제품 경쟁력, SI·O&M과 전력거래 소프트웨어를 결합한 고수익 사업으로 차별화할 계획이다.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 7
+    },
+    {
+      "topic": "원통형·46시리즈",
+      "question": "하반기 원통형 수요와 46시리즈 생산·수주 전략은?",
+      "answer": "원통형 성장세는 하반기와 2027년까지 이어질 것으로 기대했다. 남경 원통형 Capa를 완전 가동하고 오창 46시리즈 물량 확대, 애리조나 공장 연내 양산 준비와 추가 수주 활동을 병행할 계획이다.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 8
+    },
+    {
+      "topic": "북미 JV·유럽 EV",
+      "question": "Ultium Cells 1기 재가동과 유럽 고객 물량 전망은?",
+      "answer": "Ultium Cells 1기는 3분기 중반 재가동을 시작하고 4분기에 더 많은 물량을 공급할 예정이다. 유럽은 미드니켈·LFP 중심으로 하반기 큰 폭의 매출 성장과 폴란드 공장 가동률 개선을 예상했다.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 9
+    },
+    {
+      "topic": "북미 BTM ESS",
+      "question": "미국 BTM 시장의 수요 모멘텀과 회사의 대응은?",
+      "answer": "AI 데이터센터 전력 수요와 전력망 병목, 정책 지원으로 BTM ESS 수요가 확대될 것으로 봤다. Non-PFE 배터리와 미국 내 Cell·SI·O&M 역량을 바탕으로 FTM 수주와 빅테크 BTM 직납 논의를 진행 중이다.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 10
+    },
+    {
+      "topic": "BBU·로봇",
+      "question": "BBU와 로봇 등 신규 애플리케이션 추진 계획은?",
+      "answer": "로봇에는 글로벌 고객 대상으로 2170 제품을 공급 중이며, BBU는 고출력·고온 보관·장수명 사양의 Tabless Cell을 개발하고 오창 양산 라인을 준비 중이다.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 10
+    },
+    {
+      "topic": "하반기 수주",
+      "question": "하반기 주요 수주 프로젝트의 방향과 모멘텀은?",
+      "answer": "ESS는 북미 전력망 대형 고객과 유틸리티·AI 데이터센터 개발사를 대상으로 연내 수주를 추진한다. EV는 유럽·아시아 미드니켈·LFP, 미국·유럽 46시리즈, 북미 HEV 신규 과제를 중심으로 논의 중이다.",
+      "source_file": "26_2Q_Script.pdf",
+      "page": 11
+    }
+  ],
+  "body": {
+    "summary": "매출 7,560십억원, 영업이익 113십억원으로 2개 분기 만에 흑자 전환했다. 유럽 EV 파우치, 원통형과 북미 ESS 물량 증가가 성장을 이끌었으며, 3분기 매출 20% 이상 성장과 연간 매출 20% 이상 성장 가이던스를 재확인했다.",
+    "actuals": "매출과 영업이익에는 2026년 회계 표시 변경에 따라 북미 생산 보조금 241십억원이 포함됐다. AMPC 제외 영업이익은 128십억원 손실로 계산된다.",
+    "drivers": "고수익 원통형 Mix와 유럽 가동률 개선, 북미 ESS 물량 확대에 따른 고정비 부담 완화가 흑자 전환의 주된 요인이었다. 북미 EV 수요 약세와 ESS 신규 Site의 초기 Ramp-up 비용은 계속 부담으로 남았다.",
+    "ampc_oneoffs": "북미 생산 보조금은 241십억원으로 전분기 대비 27% 증가했다. 영업외에서는 이자비용과 유형자산 처분손실 등이 반영돼 241.2십억원의 영업외손실이 발생했다.",
+    "guidance": "3분기 출하량 50% 이상, 전사 매출 20% 이상 전분기 대비 성장을 전망했다. 연간 매출 20% 이상 성장 가이던스를 유지하고, 4분기부터 AMPC 제외 ESS 수익성 확보를 목표로 했다.",
+    "capex_capacity_orders": "2분기 CAPEX는 1,041십억원으로 전분기 대비 약 40% 줄었다. 북미 ESS는 연말까지 50GWh 이상 Capa 확보를 계획하며, 상반기 AIDC 프로젝트를 포함해 3조원 이상의 신규 수주를 확보했다.",
+    "qa": "핵심 쟁점은 하반기 실적 성장, 북미 ESS의 중국 경쟁 대응과 AMPC 제외 수익성, 원통형·46시리즈 성장, Ultium Cells 재가동, BTM·BBU 신규 시장과 하반기 수주였다.",
+    "risks": "북미 EV 수요 회복 지연, 다수 ESS Site의 동시 Ramp-up 비용, 부채비율 상승, 중국 경쟁사의 우회 진입, 수주 확정 전 프로젝트 가시성 부족이 주요 불확실성이다.",
+    "quotes": "\"전사 매출은 전분기 대비 아마 20% 이상 성장할 수 있을 것으로 보고 있습니다.\" (컨콜 스크립트 p.6)\n\"4분기를 기점으로 IRA 효과를 제외하고도 ESS의 수익성을 확보\" (컨콜 스크립트 p.7)"
+  }
+}

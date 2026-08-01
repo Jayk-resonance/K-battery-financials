@@ -3,3 +3,12 @@ document_id,company,fy,period,topic,horizon,direction,value,value_max,unit,summa
 2026_1Q_LGES,LGES,2026,1Q,2분기 매출·손익,2026 2Q,개선,10,,% 이상,"전사 매출은 전분기 대비 최소 10% 이상 성장, 생산보조금 제외 기준 전사 흑자전환을 목표.",26_1Q_Script.pdf,,legacy_unpaged
 2026_1Q_LGES,LGES,2026,1Q,연간 매출 성장률,2026 FY,유지,15,20,% 이상,유럽 중저가 제품과 원통형 전략 고객 매출 확대를 근거로 연초 제시한 15~20% 이상 성장 가이던스를 재확인.,26_1Q_Script.pdf,,legacy_unpaged
 2026_1Q_LGES,LGES,2026,1Q,북미 ESS 생산능력,2026 연말,확대,50,,GWh 이상,테네시 UC 2기 EV 라인의 일부 ESS 전환을 포함해 북미 5개 생산거점에서 50GWh 이상 Capa 확보 목표.,26_1Q_Script.pdf,,legacy_unpaged
+2026_2Q_LGES,LGES,2026,2Q,3분기 출하량,2026 3Q,확대,50,,% 이상 QoQ,북미 신규 Capa 가동 확대를 바탕으로 전분기 대비 최소 50% 이상의 출하량 증가를 예상.,26_2Q_Script.pdf,6,verified
+2026_2Q_LGES,LGES,2026,2Q,3분기 전사 매출,2026 3Q,확대,20,,% 이상 QoQ,"북미 JV 생산 재개, 유럽 미드니켈 물량 성장과 원통형 공급을 근거로 전분기 대비 20% 이상 성장을 전망.",26_2Q_Script.pdf,6,verified
+2026_2Q_LGES,LGES,2026,2Q,연간 전사 매출 성장률,2026 FY,유지,20,,% 이상 YoY,ESS와 원통형의 하반기 물량 성장을 근거로 연초 제시한 20% 이상 성장 가이던스를 충분히 달성 가능하다고 재확인.,26_2Q_Script.pdf,7,verified
+2026_2Q_LGES,LGES,2026,2Q,ESS AMPC 제외 수익성,2026 4Q,흑자전환,,,,북미 5개 신규 Site의 생산 안정화와 물량 효과가 극대화되는 4분기를 기점으로 IRA 생산 보조금 효과를 제외하고도 ESS 수익성 확보를 목표.,26_2Q_Script.pdf,7,verified
+2026_2Q_LGES,LGES,2026,2Q,북미 ESS 생산능력,2026 연말,확대,50,,GWh 이상,GM JV 2기와 혼다 JV의 ESS 라인 가동을 포함해 연말까지 북미 생산 Capa 50GWh 이상 확보 계획.,26_2Q_Script.pdf,3,verified
+2026_2Q_삼성SDI,삼성SDI,2026,2Q,ESS 사업,2026 하반기,확대,,,,"미국 현지 각형 LFP 적기 양산과 UPS Capa 확대, 국내 중앙계약시장 사업 확대를 추진하고 소듐이온 배터리 개발과 양산을 준비.",2026.2Q_IR_Final_Kr.pdf,6,verified
+2026_2Q_삼성SDI,삼성SDI,2026,2Q,EV 사업,2026 하반기,확대,,,,"유럽 Volume 모델향 판매 확대와 현지 각형 기반 다수 프로젝트 수주를 추진하고, 주요 고객 협력과 미래 수주로 시장 회복에 대비.",2026.2Q_IR_Final_Kr.pdf,6,verified
+2026_2Q_삼성SDI,삼성SDI,2026,2Q,소형전지,2026 하반기,확대,,,,고출력 원형 Capa를 확대해 전동공구·BBU 수요에 대응하고 휴머노이드·우주항공·HEV 등 신규 시장 진입을 추진.,2026.2Q_IR_Final_Kr.pdf,6,verified
+2026_2Q_삼성SDI,삼성SDI,2026,2Q,전자재료,2026 하반기,확대,,,,반도체 신규 소재와 고부가 필름 소재 중심으로 판매 확대를 추진.,2026.2Q_IR_Final_Kr.pdf,6,verified

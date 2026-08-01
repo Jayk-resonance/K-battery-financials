@@ -20,7 +20,8 @@ os.makedirs(OUT, exist_ok=True)
 
 COMPANIES = ["LGES", "삼성SDI", "SK온"]
 ANNOUNCE = {("LGES", 2026, "1Q"): "2026-04-08", ("삼성SDI", 2026, "1Q"): "2026-04-28",
-            ("SK온", 2026, "1Q"): "2026-05-13"}
+            ("SK온", 2026, "1Q"): "2026-05-13",
+            ("LGES", 2026, "2Q"): "2026-07-30", ("삼성SDI", 2026, "2Q"): "2026-07-30"}
 
 est = list(csv.DictReader(open(f"{IDX}/estimates.csv", encoding="utf-8")))
 stances = list(csv.DictReader(open(f"{IDX}/stances.csv", encoding="utf-8")))
@@ -48,12 +49,15 @@ KNOWN_OP_BASIS = {
     ("LGES", "2026", "1Q"): {"incl": -207.8, "excl": -397.6},       # AMPC 190
     ("삼성SDI", "2026", "1Q"): {"incl": -155.6},                     # 분기 AMPC 실적 미공시 → excl 대조 불가
     ("SK온", "2026", "1Q"): {"incl": -349.2},
+    ("LGES", "2026", "2Q"): {"incl": 113.0, "excl": -128.0},        # AMPC 241
+    ("삼성SDI", "2026", "2Q"): {"incl": 203.8},                      # 분기 AMPC 실적 미공시 → excl 대조 불가
 }
 _TOL = 2.0  # 십억원
 # 해당 기간의 실적 발표일 — 이후 발간 리포트의 불일치 값은 기준 검증 불가로 점도표 제외
 KNOWN_ANNOUNCE = {("LGES", "2025", "FY"): "2026-02-01", ("삼성SDI", "2025", "FY"): "2026-02-01",
                   ("LGES", "2026", "1Q"): "2026-04-08", ("삼성SDI", "2026", "1Q"): "2026-04-28",
-                  ("SK온", "2026", "1Q"): "2026-05-13"}
+                  ("SK온", "2026", "1Q"): "2026-05-13",
+                  ("LGES", "2026", "2Q"): "2026-07-30", ("삼성SDI", "2026", "2Q"): "2026-07-30"}
 
 
 def known_mismatch(comp, fy, period, rdate, op):

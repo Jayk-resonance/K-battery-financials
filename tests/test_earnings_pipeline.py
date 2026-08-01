@@ -28,12 +28,16 @@ class EarningsPipelineTest(unittest.TestCase):
             self.actuals_sets.append(data)
         self.lges = load_staging("earnings_2026_1Q_LGES.json")
         self.sdi = load_staging("earnings_2026_1Q_삼성SDI.json")
+        self.lges_2q = load_staging("earnings_2026_2Q_LGES.json")
+        self.sdi_2q = load_staging("earnings_2026_2Q_삼성SDI.json")
 
     def test_pilot_packages_pass_strict_validation(self):
         result = subprocess.run(
             [sys.executable, os.path.join(ROOT, "tools", "build_indexes.py"),
              "--check-id", self.lges["document_id"],
-             "--check-id", self.sdi["document_id"]],
+             "--check-id", self.sdi["document_id"],
+             "--check-id", self.lges_2q["document_id"],
+             "--check-id", self.sdi_2q["document_id"]],
             cwd=ROOT, capture_output=True, text=True, encoding="utf-8"
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -69,6 +73,25 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertEqual(self.sdi["guidance"], [])
         self.assertEqual(self.sdi["qa"], [])
 
+    def test_second_quarter_key_figures_and_call_counts(self):
+        lges = {(row["segment_std"], row["metric"]): row["value"]
+                for row in self.lges_2q["actuals"]}
+        self.assertEqual(lges[("전사", "매출")], 7560)
+        self.assertEqual(lges[("전사", "영업이익")], 113)
+        self.assertEqual(lges[("전사", "영업이익_AMPC제외")], -128)
+        self.assertEqual(lges[("전사", "AMPC")], 241)
+        self.assertEqual(len(self.lges_2q["guidance"]), 5)
+        self.assertEqual(len(self.lges_2q["qa"]), 7)
+
+        sdi = {(row["segment_std"], row["metric"]): row["value"]
+               for row in self.sdi_2q["actuals"]}
+        self.assertEqual(sdi[("전사", "매출")], 3768.8)
+        self.assertEqual(sdi[("전사", "영업이익")], 203.8)
+        self.assertEqual(sdi[("배터리합계", "매출")], 3519.0)
+        self.assertEqual(sdi[("배터리합계", "영업이익")], 159.3)
+        self.assertEqual(len(self.sdi_2q["guidance"]), 4)
+        self.assertEqual(self.sdi_2q["qa"], [])
+
     def test_rendered_markdown_has_fixed_section_order(self):
         rendered = BUILD.render_earnings_md(self.lges, self.actuals_sets)
         headings = [
@@ -88,6 +111,13 @@ class EarningsPipelineTest(unittest.TestCase):
         BUILD.validate_earnings(package, "earnings_2026_1Q_LGES.json")
         target = BUILD.warnings_for([package["document_id"]])
         self.assertTrue(any("qa 필수 필드 누락: answer" in warning for warning in target))
+
+    def test_dashboard_selects_next_unreported_quarter(self):
+        path = os.path.join(ROOT, "projects", "dashboard", "dashboard_template.html")
+        with open(path, encoding="utf-8") as f:
+            template = f.read()
+        self.assertIn('QS.find(q=>qact[q]==null)', template)
+        self.assertNotIn('const ANAQ="2Q"', template)
 
 
 if __name__ == "__main__":
