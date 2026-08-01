@@ -1,0 +1,44 @@
+{
+  "report_id": "2026-07-31_키움증권_삼성SDI",
+  "date": "2026-07-31",
+  "house": "키움증권",
+  "analyst": "권준수",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 670000,
+  "prev_target_price": 820000,
+  "key_issues": ["관세 환급", "유럽 EV 점유율", "북미 ESS", "미국 LFP 양산", "AMPC", "BBU·파워툴", "밸류에이션"],
+  "estimates": [
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 3768.8, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 203.8, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "소형전지", "segment_std": "소형", "fy": 2026, "period": "2Q", "metric": "매출", "value": 1231.6, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "중대형전지", "segment_std": "중대형", "fy": 2026, "period": "2Q", "metric": "매출", "value": 2287.4, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전자재료", "segment_std": "전자재료", "fy": 2026, "period": "2Q", "metric": "매출", "value": 249.8, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "AMPC", "value": 107.7, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 3987.9, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 132.1, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "AMPC", "value": 121, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 15733.1, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 407.5, "unit": "십억원", "page": 2, "ampc_basis": "incl"}
+  ],
+  "stances": [
+    {"issue": "관세", "company": "삼성SDI", "stance_score": 3, "summary": "약 2,000억원의 관세 환급이 2Q 흑자전환을 이끌었지만 일회성 효과로 구분해야 함.", "page": 1},
+    {"issue": "ESS", "company": "삼성SDI", "stance_score": 4, "summary": "3Q UPS 수요와 이연 물량으로 ESS 매출 +37% QoQ를 전망하나 하반기 수익성 검증이 필요.", "page": 1},
+    {"issue": "LFP", "company": "삼성SDI", "stance_score": 3, "summary": "미국 최초 ESS용 LFP 라인의 양산 안정화와 수익성 확인이 추세적 주가 상승의 조건.", "page": 1},
+    {"issue": "AMPC", "company": "삼성SDI", "stance_score": 4, "summary": "3Q AMPC와 가동률 상승이 관세 환급 소멸 이후에도 흑자 기조를 지지할 전망.", "page": 1},
+    {"issue": "유럽EV", "company": "삼성SDI", "stance_score": -2, "summary": "BMW·VW 내 점유율 감소로 자동차전지 매출이 3Q 감소할 전망이며 추세적 회복 전 점검이 필요.", "page": 1},
+    {"issue": "소형전지", "company": "삼성SDI", "stance_score": 4, "summary": "고출력 파워툴과 BBU 출하 증가, 제품 믹스 개선으로 손익이 개선.", "page": 1},
+    {"issue": "밸류에이션", "company": "삼성SDI", "stance_score": 1, "summary": "조정 후 단기 Trading 구간으로 보지만 유럽 점유율과 LFP 수익성 확인 전 추세적 상승 판단은 유보.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26 매출 3.8조원과 영업이익 2,038억원으로 흑자전환했다. 약 2,000억원 관세 환급, AMPC 확대와 소형전지 믹스 개선이 주요 요인이다. 3Q26 영업이익 1,321억원으로 흑자를 유지할 전망이지만 유럽 EV 점유율 회복과 미국 ESS용 LFP의 양산 안정성·수익성 확인이 필요하다고 평가했다.",
+    "valuation": "목표주가는 Peer 멀티플 변경을 반영해 820,000원에서 670,000원으로 하향했다. 2028년 EBITDA에 소형 10배, 중대형 11.5배, 전자재료 9.2배를 적용한 SOTP로 주당 기업가치 669,221원을 산출했다.",
+    "segment_pl": "| 부문 | 2Q26 매출 | 3Q26 매출 전망 | 판단 |\n|---|---:|---:|---|\n| 소형전지 | 1,231.6십억원 | 1,308.5십억원 | 파워툴·BBU와 믹스 개선 |\n| 중대형전지 | 2,287.4십억원 | 2,420.0십억원 | EV 감소를 ESS가 보완 |\n| 전자재료 | 249.8십억원 | 259.4십억원 | 폴더블·반도체 소재 개선 |\n| 전사 | 영업이익 203.8십억원 | 영업이익 132.1십억원 | 관세 환급 소멸에도 AMPC와 가동률로 흑자 유지 |",
+    "issue_comments": "3Q ESS 매출은 UPS 수요와 이연 물량으로 37% QoQ 증가할 전망이다. 자동차전지는 BMW·VW 점유율 감소로 매출이 줄지만 소형전지와 AMPC가 보완한다. 미국 LFP는 양산 안정화와 수익성 검증이 핵심 체크포인트다.",
+    "risks": "관세 환급이라는 일회성 효과가 사라진 뒤 이익 개선 속도가 둔화될 수 있다. 유럽 EV 점유율 회복 지연, 미국 LFP 양산 차질 또는 낮은 수익성, ESS 물량 이연이 주요 위험이다.",
+    "quotes": "\"실적 개선 속도는 점검 필요\" (p.1)"
+  }
+}

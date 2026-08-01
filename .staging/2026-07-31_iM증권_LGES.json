@@ -1,0 +1,43 @@
+{
+  "report_id": "2026-07-31_iM증권_LGES",
+  "date": "2026-07-31",
+  "house": "iM증권",
+  "analyst": "정원석, 박정하",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 550000,
+  "prev_target_price": 620000,
+  "key_issues": ["ESS", "ESS 팩 생산 병목", "AMPC", "유럽 EV 회복", "원형전지", "얼티엄셀즈 재가동", "밸류에이션"],
+  "estimates": [
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 113, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "AMPC", "value": 241, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": -128, "unit": "십억원", "page": 2, "ampc_basis": "excl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 9021, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 293, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "AMPC", "value": 347, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 32567, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 669, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2027, "period": "FY", "metric": "매출", "value": 42241, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2027, "period": "FY", "metric": "영업이익", "value": 3194, "unit": "십억원", "page": 2, "ampc_basis": "incl"}
+  ],
+  "stances": [
+    {"issue": "ESS", "company": "LG에너지솔루션", "stance_score": 7, "summary": "팩 생산 병목 완화와 이연 물량 출하로 3Q26 ESS 매출이 전분기 대비 약 40%, 연간 매출이 약 3.3배 증가할 전망.", "page": 1},
+    {"issue": "AMPC", "company": "LG에너지솔루션", "stance_score": 5, "summary": "미국 ESS 생산량 확대에 따라 3Q26 AMPC가 3,470억원으로 증가해 수익성 회복을 뒷받침할 전망.", "page": 1},
+    {"issue": "유럽EV", "company": "LG에너지솔루션", "stance_score": 4, "summary": "유럽향 출하 회복이 자동차전지 매출 증가와 적자 축소에 기여할 것으로 예상.", "page": 1},
+    {"issue": "소형전지", "company": "LG에너지솔루션", "stance_score": 4, "summary": "Tesla 판매 호조에 따른 원형전지 출하 증가가 매출 회복과 수익성 방어에 기여.", "page": 1},
+    {"issue": "북미EV", "company": "LG에너지솔루션", "stance_score": 2, "summary": "GM 얼티엄셀즈 1공장 재가동으로 3Q26 자동차전지 고정비 부담이 완화될 전망.", "page": 1},
+    {"issue": "밸류에이션", "company": "LG에너지솔루션", "stance_score": 3, "summary": "목표가는 하향했지만 2028년 예상 P/E 19배로 밸류에이션 부담이 완화됐다고 판단.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26 매출 7.6조원, 영업이익 1,130억원으로 흑자전환했지만 ESS 팩 생산 병목 때문에 영업이익은 시장 기대치를 하회했다. iM증권은 병목 완화와 GM 얼티엄셀즈 재가동을 바탕으로 3Q26 매출 9.0조원, 영업이익 2,930억원을 전망한다. 중장기 성장축은 북미 ESS와 원형전지이며 매수 의견을 유지한다.",
+    "valuation": "목표주가는 620,000원에서 550,000원으로 하향했다. 글로벌 이차전지 업종의 주가 조정에 따른 적용 밸류에이션 하락을 반영했으며, 현재 주가는 2028년 예상 실적 기준 P/E 19배로 과거 성장기 대비 부담이 완화됐다고 평가했다.",
+    "segment_pl": "| 부문 | 2Q26 매출 | 핵심 판단 |\n|---|---:|---|\n| 자동차전지 | 2,887십억원 | 유럽향 출하 회복으로 매출 증가, 미국 GM 라인은 가동 중단 영향 지속 |\n| ESS | 2,372십억원 | 매출 +30% QoQ이나 팩 생산 병목으로 기대치 하회 |\n| 소형전지 | 2,301십억원 | Tesla 판매 호조로 원형전지 출하 증가 |\n| 전사 | 영업이익 113십억원 | AMPC 241십억원 포함, AMPC 제외 -128십억원 |",
+    "issue_comments": "ESS 팩 병목은 세방전지 신규 협력사 추가로 하반기부터 완화될 전망이다. 3Q26 ESS 매출은 이연 출하로 약 40% QoQ 성장하고, 미국 생산 안정화에 따라 AMPC도 확대될 것으로 예상한다. 자동차전지는 유럽 물량 증가와 GM 얼티엄셀즈 1공장 재가동이 적자 축소를 이끌 전망이다.",
+    "risks": "팩 생산능력 확충이 늦어지면 ESS 출하와 수익성 개선이 지연될 수 있다. 북미 EV 수요 둔화로 GM 라인 재가동 또는 가동률 회복이 예상보다 늦어질 가능성, 미국 정책 변화로 ESS·AMPC 기대가 약화될 가능성도 주요 위험이다.",
+    "quotes": "\"하반기에도 ESS 중심 실적 개선세 지속될 전망\" (p.1)"
+  }
+}

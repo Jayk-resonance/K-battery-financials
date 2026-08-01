@@ -1,0 +1,39 @@
+{
+  "report_id": "2026-07-31_삼성증권_삼성SDI",
+  "date": "2026-07-31",
+  "house": "삼성증권",
+  "analyst": "장정훈",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 550000,
+  "prev_target_price": 680000,
+  "key_issues": ["관세 환입", "AMPC", "북미 ESS", "UPS", "BBU·전동공구", "삼성디스플레이 지분", "밸류에이션"],
+  "estimates": [
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 3768.8, "unit": "십억원", "page": 1, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 203.8, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "AMPC", "value": 107.7, "unit": "십억원", "page": 1, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "배터리", "segment_std": "배터리합계", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 159.3, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전자재료", "segment_std": "전자재료", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 44.5, "unit": "십억원", "page": 1, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 4000, "unit": "십억원", "page": 1, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 75.6, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "AMPC", "value": 135, "unit": "십억원", "page": 1, "ampc_basis": "na"}
+  ],
+  "stances": [
+    {"issue": "관세", "company": "삼성SDI", "stance_score": 5, "summary": "미국향 셀 관세 환입 1,000억원 후반대가 2Q 어닝 서프라이즈의 주된 원인.", "page": 1},
+    {"issue": "AMPC", "company": "삼성SDI", "stance_score": 5, "summary": "3Q 북미 ESS 출하 증가로 AMPC가 1,350억원까지 확대될 전망.", "page": 1},
+    {"issue": "ESS", "company": "삼성SDI", "stance_score": 6, "summary": "고수익 UPS 판매와 북미 현지 ESS 출하 증가가 3Q 중대형전지 흑자를 지지할 전망.", "page": 1},
+    {"issue": "소형전지", "company": "삼성SDI", "stance_score": 5, "summary": "BBU와 전동공구 판매 호조로 3Q 풀가동 수준과 흑자전환을 예상.", "page": 1},
+    {"issue": "밸류에이션", "company": "삼성SDI", "stance_score": 3, "summary": "Peer 배수와 시장 변동성 할인으로 목표가를 낮췄지만 북미 ESS 수주와 삼성디스플레이 지분가치를 근거로 매수 유지.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26 매출 3.8조원과 영업이익 2,038억원으로 컨센서스를 크게 상회했다. 1,000억원 후반대로 추정되는 관세 환입이 배터리 부문 흑자에 기여했고 AMPC는 1,077억원이었다. 3Q에는 일회성 효과가 사라지지만 소형전지와 중대형전지 모두 흑자를 유지할 것으로 전망한다.",
+    "valuation": "목표주가는 680,000원에서 550,000원으로 19% 하향했다. SOTP에서 전지 Peer EV/EBITDA 배수를 12.7배에서 11.8배로 낮추고 시장 변동성을 고려해 15% 할인했다. 북미 ESS 수주 및 증설 기대와 삼성디스플레이 지분 매각 가능성을 매수 근거로 유지했다.",
+    "segment_pl": "2Q26 배터리 부문 영업이익은 159.3십억원으로 관세 환입과 AMPC 107.7십억원이 반영됐다. 전자재료 영업이익은 44.5십억원, 영업이익률은 17.8%로 폴더블향 필름 매출 증가와 믹스 개선 효과가 컸다. 3Q 전사 영업이익은 75.6십억원을 전망한다.",
+    "issue_comments": "3Q 소형전지는 BBU·전동공구 호조로 풀가동과 흑자전환을 예상한다. 중대형전지는 EV 고객 물량 감소에도 UPS와 북미 ESS가 보완하고 AMPC가 135십억원으로 늘어 흑자를 유지할 전망이다.",
+    "risks": "2Q 이익의 관세 환입 의존도가 높아 3Q 이익은 크게 감소할 전망이다. EV 고객 물량 감소가 예상보다 크거나 북미 ESS 출하와 AMPC 증가가 늦어질 수 있으며, SOTP Peer 배수 추가 하락과 시장 변동성 확대도 위험이다.",
+    "quotes": "\"관세 환입 영향 2분기 조기 흑자 전환\" (p.1)"
+  }
+}

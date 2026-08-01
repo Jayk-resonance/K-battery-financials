@@ -1121,7 +1121,97 @@
   "house": "현대차증권",
   "date": "2026-05-04",
   "coverage": "LGES",
+ "report_type": "기업",
+ "pages": 7
+ },
+ {
+  "report_id": "2026-07-31_iM증권_LGES",
+  "file": "iM증권_LG에너지솔루션_하반기에도 ESS 중심 실적 개선세 지속_20260731.pdf",
+  "house": "iM증권",
+  "date": "2026-07-31",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-07-31_iM증권_삼성SDI",
+  "file": "iM증권_삼성SDI_ESS로의 사업 전환 가속화 전망_20260731.pdf",
+  "house": "iM증권",
+  "date": "2026-07-31",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-07-30_KB증권_LGES",
+  "file": "KB증권_LG에너지솔루션_상반기 바닥 확인_20260730.pdf",
+  "house": "KB증권",
+  "date": "2026-07-30",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 8
+ },
+ {
+  "report_id": "2026-07-30_삼성증권_LGES",
+  "file": "삼성증권_LG에너지솔루션_2Q26 review - ESS 성장통에도 이익 개선세 유효_20260730.pdf",
+  "house": "삼성증권",
+  "date": "2026-07-30",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 9
+ },
+ {
+  "report_id": "2026-07-31_삼성증권_삼성SDI",
+  "file": "삼성증권_삼성SDI_관세 환입 영향 2분기 조기 흑자 전환_20260731.pdf",
+  "house": "삼성증권",
+  "date": "2026-07-31",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 6
+ },
+ {
+  "report_id": "2026-07-31_신한투자증권_LGES",
+  "file": "신한투자증권_LG에너지솔루션_늦어진 만큼 선명해진 회복_20260731.pdf",
+  "house": "신한투자증권",
+  "date": "2026-07-31",
+  "coverage": "LGES",
   "report_type": "기업",
   "pages": 7
+ },
+ {
+  "report_id": "2026-07-31_신한투자증권_삼성SDI",
+  "file": "신한투자증권_삼성SDI_흑자전환, 다음은 본업_20260731.pdf",
+  "house": "신한투자증권",
+  "date": "2026-07-31",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 7
+ },
+ {
+  "report_id": "2026-07-31_키움증권_삼성SDI",
+  "file": "키움증권_삼성SDI_분기 흑자전환 달성, 실적 개선 속도는 점검 필요_20260731.pdf",
+  "house": "키움증권",
+  "date": "2026-07-31",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 8
+ },
+ {
+  "report_id": "2026-07-31_하나증권_LGES",
+  "file": "하나증권_LG에너지솔루션_하반기 강한 증익 모멘텀_20260731.pdf",
+  "house": "하나증권",
+  "date": "2026-07-31",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "pages": 4
+ },
+ {
+  "report_id": "2026-07-31_하나증권_삼성SDI",
+  "file": "하나증권_삼성SDI_Strong Buy, 하반기에도 흑자 지속 전망_20260731.pdf",
+  "house": "하나증권",
+  "date": "2026-07-31",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "pages": 4
  }
 ]
