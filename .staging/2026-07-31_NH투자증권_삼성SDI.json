@@ -1,0 +1,35 @@
+{
+  "report_id": "2026-07-31_NH투자증권_삼성SDI",
+  "date": "2026-07-31",
+  "house": "NH투자증권",
+  "analyst": "주민우",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 600000,
+  "prev_target_price": 800000,
+  "key_issues": ["7개 분기 만의 흑자전환", "관세 환급", "유럽 EV 수주", "북미 ESS LFP", "소형전지 회복"],
+  "estimates": [
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 3769, "unit": "십억원", "page": 1, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 204, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 4001, "unit": "십억원", "page": 1, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 199, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 16795, "unit": "십억원", "page": 1, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 772, "unit": "십억원", "page": 1, "ampc_basis": "incl"}
+  ],
+  "stances": [
+    {"issue": "유럽EV", "company": "삼성SDI", "stance_score": 7, "summary": "산업가속화법 수혜와 유럽향 신규 EV 수주를 기대한다.", "page": 1},
+    {"issue": "ESS", "company": "삼성SDI", "stance_score": 8, "summary": "북미 LFP 양산과 이연 물량 반영으로 하반기 ESS 성장을 전망한다.", "page": 1},
+    {"issue": "소형전지", "company": "삼성SDI", "stance_score": 6, "summary": "전동공구·BBU 확판으로 소형전지 실적이 추가 개선될 것으로 본다.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26 매출 3.8조원, 영업이익 2,038억원으로 관세 효과를 제외해도 7개 분기 만의 흑자전환에 성공했다고 평가했다.",
+    "valuation": "Buy를 유지했지만 실적 기준 시점을 2028년으로 바꾸고 목표주가를 800,000원에서 600,000원으로 25% 낮췄다.",
+    "segment_pl": "EV 매출은 10%, ESS는 -10%, 소형전지는 12% 전분기 대비 변동한 것으로 추정했다. 3분기에는 소형전지와 ESS 개선을 예상한다.",
+    "issue_comments": "유럽향 수주, 북미 ESS LFP 양산, BBU·전동공구 수요가 하반기 실적을 지지할 것으로 본다.",
+    "risks": "EV 수요 감소, ESS 실적 부진, 삼성디스플레이 실적 부진에 따른 지분법이익 감소가 위험 요인이다.",
+    "quotes": "\"7분기만에 흑자전환 성공\" (p.1)"
+  }
+}

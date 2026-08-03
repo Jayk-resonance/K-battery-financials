@@ -1,0 +1,36 @@
+{
+  "report_id": "2026-07-31_다올투자증권_LGES",
+  "date": "2026-07-31",
+  "house": "다올투자증권",
+  "analyst": "유지웅",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 550000,
+  "prev_target_price": 550000,
+  "key_issues": ["하반기 외형 성장", "ESS 성장", "46시리즈", "GM JV 재가동", "AMPC"],
+  "estimates": [
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 113, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 8320, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 257, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 32274, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 701, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "AMPC", "value": 1298, "unit": "십억원", "page": 2, "ampc_basis": "na"}
+  ],
+  "stances": [
+    {"issue": "ESS", "company": "LG에너지솔루션", "stance_score": 8, "summary": "하반기 ESS 매출 증가와 신규 수주 가능성을 주가 반전의 핵심으로 본다.", "page": 1},
+    {"issue": "46파이", "company": "LG에너지솔루션", "stance_score": 7, "summary": "오창 램프업과 애리조나 가동 준비로 원통형 성장성이 커질 것으로 본다.", "page": 1},
+    {"issue": "북미EV", "company": "LG에너지솔루션", "stance_score": 6, "summary": "GM JV 재가동과 공급망 전환 완료로 2027년 북미 EV 공급 증가를 전망한다.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26 매출 7.6조원, 영업이익 1,130억원을 기록했고 AMPC를 제외하면 적자였다. 하반기 외형 성장 가속이 주가 반전의 계기가 될 것으로 전망했다.",
+    "valuation": "BUY와 적정주가 550,000원을 유지했다. 2027년 EPS에 57배를 적용했다.",
+    "segment_pl": "2분기 자동차는 약 5%, 소형전지는 18%, ESS는 32% 전분기 대비 성장한 것으로 분석했다. 소형전지와 ESS의 성장 기여가 컸다.",
+    "issue_comments": "3분기 매출 8.32조원, 영업이익 2,570억원, 4분기 영업이익 5,390억원으로 개선을 예상했다.",
+    "risks": "GM향 공급 재개, ESS 신규 수주와 46시리즈 램프업이 계획보다 늦어질 수 있다.",
+    "quotes": "\"2Q26 Review: 출발 준비\" (p.1)"
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "document_id": "2026_1Q_LGES",
+  "document_type": "earnings_call",
+  "company": "LGES",
+  "fy": 2026,
+  "period": "1Q",
+  "announcement_date": "2026-04-08",
+  "sources": [
+    {"kind": "ir_deck", "file": "26_1Q_LGES_business_performance_F_KR.pdf"},
+    {"kind": "call_script", "file": "26_1Q_Script.pdf"}
+  ],
+  "legacy_fact_ref": {
+    "file": "actuals_LGES.json",
+    "fy": 2026,
+    "period": "1Q"
+  },
+  "guidance": [
+    {
+      "topic": "회계기준 변경",
+      "horizon": "2026 1Q 이후",
+      "direction": "변경",
+      "value": null,
+      "value_max": null,
+      "unit": null,
+      "summary": "북미 JV 외 고객판매분 생산보조금을 매출의 기타수익으로 병합 표시하고 과거 실적을 재작성해 비교 공시.",
+      "source_file": "26_1Q_Script.pdf",
+      "page": null,
+      "citation_status": "legacy_unpaged"
+    },
+    {
+      "topic": "2분기 매출·손익",
+      "horizon": "2026 2Q",
+      "direction": "개선",
+      "value": 10,
+      "value_max": null,
+      "unit": "% 이상",
+      "summary": "전사 매출은 전분기 대비 최소 10% 이상 성장, 생산보조금 제외 기준 전사 흑자전환을 목표.",
+      "source_file": "26_1Q_Script.pdf",
+      "page": null,
+      "citation_status": "legacy_unpaged"
+    },
+    {
+      "topic": "연간 매출 성장률",
+      "horizon": "2026 FY",
+      "direction": "유지",
+      "value": 15,
+      "value_max": 20,
+      "unit": "% 이상",
+      "summary": "유럽 중저가 제품과 원통형 전략 고객 매출 확대를 근거로 연초 제시한 15~20% 이상 성장 가이던스를 재확인.",
+      "source_file": "26_1Q_Script.pdf",
+      "page": null,
+      "citation_status": "legacy_unpaged"
+    },
+    {
+      "topic": "북미 ESS 생산능력",
+      "horizon": "2026 연말",
+      "direction": "확대",
+      "value": 50,
+      "value_max": null,
+      "unit": "GWh 이상",
+      "summary": "테네시 UC 2기 EV 라인의 일부 ESS 전환을 포함해 북미 5개 생산거점에서 50GWh 이상 Capa 확보 목표.",
+      "source_file": "26_1Q_Script.pdf",
+      "page": null,
+      "citation_status": "legacy_unpaged"
+    }
+  ],
+  "qa": [
+    {
+      "topic": "북미 ESS 수익성",
+      "question": "북미 ESS 물량 증가와 초기 수익성은 어떻게 전개되는가?",
+      "answer": "2025년 말 140GWh 수주잔고를 확보했고 1분기부터 매출 성장이 가시화됐다. EV 라인의 ESS 전환 초기에는 고정비와 원재료·가공비 부담이 있으며 수율·가동률 안정화와 원가 절감으로 대응한다.",
+      "source_file": "26_1Q_Script.pdf",
+      "page": null,
+      "citation_status": "legacy_unpaged"
+    },
+    {
+      "topic": "미국-이란 전쟁 영향",
+      "question": "중동 정세 악화가 배터리 사업에 미치는 영향은 무엇인가?",
+      "answer": "현지 생산과 공급망 구축으로 직접 영향은 제한적이나 물류비와 인플레이션에 대비해 투자·비용을 관리한다. 고유가는 EV 구매 심리와 신재생·ESS 선호를 높일 가능성도 있다.",
+      "source_file": "26_1Q_Script.pdf",
+      "page": null,
+      "citation_status": "legacy_unpaged"
+    },
+    {
+      "topic": "46시리즈",
+      "question": "원통형과 46시리즈의 수요 및 생산 계획은 무엇인가?",
+      "answer": "중국 신모델과 유럽 판매로 원통형 물량이 확대되고 있으며 애리조나는 연말 가동을 목표로 한다. 폴란드 원통형 Capa도 장기 검토 중이다.",
+      "source_file": "26_1Q_Script.pdf",
+      "page": null,
+      "citation_status": "legacy_unpaged"
+    },
+    {
+      "topic": "북미 ESS 수급",
+      "question": "북미 ESS 공급과잉 우려를 어떻게 보는가?",
+      "answer": "북미 ESS 수요의 높은 성장과 중국 업체 진입 제한, 비중국 업체의 제한적인 현지 생산능력을 감안하면 미국 현지산 공급 부족이 2030년까지 이어질 것으로 판단했다.",
+      "source_file": "26_1Q_Script.pdf",
+      "page": null,
+      "citation_status": "legacy_unpaged"
+    },
+    {
+      "topic": "EV 수요",
+      "question": "하반기 EV 수요 회복 신호가 확인되는가?",
+      "answer": "미국 EV와 중고 EV 판매에서 일부 개선 조짐은 있으나 고객사의 직접적인 변화는 아직 확인되지 않았다. 재고 소진과 수요 당겨짐 가능성을 모니터링 중이다.",
+      "source_file": "26_1Q_Script.pdf",
+      "page": null,
+      "citation_status": "legacy_unpaged"
+    },
+    {
+      "topic": "메탈가·환율",
+      "question": "메탈 가격과 환율 변동을 어떻게 관리하는가?",
+      "answer": "메탈가 상승은 1~2분기 시차를 두고 판가에 반영될 전망이다. EV는 판가 연동, ESS는 일부 고정가와 파생상품으로 위험을 낮추고 외화채는 선물환·통화스와프로 헤지한다.",
+      "source_file": "26_1Q_Script.pdf",
+      "page": null,
+      "citation_status": "legacy_unpaged"
+    }
+  ],
+  "body": {
+    "summary": "매출 6,555십억원, 영업손실 208십억원으로 전분기 대비 매출은 소폭 늘었지만 북미 EV 파우치 물량 감소와 ESS 생산거점 초기 비용으로 적자가 이어졌다. 회사는 2분기 매출 10% 이상 성장과 생산보조금 제외 기준 흑자전환을 목표로 제시했다.",
+    "actuals": "확정 숫자는 기존 actuals_LGES.json의 2026년 1분기 행을 참조한다. 이 회귀 연결은 숫자를 복제하지 않아 기존 인덱스와 충돌하지 않는다.",
+    "drivers": "EV 파우치 약세를 원통형과 ESS 출하가 일부 상쇄했다. ESS 생산 확대는 매출에 기여했지만 초기 Ramp-up 비용으로 단기 수익성에는 부담이었다.",
+    "ampc_oneoffs": "AMPC는 190십억원이다. 영업손실 208십억원에서 AMPC를 제외한 계산값은 약 398십억원 손실이다. 2026년 1분기부터 일부 생산보조금 표시 방식이 매출 내 기타수익으로 변경됐다.",
+    "guidance": "정량 가이던스는 위 구조화 표를 기준으로 사용한다. 회계표시 변경과 사업 전망을 섞지 않고 별도 행으로 보존했다.",
+    "capex_capacity_orders": "1분기 CAPEX는 -1,648십억원으로 기록돼 있다. 46시리즈 수주잔고는 2026년 4월 말 440GWh 이상이며, 북미 ESS는 연말까지 5개 거점 50GWh 이상 Capa 확보가 목표다.",
+    "qa": "핵심 쟁점은 북미 ESS의 초기 수익성, 46시리즈 생산 확대, EV 수요 회복 시점, 메탈가·환율 위험 관리였다.",
+    "risks": "EV 고객사의 보수적 재고 운영, ESS 전환 라인의 초기 고정비, 물류비·원재료비 상승, 고객 주문 회복 시점의 불확실성이 남아 있다.",
+    "quotes": "기존 컨콜 staging에는 직접 인용 문장별 페이지가 남아 있지 않아 이번 회귀 패키지에는 원문 직접 인용을 생성하지 않았다. 신규 분기부터는 페이지를 필수 기록한다."
+  }
+}

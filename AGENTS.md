@@ -16,7 +16,8 @@ K-배터리 3사(LG에너지솔루션·삼성SDI·SK온) 증권사 리포트를 
 | 1 | `CLAUDE.md` | **작업 지침 본문** — 파이프라인, 인제스트 6단계, 운영 규칙, 배포, 실적 갱신 체크리스트 |
 | 2 | `schema/template.md` | 표준 MD 양식 + **인제스트 입력 형식(staging JSON 스키마)** ← 부록 |
 | 3 | `schema/NORMALIZATION.md` | 판단 규칙 — segment_std, ampc_basis(판정 예시 포함), metric 통제어휘, stance_score, 이슈 어휘, 부문·AMPC 집계 규칙 |
-| 4 | `README.md` | 저장소 설계 배경 |
+| 4 | `schema/earnings_template.md` | **실적·컨콜 전용** staging JSON·표준 MD·출처 규칙 |
+| 5 | `README.md` | 저장소 설계 배경 |
 
 세부 규칙을 이 파일에 복사하지 않는다(내용이 갈라지는 것을 막기 위해). **위 문서가 원본이다.**
 
@@ -44,16 +45,19 @@ K-배터리 3사(LG에너지솔루션·삼성SDI·SK온) 증권사 리포트를 
 
 ```bash
 # 1) PDF → .staging/<report_id>.json  (형식: schema/template.md 부록)
-python3 tools/build_indexes.py --check    # 2) 검증만 (파일 안 씀) — 경고 확인
-python3 tools/build_indexes.py            # 3) 표준 MD + 인덱스 재생성
-python3 tools/build_dashboard_data.py     # 4) 대시보드 데이터 ([STALE] 경고 확인)
-python3 tools/assemble_dashboard.py       # 5) 자립형 dashboard.html
-python3 tools/deploy_pages.py             # 6) docs/index.html (Pages 배포본)
+python3 tools/build_indexes.py --check-id <report_id>  # 2) 신규 ID 엄격 검증 — 경고 0건 필수
+python3 tools/build_indexes.py --check    # 3) 전체 DB 회귀 검증 (파일 안 씀)
+python3 tools/build_indexes.py            # 4) 표준 MD + 인덱스 재생성
+python3 tools/build_dashboard_data.py     # 5) 대시보드 데이터 ([STALE] 경고 확인)
+python3 tools/assemble_dashboard.py       # 6) 자립형 dashboard.html
+python3 tools/deploy_pages.py             # 7) docs/index.html (Pages 배포본)
 git add -A && git commit -m "..." && git push
 ```
 
 전체 절차·주의사항은 `CLAUDE.md`의 «인제스트 절차» «대시보드 재생성 + 웹 배포» 참조.
 새 분기 실적이 발표된 뒤에는 «새 실적 발표 시 갱신 체크리스트»를 반드시 수행한다.
+실적·컨콜은 증권사 리포트 JSON에 넣지 말고 `schema/earnings_template.md`에 따라
+`.staging/earnings_<FY>_<분기>_<회사>.json` 한 건으로 묶는다.
 
 ## 5. 여러 에이전트가 나눠 작업할 때 (권장 분업)
 

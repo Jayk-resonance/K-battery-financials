@@ -1,0 +1,43 @@
+{
+  "report_id": "2026-07-30_삼성증권_LGES",
+  "date": "2026-07-30",
+  "house": "삼성증권",
+  "analyst": "조현렬",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 460000,
+  "prev_target_price": 510000,
+  "key_issues": ["ESS 팩 병목", "상호관세 환급", "AMPC", "유럽 EV", "아시아 LEV", "OEM 보상금", "밸류에이션"],
+  "estimates": [
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560.2, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 113.3, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "소형전지", "segment_std": "소형", "fy": 2026, "period": "2Q", "metric": "매출", "value": 2460, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "소형전지", "segment_std": "소형", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 166.2, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "자동차전지", "segment_std": "EV", "fy": 2026, "period": "2Q", "metric": "매출", "value": 3020, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "자동차전지", "segment_std": "EV", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": -241.9, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "ESS전지", "segment_std": "ESS", "fy": 2026, "period": "2Q", "metric": "매출", "value": 2080, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "ESS전지", "segment_std": "ESS", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": -52, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "AMPC", "value": 241, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 239.5, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "AMPC", "value": 388.3, "unit": "십억원", "page": 2, "ampc_basis": "na"}
+  ],
+  "stances": [
+    {"issue": "ESS", "company": "LG에너지솔루션", "stance_score": 2, "summary": "팩 조립 병목으로 단기 실적은 기대에 못 미치지만 3Q부터 완화되고 4Q26에는 영향이 소멸할 전망.", "page": 2},
+    {"issue": "AMPC", "company": "LG에너지솔루션", "stance_score": 4, "summary": "3Q26 미국 생산·판매량 증가로 AMPC가 3,883억원까지 확대될 것으로 전망.", "page": 2},
+    {"issue": "유럽EV", "company": "LG에너지솔루션", "stance_score": 4, "summary": "유럽향 판매 회복이 자동차전지 출하 증가와 적자 축소에 기여.", "page": 1},
+    {"issue": "소형전지", "company": "LG에너지솔루션", "stance_score": 5, "summary": "아시아 저속 전기차 및 선도 전기차업체 수요로 2Q 출하량이 18% QoQ 증가.", "page": 1},
+    {"issue": "OEM보상금", "company": "LG에너지솔루션", "stance_score": 1, "summary": "설비 재목적화 관련 고객사 보상금이 반영됐으나 전분기보다 감소하고 매출 대비 이익 인식 폭도 제한적.", "page": 1},
+    {"issue": "밸류에이션", "company": "LG에너지솔루션", "stance_score": 3, "summary": "EPS와 Peer 멀티플 하향에도 1Q26을 저점으로 한 이익 개선세를 근거로 매수 의견 유지.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26 영업이익 1,133억원은 컨센서스와 삼성증권 추정치를 하회했다. 자동차전지와 AMPC가 예상보다 낮았고 ESS는 상호관세 환급에도 팩 조립 병목으로 적자를 지속했다. 다만 소형전지와 유럽 판매가 개선됐고, 병목 영향이 4Q26부터 소멸한다는 판단으로 매수 의견을 유지했다.",
+    "valuation": "목표주가는 510,000원에서 460,000원으로 10% 하향했다. 2027년 EPS 9% 하향과 글로벌 Peer 멀티플 하락을 반영해 Target P/E를 47.8배에서 41.3배로 낮췄고, P/E와 P/B 적정가치 평균을 사용했다.",
+    "segment_pl": "| 부문 | 2Q26 매출 | 2Q26 영업이익 | 판단 |\n|---|---:|---:|---|\n| 소형전지 | 2,460십억원 | 166.2십억원 | 아시아 LEV와 선도 고객 수요로 출하 증가 |\n| 자동차전지 | 3,020십억원 | -241.9십억원 | 유럽 판매 회복, 미국 가동률 부담 지속 |\n| ESS전지 | 2,080십억원 | -52십억원 | 판매 성장에도 팩 병목, 관세 환급 약 80십억원 반영 |",
+    "issue_comments": "ESS 팩 병목은 3Q부터 완화되고 4Q26에 완전 소멸할 것으로 본다. 3Q26에는 ESS 판매 +55% QoQ와 미국 생산 증가로 AMPC 388.3십억원을 전망하지만 병목 탓에 ESS 적자는 이어질 것으로 예상한다. 자동차전지는 GM JV 재가동과 유럽 고객 판매 확대로 개선될 전망이다.",
+    "risks": "팩 조립 병목 해소가 4Q 이후로 지연되면 ESS 손익 개선이 늦어질 수 있다. 미국 생산 증가와 AMPC 전망이 계획에 못 미치거나, 유럽 판매 회복과 GM JV 재가동이 약할 경우 3Q 실적도 컨센서스를 하회할 위험이 있다.",
+    "quotes": "\"ESS 성장통에도 이익 개선세 유효\" (p.1)"
+  }
+}

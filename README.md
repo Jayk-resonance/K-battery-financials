@@ -19,13 +19,15 @@ frontmatter 필드가 곧 "DB 컬럼"이다. 표준 양식은 [`schema/template.
 ├── inbox/                    # ← 원본 PDF를 여기 넣는다 (사용자의 유일한 수작업)
 ├── .staging/                 # 인제스트 중간 산출물(JSON). git 추적됨 — 재빌드의 유일한 소스
 ├── reports/YYYY/              # 표준 MD. 파일명 = YYYY-MM-DD_증권사_커버리지.md
+├── earnings/YYYY/             # 회사 실적·컨퍼런스콜 표준 MD
 ├── index/
 │   ├── reports.jsonl          # 리포트 1건 = 1행
 │   ├── estimates.csv          # (리포트×회사×세그먼트×지표×기간) 추정치
 │   ├── stances.csv            # (리포트×이슈×회사) 이슈별 스탠스
-│   └── ...                    # industry_views·demand_forecasts·themes·actuals·drivers
+│   └── ...                    # industry_views·themes·actuals·drivers·guidance·call_qa
 ├── schema/
 │   ├── template.md            # 표준 MD 양식 + 인제스트 입력 형식(부록)
+│   ├── earnings_template.md   # 실적·컨콜 전용 입력·MD 형식
 │   └── NORMALIZATION.md       # 판단 규칙(segment_std·ampc_basis·metric·이슈 통제어휘)
 ├── tools/                     # 인제스트·빌드·배포 스크립트
 ├── projects/dashboard/        # 대시보드 데이터·템플릿·자립형 산출물
@@ -42,6 +44,13 @@ frontmatter 필드가 곧 "DB 컬럼"이다. 표준 양식은 [`schema/template.
    → PDF를 `schema/template.md` 형식의 MD로 변환해 `.staging/`에 저장 후 `reports/YYYY/` 에 렌더
    → `index/` 를 `.staging/` 전체로부터 재생성한다(전량 재빌드 — 결정적·재현 가능).
    → 원본 PDF 경로와 페이지를 남겨 **모든 숫자를 역추적** 가능하게 한다.
+
+### 1-1) 실적·컨퍼런스콜 넣기
+1. 회사 IR·컨콜 원본을 `actuals/`에 넣는다.
+2. Claude에게: **"actuals의 이번 분기 실적·컨콜을 인제스트해줘"**
+   → `schema/earnings_template.md`에 따라 회사×분기 1개 JSON을 만든다.
+   → `earnings/YYYY/` 표준 MD와 actuals·drivers·guidance·Q&A 인덱스를 함께 재생성한다.
+   → 원문이 없는 가이던스·Q&A는 추정해 채우지 않고 미수록 사유를 남긴다.
 
 ### 2) 분석하기
 Claude에게 원하는 분석을 요청하면 `index/` 를 조회해 `projects/<이름>/` 에 결과를 쓴다. 예:

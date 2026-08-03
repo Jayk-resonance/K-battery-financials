@@ -1,0 +1,37 @@
+{
+  "report_id": "2026-07-31_BNK투자증권_SK온",
+  "date": "2026-07-31",
+  "house": "BNK투자증권",
+  "analyst": "김현태",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 170000,
+  "prev_target_price": 170000,
+  "key_issues": ["OEM보상금", "배터리판매량", "밸류에이션"],
+  "estimates": [
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"3Q","metric":"매출","value":2088,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"4Q","metric":"매출","value":2240,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"FY","metric":"매출","value":9144,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2027,"period":"FY","metric":"매출","value":9316,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"3Q","metric":"영업이익","value":-239,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"4Q","metric":"영업이익","value":-360,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"FY","metric":"영업이익","value":-127,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2027,"period":"FY","metric":"영업이익","value":-826,"unit":"십억원","ampc_basis":"incl_unknown","page":2}
+  ],
+  "stances": [
+    {"issue":"OEM보상금","company":"SK온","stance_score":1,"summary":"2Q26 배터리 일회성 보상금을 약 1조원으로 추정하며 실적 서프라이즈의 핵심이지만 반복 가능성은 낮다고 판단한다.","page":1},
+    {"issue":"배터리판매량","company":"SK온","stance_score":2,"summary":"2Q26 매출 급증 이후 3Q와 4Q에도 2조원대 매출을 전망하지만 2027년 성장률은 제한적으로 본다.","page":2},
+    {"issue":"밸류에이션","company":"SK이노베이션","stance_score":6,"summary":"정유·윤활유 호조가 배터리의 재무 부담을 완화하는 구조를 근거로 매수와 목표주가 17만원을 유지한다.","page":1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26 SK이노베이션 영업이익은 3.49조원으로 컨센서스를 124% 상회했다. 배터리 일회성 보상금을 약 1조원으로 추정하며 SK온은 8,218억원 흑자를 기록했다.",
+    "valuation": "투자의견 매수와 6개월 목표주가 170,000원을 유지했다. 정유·윤활유의 현금창출이 SK온의 재무 부담을 낮추는 점을 긍정적으로 평가했다.",
+    "segment_pl": "SK온 매출은 3Q26 2,088십억원, 4Q26 2,240십억원을 전망한다. 영업이익은 일회성 보상금 소멸로 각각 -239십억원, -360십억원 적자를 예상한다. FY2026 영업이익은 -127십억원이다.",
+    "issue_comments": "2Q 흑자는 약 1조원으로 추정되는 고객 보상금의 영향이 컸다. 하반기에는 일회성 효과가 사라져 다시 적자로 전환하지만 매출 규모는 2조원대를 유지할 것으로 본다.",
+    "risks": "고객 보상금의 반복 가능성이 낮고 2027년 배터리 영업손실을 -826십억원으로 전망해 경상 수익성 회복이 지연될 위험을 반영한다.",
+    "quotes": "\"배터리 일회성 보상금(약 1조원 추정)을 제거하더라도 서프라이즈였다.\" (p.1)"
+  }
+}

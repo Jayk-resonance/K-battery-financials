@@ -1,0 +1,36 @@
+{
+  "report_id": "2026-07-31_키움증권_LGES",
+  "date": "2026-07-31",
+  "house": "키움증권",
+  "analyst": "권준수",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 500000,
+  "prev_target_price": null,
+  "key_issues": ["ESS 램프업 지연", "OEM 보상금 이연", "90GWh 신규 수주", "AMPC 제외 ESS 흑자", "밸류에이션"],
+  "estimates": [
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560.2, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 113.3, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 9010.6, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 287.7, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 32297, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 607.6, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "AMPC", "value": 1363, "unit": "십억원", "page": 2, "ampc_basis": "na"}
+  ],
+  "stances": [
+    {"issue": "ESS", "company": "LG에너지솔루션", "stance_score": 5, "summary": "중장기 수주는 긍정적이지만 단기 램프업 속도와 수익성 개선은 기대보다 느리다고 본다.", "page": 1},
+    {"issue": "OEM보상금", "company": "LG에너지솔루션", "stance_score": -2, "summary": "보상금 인식 이연이 2분기 영업이익의 컨센서스 하회에 영향을 줬다.", "page": 1},
+    {"issue": "밸류에이션", "company": "LG에너지솔루션", "stance_score": 4, "summary": "경쟁사 밸류에이션 하락을 반영해 목표가는 낮추지만 중장기 성장성을 감안해 매수를 유지한다.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26 매출 7.6조원, 영업이익 1,133억원으로 보상금 이연과 ESS 램프업 지연 때문에 컨센서스를 밑돌았다. 3Q26 영업이익은 2,877억원을 전망했다.",
+    "valuation": "BUY를 유지하되 경쟁사 밸류에이션 하락을 반영해 목표주가를 500,000원으로 낮췄다. 보고서 본문에서 직전 목표주가 숫자는 확인되지 않았다.",
+    "segment_pl": "EV 파우치는 유럽 물량 증가, 소형전지는 원통형 판매 호조가 예상된다. ESS는 수요와 수주가 견조하지만 램프업 비용으로 단기 수익성이 불확실하다.",
+    "issue_comments": "2026년 신규 수주 90GWh 목표를 확인했으며 AMPC 제외 ESS 흑자전환 시점은 4Q26으로 전망했다.",
+    "risks": "ESS 램프업과 AMPC 쉐어링, 제품 ASP 하락, OEM 보상금 이연이 수익성 개선을 늦출 수 있다.",
+    "quotes": "\"중장기 성장성 확인, 다만 단기 ESS 수익성 우려\" (p.1)"
+  }
+}

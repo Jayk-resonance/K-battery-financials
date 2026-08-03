@@ -1,0 +1,36 @@
+{
+  "report_id": "2026-07-31_IBK투자증권_LGES",
+  "date": "2026-07-31",
+  "house": "IBK투자증권",
+  "analyst": "이현욱",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 560000,
+  "prev_target_price": 560000,
+  "key_issues": ["2분기 ESS 부진", "3분기 ESS 회복", "북미 ESS 수주", "AMPC", "유럽 EV 회복"],
+  "estimates": [
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 113, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 9047, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 293, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 32274, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 1069, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "AMPC", "value": 1499, "unit": "십억원", "page": 2, "ampc_basis": "na"}
+  ],
+  "stances": [
+    {"issue": "ESS", "company": "LG에너지솔루션", "stance_score": 8, "summary": "2분기 생산 병목 뒤 3분기 ESS 매출이 전분기 대비 42% 늘며 실적을 견인할 것으로 본다.", "page": 1},
+    {"issue": "유럽EV", "company": "LG에너지솔루션", "stance_score": 5, "summary": "유럽 중심의 EV 판매 확대가 2분기 ESS 부진을 일부 상쇄했다.", "page": 1},
+    {"issue": "AMPC", "company": "LG에너지솔루션", "stance_score": 6, "summary": "3분기부터 EV 부문의 AMPC 수취가 본격화될 것으로 예상한다.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26 매출 7.56조원, 영업이익 1,130억원으로 흑자전환했지만 ESS 생산 병목으로 영업이익은 컨센서스를 밑돌았다.",
+    "valuation": "투자의견 매수와 목표주가 560,000원을 모두 유지했다.",
+    "segment_pl": "ESS는 셀 생산 정상화에도 팩·컨테이너 CAPA 병목으로 가이던스보다 부진했다. EV는 유럽 판매 확대, 소형전지는 원통형 판매 호조로 이를 일부 보완했다.",
+    "issue_comments": "3Q26 ESS 매출을 전분기 대비 42% 증가로 전망하고, 하반기 70GWh 신규 수주와 미국 ESS CAPA 확대를 기대한다.",
+    "risks": "ESS 램프업과 팩·컨테이너 병목 해소가 예상보다 늦어질 수 있다.",
+    "quotes": "\"90 - 20 = 70\" (p.1)"
+  }
+}

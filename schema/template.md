@@ -94,5 +94,9 @@ source_pdf: inbox/미래에셋_20260115.pdf   # 원본 경로 (모든 숫자의 
 - 각 값은 문자열 또는 문자열 리스트(리스트는 개행으로 결합된다). `null`은 빈 섹션이 된다.
 - `estimates`·`stances`의 값 규칙(단위 십억원, segment_std, ampc_basis, metric 통제어휘,
   stance_score −10~+10)은 `NORMALIZATION.md` 를 따른다.
-- 작성 후 반드시 `python3 tools/build_indexes.py --check` 로 경고를 확인한다.
-  `metric 비표준`·`segment_std 강제`·`stance_score 범위 밖` 경고는 **데이터가 새는 신호**다.
+- 작성 후 먼저 `python3 tools/build_indexes.py --check-id <report_id>` 로 신규 리포트를 엄격
+  검증한다. 대상 경고가 1건이라도 있으면 실패하며, 수정 후 경고 0건을 확인해야 한다.
+  실제 재빌드도 기존 인덱스에 없던 신규 ID의 경고를 다시 검사해 쓰기 전에 자동 중단한다.
+- 이어서 `python3 tools/build_indexes.py --check` 로 전체 DB 회귀 검증을 확인한다.
+  `metric 비표준`·`segment_std 강제`·`stance_score 범위 밖`·`issue 비표준` 경고는
+  **데이터가 새거나 집계 축이 갈리는 신호**다.

@@ -1,0 +1,38 @@
+{
+  "report_id": "2026-07-31_DS투자증권_LGES",
+  "date": "2026-07-31",
+  "house": "DS투자증권",
+  "analyst": "최태용",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 600000,
+  "prev_target_price": 600000,
+  "key_issues": ["ESS 출하 정상화", "얼티엄1 재가동", "AMPC 제외 손익분기", "북미 ESS 수주", "관세 환급"],
+  "estimates": [
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 113, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "AMPC", "value": 241, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 9073, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 272, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "AMPC", "value": 387, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 32874, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 808, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "AMPC", "value": 1346, "unit": "십억원", "page": 2, "ampc_basis": "na"}
+  ],
+  "stances": [
+    {"issue": "ESS", "company": "LG에너지솔루션", "stance_score": 9, "summary": "3분기 ESS 출하가 약 50% 늘고 대규모 수주잔고가 중장기 성장을 뒷받침할 것으로 본다.", "page": 1},
+    {"issue": "AMPC", "company": "LG에너지솔루션", "stance_score": 8, "summary": "ESS 물량 확대에 힘입어 4분기 AMPC 제외 기준 손익분기점 도달을 전망한다.", "page": 1},
+    {"issue": "북미EV", "company": "LG에너지솔루션", "stance_score": 7, "summary": "얼티엄1 공장이 8월 중순 재가동되어 4분기부터 실적에 기여할 것으로 예상한다.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26 ESS 램프업 지연으로 수익성이 가려졌지만 3분기 출하 정상화와 얼티엄1 재가동으로 회복을 전망했다.",
+    "valuation": "매수와 목표주가 600,000원을 유지했다. 지연된 물량의 회복과 신규 수주 가시성을 긍정적으로 평가했다.",
+    "segment_pl": "3Q26 매출 9.1조원, 영업이익 2,720억원을 전망했다. ESS 출하 증가는 크지만 초기 가동 비용이 이익 개선 폭을 제한할 것으로 봤다.",
+    "issue_comments": "약 140GWh 수주잔고와 3.3조원 신규 수주, 얼티엄1 재가동, 약 1,000억원의 관세 환급 효과를 핵심 변수로 제시했다.",
+    "risks": "ESS 초기 가동 비용 장기화, 얼티엄 재가동 지연, EV 수요 회복 지연이 위험 요인이다.",
+    "quotes": "\"지연된 물량, 채워지는 수주\" (p.1)"
+  }
+}

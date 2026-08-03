@@ -1,0 +1,38 @@
+{
+  "report_id": "2026-07-31_메리츠증권_LGES",
+  "date": "2026-07-31",
+  "house": "메리츠증권",
+  "analyst": "노우호",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 440000,
+  "prev_target_price": 470000,
+  "key_issues": ["목표주가 하향", "유럽 LFP·미드니켈", "북미 원통형", "ESS·AI 데이터센터", "3Q AMPC 원문 불일치"],
+  "estimates": [
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560.2, "unit": "십억원", "page": 3, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 113.3, "unit": "십억원", "page": 3, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "AMPC", "value": 228.4, "unit": "십억원", "page": 3, "ampc_basis": "na"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 7674.1, "unit": "십억원", "page": 3, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 411, "unit": "십억원", "page": 3, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "AMPC", "value": 345.2, "unit": "십억원", "page": 3, "ampc_basis": "na"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 29897.6, "unit": "십억원", "page": 3, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 876.1, "unit": "십억원", "page": 3, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "AMPC", "value": 1194.4, "unit": "십억원", "page": 3, "ampc_basis": "na"}
+  ],
+  "stances": [
+    {"issue": "LFP", "company": "LG에너지솔루션", "stance_score": 7, "summary": "유럽 LFP와 고전압 미드니켈 제품 확대로 지역·제품 경쟁력을 보완할 것으로 본다.", "page": 1},
+    {"issue": "46파이", "company": "LG에너지솔루션", "stance_score": 7, "summary": "북미 원통형 전지와 신규 고객 확보가 중장기 경쟁력 회복에 기여할 것으로 전망한다.", "page": 1},
+    {"issue": "밸류에이션", "company": "LG에너지솔루션", "stance_score": 5, "summary": "단기 실적 추정치와 비용 부담을 반영해 목표주가를 낮췄지만 매수 의견은 유지했다.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "유럽의 LFP·미드니켈, 미국 원통형 전지, ESS·AI 데이터센터 대응을 경쟁력 확보 과정으로 평가했다.",
+    "valuation": "매수를 유지하고 목표주가를 440,000원으로 하향했다. 직전 동일 하우스 자료의 470,000원 대비 단기 추정치와 비용 부담을 반영했다.",
+    "segment_pl": "상세 표는 3Q26 매출 7.67조원, 영업이익 4,110억원, AMPC 3,452억원을 제시한다. 다만 1쪽 본문은 같은 분기 AMPC를 2,545억원으로 기재해 원문 내부 수치가 서로 다르다.",
+    "issue_comments": "인덱스는 항목별 산출표가 있는 3쪽의 AMPC 3,452억원을 사용했고, 1쪽 본문의 2,545억원도 이 문서에 함께 보존했다.",
+    "risks": "EV 수요 둔화, 제품 전환 비용, 북미 투자 부담과 원문 내 AMPC 수치 불일치가 해석상 위험 요인이다.",
+    "quotes": "\"경쟁력 확보 준비 과정\" (p.1)"
+  }
+}

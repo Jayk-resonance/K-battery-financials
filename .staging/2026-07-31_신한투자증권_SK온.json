@@ -1,0 +1,42 @@
+{
+  "report_id": "2026-07-31_신한투자증권_SK온",
+  "date": "2026-07-31",
+  "house": "신한투자증권",
+  "analyst": "이진명, 김명주",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 190000,
+  "prev_target_price": 170000,
+  "key_issues": ["OEM보상금", "ESS", "북미CAPEX", "AMPC"],
+  "estimates": [
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"3Q","metric":"매출","value":1975.1,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"4Q","metric":"매출","value":1812.7,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"FY","metric":"매출","value":8603.9,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2027,"period":"FY","metric":"매출","value":10212.4,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"3Q","metric":"영업이익","value":-169.1,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"4Q","metric":"영업이익","value":-140.0,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"FY","metric":"영업이익","value":163.5,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2027,"period":"FY","metric":"영업이익","value":-2.3,"unit":"십억원","ampc_basis":"incl_unknown","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"3Q","metric":"AMPC","value":123.8,"unit":"십억원","ampc_basis":"na","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"4Q","metric":"AMPC","value":128.7,"unit":"십억원","ampc_basis":"na","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"FY","metric":"AMPC","value":461.3,"unit":"십억원","ampc_basis":"na","page":2},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2027,"period":"FY","metric":"AMPC","value":541.5,"unit":"십억원","ampc_basis":"na","page":2}
+  ],
+  "stances": [
+    {"issue":"OEM보상금","company":"SK온","stance_score":1,"summary":"2Q 고객 보상을 약 1조원으로 추정하며 흑자의 반복 가능성은 낮지만 현금흐름에는 긍정적이라고 본다.","page":1},
+    {"issue":"ESS","company":"SK온","stance_score":4,"summary":"북미 생산설비의 ESS 전환이 가동률과 고정비 개선에 기여할 것으로 기대한다.","page":1},
+    {"issue":"북미CAPEX","company":"SK온","stance_score":4,"summary":"BOSK 구조 정리와 비용 절감으로 일회성을 제외한 기초 손실도 개선됐다고 평가한다.","page":1},
+    {"issue":"AMPC","company":"SK온","stance_score":3,"summary":"AMPC를 FY2026 461.3십억원으로 전망해 하반기 영업손실 완충 역할을 예상한다.","page":2}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q SK온 매출은 약 2.9조원, 영업이익은 8,218억원이다. 아시아 판매 증가와 약 1조원으로 추정한 고객 보상이 외형과 이익을 끌어올렸고, 비용 절감·BOSK 구조 정리·ESS 전환도 기초 수익성을 개선했다.",
+    "valuation": "투자의견 매수를 유지하고 목표주가를 170,000원에서 190,000원으로 상향했다.",
+    "segment_pl": "SK온 매출은 3Q26 1,975.1십억원, 4Q26 1,812.7십억원을 전망한다. 영업이익은 각각 -169.1십억원, -140.0십억원이며 AMPC는 각각 123.8십억원, 128.7십억원이다.",
+    "issue_comments": "고객 보상 소멸로 하반기 분기 적자를 예상하지만, BOSK 비용 감소와 ESS 전환이 경상 손실을 완화할 것으로 봤다.",
+    "risks": "고객 보상금 소멸, 전기차 수요 부진, ESS 전환 지연은 하반기 적자 폭을 키울 수 있다.",
+    "quotes": "\"일회성 제외 시에도 비용 효율화로 적자 폭이 축소됐다.\" (p.1)"
+  }
+}

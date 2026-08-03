@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>K-배터리 리포트 인텔리전스</title>
 <style>
 :root{
@@ -109,6 +114,8 @@ summary{cursor:pointer;color:var(--muted);font-size:12.5px}
   .card{padding:15px 15px}
 }
 </style>
+</head>
+<body>
 <div class="layout">
 <aside class="sidebar">
   <div class="brand"><div class="brand-mark">🔋</div><div><b>K-배터리</b><small>리포트 인텔리전스</small></div></div>
@@ -191,21 +198,25 @@ function rOver(v){
 }
 
 /* ---------- F1 분기 실적 ---------- */
+function qActual(comp,metric,fy,p){
+  let v=null;
+  if(comp==="SK온"){const g=DATA.f1_quarterly.actuals_grid[`SK온|${fy}|${p}`]||{};
+    v=g[`배터리합계|${metric}|incl`]??g[`배터리합계|${metric}|excl`]??g[`배터리합계|${metric}|na`]??g[`배터리합계|${metric}|incl_unknown`]??null;
+    if(v==null){const k=`${fy}|${p}|${metric}`;v=DATA.f1_quarterly.skon_quarters[k]?.value??null;if(v!=null)v={med:v}.med}}
+  else{const g=DATA.f1_quarterly.actuals_grid[`${comp}|${fy}|${p}`]||{};
+    if(metric==="영업이익")v=g["전사|영업이익|incl"]??g["전사|영업이익|na"]??null;
+    else v=g["전사|매출|excl"]??g["전사|매출|na"]??((comp==="LGES"&&g["전사|매출|incl"]!=null&&g["전사|AMPC|na"]!=null)?g["전사|매출|incl"]-g["전사|AMPC|na"]:g["전사|매출|incl"])??null}
+  return v;
+}
 function qseries(comp,metric){ // [{i,label,v,est,n}]
   const Q=[[2025,"1Q"],[2025,"2Q"],[2025,"3Q"],[2025,"4Q"],[2026,"1Q"]];
-  const pts=Q.map(([fy,p],i)=>{
-    let v=null;
-    if(comp==="SK온"){const g=DATA.f1_quarterly.actuals_grid[`SK온|${fy}|${p}`]||{};
-      v=g[`배터리합계|${metric}|incl`]??g[`배터리합계|${metric}|excl`]??g[`배터리합계|${metric}|na`]??g[`배터리합계|${metric}|incl_unknown`]??null;
-      if(v==null){const k=`${fy}|${p}|${metric}`;v=DATA.f1_quarterly.skon_quarters[k]?.value??null;if(v!=null)v={med:v}.med}}
-    else{const g=DATA.f1_quarterly.actuals_grid[`${comp}|${fy}|${p}`]||{};
-      if(metric==="영업이익")v=g["전사|영업이익|incl"]??g["전사|영업이익|na"]??null;
-      else v=g["전사|매출|excl"]??g["전사|매출|na"]??((comp==="LGES"&&g["전사|매출|incl"]!=null&&g["전사|AMPC|na"]!=null)?g["전사|매출|incl"]-g["전사|AMPC|na"]:g["전사|매출|incl"])??null}
-    return{i,label:`${String(fy).slice(2)}.${p}`,v,est:false}});
+  const pts=Q.map(([fy,p],i)=>({i,label:`${String(fy).slice(2)}.${p}`,v:qActual(comp,metric,fy,p),est:false}));
   // 분석년도 잔여 분기: 컨센서스 중앙값(점도표와 동일 계산)으로 점선 연장
   ["2Q","3Q","4Q"].forEach((p,j)=>{
+    const confirmed=Object.keys(DATA.f1_quarterly.actuals_grid[`${comp}|2026|${p}`]||{}).length>0;
+    const actual=confirmed?qActual(comp,metric,2026,p):null;
     const e=DATA.f1_quarterly.est_quarters?.[comp]?.[`2026|${p}`]||{};
-    pts.push({i:5+j,label:`26.${p}E`,v:e[metric]??null,est:true,n:e[metric+"_n"]||0})});
+    pts.push({i:5+j,label:`26.${p}${actual==null?"E":""}`,v:actual??e[metric]??null,est:actual==null,n:actual==null?(e[metric+"_n"]||0):0})});
   return pts;
 }
 // 엔드 라벨 배치: 값 순서를 보존하며 최소 간격만 확보 (선-라벨 매칭 유지)
@@ -253,13 +264,13 @@ function lineChart(box,title,head,note,metric){
   // 표 뷰
   const d=el("details",{},`<summary>표로 보기</summary>`),tb=el("table");
   tb.append(el("tr",{},`<th>분기</th>${COMP.map(c=>`<th style="text-align:right">${c}</th>`).join("")}`));
-  S[0].pts.forEach((_,i)=>tb.append(el("tr",{},`<td>${S[0].pts[i].label}</td>${S.map(s=>`<td class="num">${fmt(s.pts[i].v)}</td>`).join("")}`)));
+  S[0].pts.forEach((_,i)=>tb.append(el("tr",{},`<td>${S[0].pts[i].label}</td>${S.map(s=>`<td class="num">${fmt(s.pts[i].v)}${s.pts[i].est?" (E)":""}</td>`).join("")}`)));
   d.append(tb);card.append(d);box.append(card);
 }
 // 그래프에서 도출한 Fact Finding 한줄 요약 (Head Message)
 const F1HEAD={
   매출전사:"3사 모두 '26년 하반기 매출 회복 국면 — LGES(8.46조)가 삼성SDI의 약 2배·SK온의 4.4배 규모로 외형 격차 유지",
-  영업이익전사:"'26.1Q 3사 동반 적자 저점을 지나 '26.4Q LGES·삼성SDI는 흑자 전환·확대, SK온만 적자 지속 전망",
+  영업이익전사:"LGES(1,130억원)·삼성SDI(2,038억원)·SK온(8,218억원) 모두 '26.2Q 흑자전환 — SK온은 보상금 등 일회성 영향에 유의",
   매출부문:{
     LGES:"ESS 매출이 '25.1Q 대비 7.1배 급증해 '26.4Q EV를 추월(3.28조 vs 3.20조), EV 물량 감소를 상쇄",
     삼성SDI:"'25.1Q 대비 '26.4Q EV 매출은 정체된 반면 ESS는 2.3배·소형은 1.5배 성장하며 '26년 외형 확대를 견인",
@@ -270,9 +281,9 @@ const F1HEAD={
     SK온:"부문 분해 영업이익 공시가 없어 AMPC(1,678억) 추정만 표시 — 전사 손익은 2-1 차트 참조"}};
 const headMsg=t=>`<div class="head-msg">${t}</div>`;
 function rF1(v){
-  lineChart(v,"1-1 분기별 매출액 (전사)",F1HEAD.매출전사,"LGES는 재작성 전(AMPC 제외) 매출 사용 — 3사 비교 왜곡 방지 · 26.2Q(E)부터 점선 = 컨센서스 중앙값","매출");
+  lineChart(v,"1-1 분기별 매출액 (전사)",F1HEAD.매출전사,"LGES는 재작성 전(AMPC 제외) 매출 사용 — 3사 비교 왜곡 방지 · 3사 모두 26.2Q까지 회사 IR 확정치, 26.3Q(E) 이후는 컨센서스 중앙값","매출");
   segDetailCard(v,"매출","f1sr","f1srO","1-2 분기별 매출액 (사업부문별)",F1HEAD.매출부문);
-  lineChart(v,"2-1 분기별 영업이익 (전사, AMPC 포함)",F1HEAD.영업이익전사,"LGES·삼성SDI=회사 IR 확정치 / SK온 배터리=애널리스트 인용 중앙값 · 26.2Q(E)부터 점선 = 컨센서스 중앙값(② 점도표와 동일값)","영업이익");
+  lineChart(v,"2-1 분기별 영업이익 (전사, AMPC 포함)",F1HEAD.영업이익전사,"3사 모두 26.2Q까지 회사 IR 확정치 · SK온 2Q는 보상금·AMPC 포함(개별 금액 미공시) · 26.3Q(E) 이후는 컨센서스 중앙값(② 점도표와 동일값)","영업이익");
   segDetailCard(v,"영업이익","f1so","f1soO","2-2 분기별 영업이익 (사업부문별)",F1HEAD.영업이익부문);
 
   // [참고] 증권사 추정 상세 (회사 탭) — 탭을 눌러 활성화
@@ -602,7 +613,7 @@ function rF3(v){
 const F4WHY={
  "LGES":"다수 증권사가 예상하지 못한 GM 합작공장(얼티엄셀즈) 생산 일시중단으로 EV 출하가 급감했고, 북미 ESS 램프업 초기비용과 AMPC 감소가 겹쳐 컨센서스를 하회했습니다.",
  "삼성SDI":"전력용·데이터센터향 ESS와 UPS/BBU 수요가 예상보다 강했고 미국 현지생산 ESS 판매가 늘며, 적자폭이 컨센서스 전망보다 작았습니다.",
- "SK온":"국내 EV 판매 호조로 가동률이 개선되며 파우치 부진을 상쇄, 대체로 컨센서스 수준의 적자를 기록했습니다."};
+ "SK온":"고객 보상금과 AMPC가 반영되며 기존 적자 컨센서스를 크게 상회했지만, 회사가 개별 금액을 공시하지 않아 경상 손익은 분리하지 않았습니다."};
 function rF4(v){
   const evs=DATA.f4_accuracy.events;
   const card=el("div",{class:"card"},`<h2>컨센서스 적중률 — 발표된 분기 실적 대비 검증</h2>
@@ -807,7 +818,7 @@ function renderF6Q(card){ // 2026 분기별 점도표
   for(let l=loL;l<=hiL;l++){const y=Y(l*step);
     if((l-loL)%labEvery===0)axisY(svg,L,W-16,y,l*step===0?"0":fmtA(l*step));
     else svg.append(sv("line",{x1:L,x2:W-16,y1:y,y2:y,stroke:"var(--grid)","stroke-dasharray":"1 3","stroke-opacity":.55}))}
-  const ANAQ="2Q"; // 아웃라이어 분석 대상 분기
+  const ANAQ=QS.find(q=>qact[q]==null)||QS[QS.length-1]; // 회사별 첫 미발표 분기
   svg.append(sv("rect",{x:X(ANAQ)-half-9,y:T-4,width:(half+9)*2,height:(H-B)-(T-4),fill:"var(--accent)","fill-opacity":.07,rx:6}));
   QS.forEach(q=>{
     const act=qact[q];
@@ -826,7 +837,8 @@ function renderF6Q(card){ // 2026 분기별 점도표
     const mt=sv("text",{x:last?X(q)-half-3:X(q)+half+3,y:Y(med)+4,class:"lbl","text-anchor":last?"end":"start"});mt.setAttribute("fill","var(--ink2)");mt.textContent=`중앙값 ${fmtA(med)}`;svg.append(mt);
     fomcCol(svg,col,X(q),Y,step,half,CCOL[sel.f6],null,
       d=>`<b>${d.house}</b> ${d.report_date}<br>${qfy}.${d.q} OP <b>${fmt(d.op)}원</b><br><i>${d.basis}</i>`)});
-  card.append(svg,el("p",{class:"note"},`${qfy}년 분기별 영업이익(AMPC 포함) 추정 분포, 같은 구간은 같은 높이에 배치. <b>검은 점 = 발표된 실적</b>(1Q), 회색선 = 미발표 분기(2Q~4Q)의 컨센서스 중앙값. <b>음영 = 아웃라이어 분석 대상(${qfy}.2Q)</b>.`));
+  const released=QS.filter(q=>qact[q]!=null).join("·")||"없음", pending=QS.filter(q=>qact[q]==null).join("·")||"없음";
+  card.append(svg,el("p",{class:"note"},`${qfy}년 분기별 영업이익(AMPC 포함) 추정 분포, 같은 구간은 같은 높이에 배치. <b>검은 점 = 발표된 실적</b>(${released}), 회색선 = 미발표 분기(${pending})의 컨센서스 중앙값. <b>음영 = 아웃라이어 분석 대상(${qfy}.${ANAQ})</b>.`));
 }
 
 /* ---------- F7 산업 View (v3) ---------- */
@@ -1003,3 +1015,5 @@ function rF7(v){
 }
 render();
 </script>
+</body>
+</html>

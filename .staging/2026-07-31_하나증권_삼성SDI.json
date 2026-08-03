@@ -1,0 +1,41 @@
+{
+  "report_id": "2026-07-31_하나증권_삼성SDI",
+  "date": "2026-07-31",
+  "house": "하나증권",
+  "analyst": "김현수, 홍지원",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 667000,
+  "prev_target_price": null,
+  "key_issues": ["관세 환급", "AMPC", "유럽 EV", "북미 ESS", "소형전지 흑자전환", "전자재료", "2030년 AMPC 소멸", "밸류에이션"],
+  "estimates": [
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 3769, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 203.8, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "AMPC", "value": 108, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 4000, "unit": "십억원", "page": 1, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 99.4, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 16093.4, "unit": "십억원", "page": 1, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 385.5, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2027, "period": "FY", "metric": "매출", "value": 19059.8, "unit": "십억원", "page": 1, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2027, "period": "FY", "metric": "영업이익", "value": 1483.9, "unit": "십억원", "page": 1, "ampc_basis": "incl"}
+  ],
+  "stances": [
+    {"issue": "관세", "company": "삼성SDI", "stance_score": 3, "summary": "관세 환급 일회성 이익이 2Q 흑자전환을 크게 도왔지만 환급 제외 기준 수익성도 전분기보다 개선.", "page": 1},
+    {"issue": "AMPC", "company": "삼성SDI", "stance_score": 5, "summary": "중대형 EV와 북미 ESS의 AMPC 증가가 하반기 흑자 지속을 지원할 전망.", "page": 1},
+    {"issue": "유럽EV", "company": "삼성SDI", "stance_score": 3, "summary": "미국 Stellantis JV에서 생산한 유럽향 물량 증가가 2Q 중대형 EV 매출과 수익성을 개선.", "page": 1},
+    {"issue": "ESS", "company": "삼성SDI", "stance_score": 6, "summary": "3Q 북미 ESS 라인 본격 가동으로 ESS 매출이 30% 이상 QoQ 증가할 전망.", "page": 1},
+    {"issue": "소형전지", "company": "삼성SDI", "stance_score": 5, "summary": "가동률 상승으로 3Q 소형전지가 2년 만에 흑자전환할 전망.", "page": 1},
+    {"issue": "밸류에이션", "company": "삼성SDI", "stance_score": 6, "summary": "2028년 이익과 Target P/E 24배로 목표 시가총액 54조원을 산출해 현 주가 대비 큰 상승여력을 제시.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26 매출 3.8조원과 영업이익 2,038억원으로 7개 분기 만에 흑자전환했다. Stellantis 유럽향 EV, AMPC, 관세 환급과 전자재료 믹스가 실적을 개선했다. 3Q에는 일회성 이익이 사라져 영업이익이 994억원으로 감소하지만 북미 ESS와 소형전지 가동률 상승으로 기초 수익성은 더 개선될 전망이다.",
+    "valuation": "2028년 예상 지배주주순이익과 Target P/E 24배를 적용해 목표 시가총액 54조원, 목표주가 667,000원을 제시했다. 이전 목표가 숫자는 본문에 명시되지 않아 prev_target_price는 비워 두었다. AMPC의 2030년 이후 소멸을 고려해 시간 경과에 따라 Target P/E를 낮춰야 한다고 지적했다.",
+    "segment_pl": "2Q 중대형 EV는 Stellantis 유럽향 물량과 AMPC 증가로 매출 및 마진이 개선됐고 AMPC 제외 영업이익률은 -8.2%였다. ESS는 국내 물량 이연으로 매출이 8% QoQ 감소했지만 관세 환급으로 수익성이 크게 개선됐다. 전자재료 영업이익률은 OLED 믹스 개선으로 17.8%를 기록했다.",
+    "issue_comments": "3Q 북미 ESS 매출은 30% 이상 QoQ 증가하고 소형전지는 2년 만의 흑자전환을 예상한다. 관세 환급을 제외한 전사 영업이익률도 2Q 대비 개선될 것으로 본다. 다만 장기적으로 AMPC 소멸을 반영한 멀티플 조정이 필요하다.",
+    "risks": "2Q 관세 환급 효과가 제거되면서 3Q 총영업이익은 감소한다. 북미 ESS 램프업과 소형전지 가동률 회복이 예상보다 느리거나 유럽 EV 물량이 감소할 수 있다. 2030년 이후 AMPC 소멸은 장기 이익과 밸류에이션의 구조적 위험이다.",
+    "quotes": "\"Strong Buy, 하반기에도 흑자 지속 전망\" (p.1)"
+  }
+}
