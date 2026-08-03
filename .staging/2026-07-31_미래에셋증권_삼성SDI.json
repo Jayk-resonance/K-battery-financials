@@ -1,0 +1,36 @@
+{
+  "report_id": "2026-07-31_미래에셋증권_삼성SDI",
+  "date": "2026-07-31",
+  "house": "미래에셋증권",
+  "analyst": "김철중",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 1000000,
+  "prev_target_price": 1000000,
+  "key_issues": ["연간 이익 상향", "각형 폼팩터", "자금력", "AMPC 제외 흑자", "밸류에이션"],
+  "estimates": [
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 3769, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 204, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 3998, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 192, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 15834, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 680, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "AMPC", "value": 575, "unit": "십억원", "page": 2, "ampc_basis": "na"}
+  ],
+  "stances": [
+    {"issue": "AMPC", "company": "삼성SDI", "stance_score": 8, "summary": "3분기부터 AMPC를 제외해도 영업 흑자 구간에 진입할 것으로 판단한다.", "page": 1},
+    {"issue": "밸류에이션", "company": "삼성SDI", "stance_score": 9, "summary": "주가 하락으로 과거 사이클과 글로벌 경쟁사 대비 의미 있는 비중확대 구간에 들어왔다고 본다.", "page": 1},
+    {"issue": "소형전지", "company": "삼성SDI", "stance_score": 7, "summary": "BBU와 전동공구 수요로 소형전지 이익 추정치를 상향했다.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2026년 영업이익 전망을 2,500억원에서 6,800억원으로 높였다. 2Q26 실적은 관세 환급을 제외해도 기초 이익 체력이 회복된 것으로 평가했다.",
+    "valuation": "매수와 목표주가 1,000,000원을 유지했다. 자금력, 각형 폼팩터, 밸류에이션 우위가 바뀌지 않았다는 판단이다.",
+    "segment_pl": "소형전지 적자 축소와 EV·ESS 수익성 개선을 반영해 배터리 부문 추정치를 상향했다. 3분기부터 AMPC 제외 영업 흑자를 전망했다.",
+    "issue_comments": "삼성디스플레이 지분 매각으로 자금력을 확보하고 각형 배터리의 글로벌 선도 지위를 유지할 것으로 본다.",
+    "risks": "EV·ESS 수요 회복 지연과 보유 자산 매각 지연이 추정치 개선을 늦출 수 있다.",
+    "quotes": "\"바뀐 것이 하나도 없음\" (p.1)"
+  }
+}

@@ -1205,13 +1205,121 @@
   "report_type": "기업",
   "pages": 4
  },
- {
-  "report_id": "2026-07-31_하나증권_삼성SDI",
-  "file": "하나증권_삼성SDI_Strong Buy, 하반기에도 흑자 지속 전망_20260731.pdf",
-  "house": "하나증권",
-  "date": "2026-07-31",
-  "coverage": "삼성SDI",
-  "report_type": "기업",
-  "pages": 4
- }
+  {
+    "report_id": "2026-07-31_하나증권_삼성SDI",
+    "file": "하나증권_삼성SDI_Strong Buy, 하반기에도 흑자 지속 전망_20260731.pdf",
+    "house": "하나증권",
+    "date": "2026-07-31",
+    "coverage": "삼성SDI",
+    "report_type": "기업",
+    "pages": 4
+  },
+  {
+    "report_id": "2026-07-31_DB증권_삼성SDI",
+    "file": "DB증권_삼성SDI_하반기 흑자 지속, ESS 증설 가능성_20260731.pdf",
+    "house": "DB증권",
+    "date": "2026-07-31",
+    "coverage": "삼성SDI",
+    "report_type": "기업",
+    "pages": 4
+  },
+  {
+    "report_id": "2026-07-31_IBK투자증권_LGES",
+    "file": "IBK투자증권_LG에너지솔루션_90 - 20 = 70_20260731.pdf",
+    "house": "IBK투자증권",
+    "date": "2026-07-31",
+    "coverage": "LGES",
+    "report_type": "기업",
+    "pages": 6
+  },
+  {
+    "report_id": "2026-07-31_IBK투자증권_삼성SDI",
+    "file": "IBK투자증권_삼성SDI_ESS가 좋은 날_20260731.pdf",
+    "house": "IBK투자증권",
+    "date": "2026-07-31",
+    "coverage": "삼성SDI",
+    "report_type": "기업",
+    "pages": 5
+  },
+  {
+    "report_id": "2026-07-31_LS증권_삼성SDI",
+    "file": "LS증권_삼성SDI_2Q26 Review_20260731.pdf",
+    "house": "LS증권",
+    "date": "2026-07-31",
+    "coverage": "삼성SDI",
+    "report_type": "기업",
+    "pages": 9
+  },
+  {
+    "report_id": "2026-07-31_NH투자증권_LGES",
+    "file": "NH투자증권_LG에너지솔루션_명확한 회복세_20260731.pdf",
+    "house": "NH투자증권",
+    "date": "2026-07-31",
+    "coverage": "LGES",
+    "report_type": "기업",
+    "pages": 10
+  },
+  {
+    "report_id": "2026-07-31_NH투자증권_삼성SDI",
+    "file": "NH투자증권_삼성SDI_7분기만에 흑자전환 성공_20260731.pdf",
+    "house": "NH투자증권",
+    "date": "2026-07-31",
+    "coverage": "삼성SDI",
+    "report_type": "기업",
+    "pages": 9
+  },
+  {
+    "report_id": "2026-07-31_다올투자증권_LGES",
+    "file": "다올투자증권_LG에너지솔루션_2Q26 review 출발 준비_20260731.pdf",
+    "house": "다올투자증권",
+    "date": "2026-07-31",
+    "coverage": "LGES",
+    "report_type": "기업",
+    "pages": 7
+  },
+  {
+    "report_id": "2026-07-31_대신증권_삼성SDI",
+    "file": "대신증권_삼성SDI_예상보다 빨라진 흑전_20260731.pdf",
+    "house": "대신증권",
+    "date": "2026-07-31",
+    "coverage": "삼성SDI",
+    "report_type": "기업",
+    "pages": 5
+  },
+  {
+    "report_id": "2026-07-31_미래에셋증권_삼성SDI",
+    "file": "미래에셋증권_삼성SDI_바뀐 것이 하나도 없음_20260731.pdf",
+    "house": "미래에셋증권",
+    "date": "2026-07-31",
+    "coverage": "삼성SDI",
+    "report_type": "기업",
+    "pages": 5
+  },
+  {
+    "report_id": "2026-07-31_신영증권_삼성SDI",
+    "file": "신영증권_삼성SDI_더 큰 서프라이즈_20260731.pdf",
+    "house": "신영증권",
+    "date": "2026-07-31",
+    "coverage": "삼성SDI",
+    "report_type": "기업",
+    "pages": 6
+  },
+  {
+    "report_id": "2026-07-31_유진투자증권_LGES",
+    "file": "유진투자증권_LG에너지솔루션_ESS가 이끄는 외형 성장_20260731.pdf",
+    "house": "유진투자증권",
+    "date": "2026-07-31",
+    "coverage": "LGES",
+    "report_type": "기업",
+    "pages": 12
+  },
+  {
+    "report_id": "2026-07-31_키움증권_LGES",
+    "file": "키움증권_LG에너지솔루션_중장기 성장성 확인, 다만 단기 ESS 수익성 우려_20260731.pdf",
+    "house": "키움증권",
+    "date": "2026-07-31",
+    "coverage": "LGES",
+    "report_type": "기업",
+    "pages": 8
+  }
 ]

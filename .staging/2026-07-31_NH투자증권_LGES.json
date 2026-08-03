@@ -1,0 +1,35 @@
+{
+  "report_id": "2026-07-31_NH투자증권_LGES",
+  "date": "2026-07-31",
+  "house": "NH투자증권",
+  "analyst": "주민우",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 480000,
+  "prev_target_price": 480000,
+  "key_issues": ["테슬라 유럽·아시아 판매", "유럽 공장 흑자전환", "북미 ESS", "얼티엄 1공장 재가동", "OEM 보상금"],
+  "estimates": [
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 113, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 9026, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 276.7, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 33064, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 1111, "unit": "십억원", "page": 1, "ampc_basis": "incl"}
+  ],
+  "stances": [
+    {"issue": "ESS", "company": "LG에너지솔루션", "stance_score": 9, "summary": "미국 ESS 설치 증가와 3분기 매출 42% 성장을 뚜렷한 회복 동력으로 본다.", "page": 1},
+    {"issue": "유럽EV", "company": "LG에너지솔루션", "stance_score": 7, "summary": "테슬라 유럽·아시아 판매와 유럽 공장 가동률 회복이 흑자전환을 이끌 것으로 본다.", "page": 1},
+    {"issue": "OEM보상금", "company": "LG에너지솔루션", "stance_score": 4, "summary": "1분기에 이어 2분기 약 3,000억원, 3분기 약 1,000억원대 보상금 반영을 추정한다.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "테슬라 유럽·아시아 판매 강세, 유럽 공장 가동률 상승, 미국 ESS 본격 출하와 얼티엄 1공장 재가동을 근거로 명확한 회복세를 제시했다.",
+    "valuation": "투자의견 Buy와 목표주가 480,000원을 유지했다. 추정치 하향 없이 주가가 과도하게 조정돼 밸류에이션 부담이 해소됐다고 평가했다.",
+    "segment_pl": "3Q26 자동차 매출은 전분기 대비 16%, ESS 42%, 소형 3% 증가를 예상했다. AMPC 제외 마진은 자동차 -4%, ESS 9%, 소형 5%로 추정했다.",
+    "issue_comments": "유럽 EV 수요와 북미 ESS의 동시 회복, 얼티엄 1공장 재가동을 핵심 실적 동력으로 본다.",
+    "risks": "전기차 수요 둔화, 배터리 리콜 비용, 고객사의 가격 인하 요구가 하방 위험이다.",
+    "quotes": "\"명확한 회복세. 저점 매수 나서야\" (p.1)"
+  }
+}

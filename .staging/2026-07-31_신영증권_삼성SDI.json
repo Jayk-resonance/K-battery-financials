@@ -1,0 +1,36 @@
+{
+  "report_id": "2026-07-31_신영증권_삼성SDI",
+  "date": "2026-07-31",
+  "house": "신영증권",
+  "analyst": "박진수",
+  "coverage": "삼성SDI",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 700000,
+  "prev_target_price": 830000,
+  "key_issues": ["관세 환급", "ESS 고수익 제품", "소형전지 믹스", "스타플러스 LFP", "유럽 EV"],
+  "estimates": [
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 3769, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 204, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 4021, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 125, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 15725, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 424, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "AMPC", "value": 532, "unit": "십억원", "page": 2, "ampc_basis": "na"}
+  ],
+  "stances": [
+    {"issue": "ESS", "company": "삼성SDI", "stance_score": 9, "summary": "미국 NCA ESS와 4분기 LFP 라인 가동이 하반기 이익 체력을 높일 것으로 본다.", "page": 1},
+    {"issue": "소형전지", "company": "삼성SDI", "stance_score": 7, "summary": "BBU·탭리스 파워툴 믹스 개선으로 적자폭이 줄었다고 평가한다.", "page": 1},
+    {"issue": "유럽EV", "company": "삼성SDI", "stance_score": 4, "summary": "유럽 현대·기아 판매 회복은 긍정적이나 BMW·VW 회복은 지연되는 것으로 본다.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26 매출 3.77조원, 영업이익 2,038억원으로 7개 분기 만에 흑자전환했다. AMPC와 관세 환급, 소형전지 적자 축소가 기대를 크게 웃돌게 했다.",
+    "valuation": "매수는 유지했지만 동종사 밸류에이션 하락을 반영해 목표주가를 830,000원에서 700,000원으로 낮췄다.",
+    "segment_pl": "ESS는 UPS 판매와 관세 환급으로 수익성이 크게 개선됐고, 소형전지는 고부가 제품 믹스로 적자폭이 줄었다. EV는 주요 고객 회복이 엇갈렸다.",
+    "issue_comments": "3분기 미국 NCA ESS 생산 증가와 4분기 22GWh 규모 LFP 라인 신규 가동을 이익 개선의 핵심으로 제시했다.",
+    "risks": "일회성 효과 소멸, 유럽 EV 고객 회복 지연, 신규 ESS 라인 램프업 지연이 위험 요인이다.",
+    "quotes": "\"더 큰 서프라이즈\" (p.1)"
+  }
+}
