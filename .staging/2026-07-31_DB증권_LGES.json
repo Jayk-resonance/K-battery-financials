@@ -1,0 +1,38 @@
+{
+  "report_id": "2026-07-31_DB증권_LGES",
+  "date": "2026-07-31",
+  "house": "DB증권",
+  "analyst": "안회수",
+  "coverage": "LGES",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 570000,
+  "prev_target_price": 570000,
+  "key_issues": ["하반기 수주 모멘텀", "북미 ESS", "얼티엄 재가동", "소형전지 성장", "OEM 보상금"],
+  "estimates": [
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 113, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "AMPC", "value": 241, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 8942, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 324, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "AMPC", "value": 407, "unit": "십억원", "page": 2, "ampc_basis": "na"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 33059, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 597, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "AMPC", "value": 1288, "unit": "십억원", "page": 2, "ampc_basis": "na"}
+  ],
+  "stances": [
+    {"issue": "ESS", "company": "LG에너지솔루션", "stance_score": 9, "summary": "북미 ESS 출하 확대와 신규 수주가 하반기 실적 및 기업가치 회복을 이끌 것으로 본다.", "page": 1},
+    {"issue": "북미EV", "company": "LG에너지솔루션", "stance_score": 7, "summary": "얼티엄 공장 재가동과 고객 물량 회복으로 3분기부터 EV 매출 개선을 전망한다.", "page": 1},
+    {"issue": "소형전지", "company": "LG에너지솔루션", "stance_score": 8, "summary": "원통형 전지의 두 자릿수 성장이 실적 방어와 성장 모멘텀을 보강할 것으로 판단한다.", "page": 1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q26은 EV·ESS 부진에도 소형전지 성장으로 버텼고, 3분기부터 얼티엄 재가동과 ESS 출하 확대로 회복을 전망했다.",
+    "valuation": "매수와 목표주가 570,000원을 유지했다. 하반기 수주 모멘텀을 바탕으로 섹터 대장 지위를 재확인할 것으로 평가했다.",
+    "segment_pl": "3Q26 매출 8.9조원, 영업이익 3,240억원을 전망하며 EV 회복과 ESS 약 40% 성장을 주요 동력으로 제시했다.",
+    "issue_comments": "미국 ESS 생산능력 확대와 시스템통합 진출, 소형전지 성장, 얼티엄 재가동을 중장기 경쟁력 강화 요인으로 봤다.",
+    "risks": "EV 수요 회복 지연, ESS 램프업 차질, 고객사 보상금 인식 변동이 위험 요인이다.",
+    "quotes": "\"하반기 수주 모멘텀 집중으로 섹터 대장 확인\" (p.1)"
+  }
+}

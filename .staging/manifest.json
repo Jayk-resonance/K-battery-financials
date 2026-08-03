@@ -1321,5 +1321,50 @@
     "coverage": "LGES",
     "report_type": "기업",
     "pages": 8
+  },
+  {
+    "report_id": "2026-07-31_DB증권_LGES",
+    "file": "DB증권_LG에너지솔루션_하반기 수주 모멘텀 집중으로 섹터 대장 확인_20260731.pdf",
+    "house": "DB증권",
+    "date": "2026-07-31",
+    "coverage": "LGES",
+    "report_type": "기업",
+    "pages": 3
+  },
+  {
+    "report_id": "2026-07-31_DS투자증권_LGES",
+    "file": "DS투자증권_LG에너지솔루션_지연된 물량, 채워지는 수주_20260731.pdf",
+    "house": "DS투자증권",
+    "date": "2026-07-31",
+    "coverage": "LGES",
+    "report_type": "기업",
+    "pages": 4
+  },
+  {
+    "report_id": "2026-07-31_메리츠증권_LGES",
+    "file": "메리츠증권_LG에너지솔루션_경쟁력 확보 준비 과정_20260731.pdf",
+    "house": "메리츠증권",
+    "date": "2026-07-31",
+    "coverage": "LGES",
+    "report_type": "기업",
+    "pages": 6
+  },
+  {
+    "report_id": "2026-07-31_미래에셋증권_LGES",
+    "file": "미래에셋증권_LG에너지솔루션_EV도 회복 국면 진입_20260731.pdf",
+    "house": "미래에셋증권",
+    "date": "2026-07-31",
+    "coverage": "LGES",
+    "report_type": "기업",
+    "pages": 5
+  },
+  {
+    "report_id": "2026-07-31_신영증권_LGES",
+    "file": "신영증권_LG에너지솔루션_단기 눈높이는 낮춰도 방향성은 불변_20260731.pdf",
+    "house": "신영증권",
+    "date": "2026-07-31",
+    "coverage": "LGES",
+    "report_type": "기업",
+    "pages": 5
   }
 ]
