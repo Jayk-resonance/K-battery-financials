@@ -1,0 +1,38 @@
+{
+  "report_id": "2026-07-31_유진투자증권_SK온",
+  "date": "2026-07-31",
+  "house": "유진투자증권",
+  "analyst": "황성현",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 171000,
+  "prev_target_price": 160000,
+  "key_issues": ["OEM보상금", "AMPC", "북미CAPEX", "ESS"],
+  "estimates": [
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"3Q","metric":"매출","value":2613,"unit":"십억원","ampc_basis":"incl_unknown","page":5},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"4Q","metric":"매출","value":3579,"unit":"십억원","ampc_basis":"incl_unknown","page":5},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"FY","metric":"매출","value":11008,"unit":"십억원","ampc_basis":"incl_unknown","page":5},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2027,"period":"FY","metric":"매출","value":12818,"unit":"십억원","ampc_basis":"incl_unknown","page":5},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"3Q","metric":"영업이익","value":-245,"unit":"십억원","ampc_basis":"incl_unknown","page":5},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"4Q","metric":"영업이익","value":-166,"unit":"십억원","ampc_basis":"incl_unknown","page":5},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"FY","metric":"영업이익","value":61,"unit":"십억원","ampc_basis":"incl_unknown","page":5},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2027,"period":"FY","metric":"영업이익","value":-448,"unit":"십억원","ampc_basis":"incl_unknown","page":5}
+  ],
+  "stances": [
+    {"issue":"OEM보상금","company":"SK온","stance_score":1,"summary":"2Q 보상금이 8,218억원 흑자의 핵심이므로 3Q에는 기저 소멸로 다시 적자를 예상한다.","page":1},
+    {"issue":"AMPC","company":"SK온","stance_score":3,"summary":"AMPC가 2Q 흑자에 기여하고 향후에도 손익 완충 요인으로 작용할 것으로 본다.","page":1},
+    {"issue":"북미CAPEX","company":"SK온","stance_score":4,"summary":"합작법인 재편 이후 고정비 감소가 하반기 경상 적자 폭을 줄일 것으로 평가한다.","page":1},
+    {"issue":"ESS","company":"SK온","stance_score":3,"summary":"북미 설비 운영 효율화와 ESS 대응이 가동률 회복의 보조 동력으로 작용할 수 있다고 본다.","page":1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q SK온 영업이익은 8,218억원으로 판매 증가, 고객 보상, AMPC가 반영됐다. 3Q에는 보상금 기저가 사라져 다시 적자를 예상하지만 합작법인 재편에 따른 고정비 감소로 손실 규모는 완화될 것으로 봤다.",
+    "valuation": "투자의견 매수를 유지하고 목표주가를 160,000원에서 171,000원으로 상향했다.",
+    "segment_pl": "SK온 매출은 3Q26 2,613십억원, 4Q26 3,579십억원을 전망한다. 영업이익은 각각 -245십억원, -166십억원이며 FY2026은 61십억원이다.",
+    "issue_comments": "2Q 흑자를 경상 이익으로 보지 않으며, 3Q 이후에는 고정비 절감과 판매 회복이 실제 적자 축소로 이어지는지가 핵심이다.",
+    "risks": "일회성 소멸 후 판매 회복이 예상보다 느리거나 북미 가동률이 낮게 유지되면 분기 손실이 확대될 수 있다.",
+    "quotes": "\"3분기는 일회성 기저 소멸로 적자전환을 예상한다.\" (p.1)"
+  }
+}

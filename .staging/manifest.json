@@ -1366,5 +1366,104 @@
     "coverage": "LGES",
     "report_type": "기업",
     "pages": 5
+  },
+  {
+    "report_id": "2026-07-31_BNK투자증권_SK온",
+    "file": "BNK투자증권_SK이노베이션_2026년 연간OP 약 10조원 예상_20260731.pdf",
+    "house": "BNK투자증권",
+    "date": "2026-07-31",
+    "coverage": "SK온",
+    "report_type": "기업",
+    "pages": 6
+  },
+  {
+    "report_id": "2026-07-31_DB증권_SK온",
+    "file": "DB증권_SK이노베이션_실적 추가 상향 대비_20260731.pdf",
+    "house": "DB증권",
+    "date": "2026-07-31",
+    "coverage": "SK온",
+    "report_type": "기업",
+    "pages": 3
+  },
+  {
+    "report_id": "2026-07-31_IBK투자증권_SK온",
+    "file": "IBK투자증권_SK이노베이션_윤활기유가 이끈 어닝 서프라이즈_20260731.pdf",
+    "house": "IBK투자증권",
+    "date": "2026-07-31",
+    "coverage": "SK온",
+    "report_type": "기업",
+    "pages": 4
+  },
+  {
+    "report_id": "2026-07-31_iM증권_SK온",
+    "file": "iM증권_SK이노베이션_두 번의 전쟁으로 완전히 꼬여 버린 에너지 수급_20260731.pdf",
+    "house": "iM증권",
+    "date": "2026-07-31",
+    "coverage": "SK온",
+    "report_type": "기업",
+    "pages": 8
+  },
+  {
+    "report_id": "2026-07-30_KB증권_SK온",
+    "file": "KB증권_SK이노베이션_정유. 사. 3Q도 증익 가능성. 배터리 재평가도 필요하다_20260731.pdf",
+    "house": "KB증권",
+    "date": "2026-07-30",
+    "coverage": "SK온",
+    "report_type": "기업",
+    "pages": 10
+  },
+  {
+    "report_id": "2026-07-31_LS증권_SK온",
+    "file": "LS증권_SK이노베이션_2Q26 Review_20260731.pdf",
+    "house": "LS증권",
+    "date": "2026-07-31",
+    "coverage": "SK온",
+    "report_type": "기업",
+    "pages": 7
+  },
+  {
+    "report_id": "2026-07-31_메리츠증권_SK온",
+    "file": "메리츠증권_SK이노베이션_투자의견 Buy 상향_20260731.pdf",
+    "house": "메리츠증권",
+    "date": "2026-07-31",
+    "coverage": "SK온",
+    "report_type": "기업",
+    "pages": 8
+  },
+  {
+    "report_id": "2026-07-31_신영증권_SK온",
+    "file": "신영증권_SK이노베이션_모두 다 좋아지고 있다_20260731.pdf",
+    "house": "신영증권",
+    "date": "2026-07-31",
+    "coverage": "SK온",
+    "report_type": "기업",
+    "pages": 5
+  },
+  {
+    "report_id": "2026-07-31_신한투자증권_SK온",
+    "file": "신한투자증권_SK이노베이션_높아진 이익 체력_20260731.pdf",
+    "house": "신한투자증권",
+    "date": "2026-07-31",
+    "coverage": "SK온",
+    "report_type": "기업",
+    "pages": 7
+  },
+  {
+    "report_id": "2026-07-31_유진투자증권_SK온",
+    "file": "유진투자증권_SK이노베이션_전쟁 수혜 + 배터리 보상금 반영_20260731.pdf",
+    "house": "유진투자증권",
+    "date": "2026-07-31",
+    "coverage": "SK온",
+    "report_type": "기업",
+    "pages": 7
+  },
+  {
+    "report_id": "2026-07-31_하나증권_SK온",
+    "file": "하나증권_SK이노베이션_컨센 124% 상회. 연간 추정치 상향_20260731.pdf",
+    "house": "하나증권",
+    "date": "2026-07-31",
+    "coverage": "SK온",
+    "report_type": "기업",
+    "pages": 5
   }
 ]

@@ -8,6 +8,8 @@ document_id,company,fy,period,topic,horizon,direction,value,value_max,unit,summa
 2026_2Q_LGES,LGES,2026,2Q,연간 전사 매출 성장률,2026 FY,유지,20,,% 이상 YoY,ESS와 원통형의 하반기 물량 성장을 근거로 연초 제시한 20% 이상 성장 가이던스를 충분히 달성 가능하다고 재확인.,26_2Q_Script.pdf,7,verified
 2026_2Q_LGES,LGES,2026,2Q,ESS AMPC 제외 수익성,2026 4Q,흑자전환,,,,북미 5개 신규 Site의 생산 안정화와 물량 효과가 극대화되는 4분기를 기점으로 IRA 생산 보조금 효과를 제외하고도 ESS 수익성 확보를 목표.,26_2Q_Script.pdf,7,verified
 2026_2Q_LGES,LGES,2026,2Q,북미 ESS 생산능력,2026 연말,확대,50,,GWh 이상,GM JV 2기와 혼다 JV의 ESS 라인 가동을 포함해 연말까지 북미 생산 Capa 50GWh 이상 확보 계획.,26_2Q_Script.pdf,3,verified
+2026_2Q_SK온,SK온,2026,2Q,배터리 수익성,2026 3Q,개선,,,,JV 종결에 따른 고정비 절감 효과와 지속적인 원가 절감 노력으로 3분기 배터리 수익성을 계속 개선할 계획.,SK Innovation_Earnings Release_2Q26 (Korean).pdf,7,verified
+2026_2Q_SK온,SK온,2026,2Q,북미 EV·ESS 대응,중장기,확대,,,,SK온 테네시 단독 법인의 독자적 의사결정을 바탕으로 북미 EV와 ESS 배터리 수요에 적극 대응할 계획.,SK Innovation_Earnings Release_2Q26 (Korean).pdf,4,verified
 2026_2Q_삼성SDI,삼성SDI,2026,2Q,ESS 사업,2026 하반기,확대,,,,"미국 현지 각형 LFP 적기 양산과 UPS Capa 확대, 국내 중앙계약시장 사업 확대를 추진하고 소듐이온 배터리 개발과 양산을 준비.",2026.2Q_IR_Final_Kr.pdf,6,verified
 2026_2Q_삼성SDI,삼성SDI,2026,2Q,EV 사업,2026 하반기,확대,,,,"유럽 Volume 모델향 판매 확대와 현지 각형 기반 다수 프로젝트 수주를 추진하고, 주요 고객 협력과 미래 수주로 시장 회복에 대비.",2026.2Q_IR_Final_Kr.pdf,6,verified
 2026_2Q_삼성SDI,삼성SDI,2026,2Q,소형전지,2026 하반기,확대,,,,고출력 원형 Capa를 확대해 전동공구·BBU 수요에 대응하고 휴머노이드·우주항공·HEV 등 신규 시장 진입을 추진.,2026.2Q_IR_Final_Kr.pdf,6,verified

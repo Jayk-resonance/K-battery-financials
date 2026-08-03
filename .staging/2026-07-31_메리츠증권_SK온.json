@@ -1,0 +1,38 @@
+{
+  "report_id": "2026-07-31_메리츠증권_SK온",
+  "date": "2026-07-31",
+  "house": "메리츠증권",
+  "analyst": "노우호",
+  "coverage": "SK온",
+  "report_type": "기업",
+  "opinion": "매수",
+  "target_price": 180000,
+  "prev_target_price": 125000,
+  "key_issues": ["OEM보상금", "AMPC", "밸류에이션", "북미CAPEX"],
+  "estimates": [
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"3Q","metric":"매출","value":1729.3,"unit":"십억원","ampc_basis":"incl_unknown","page":3},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"4Q","metric":"매출","value":1699.4,"unit":"십억원","ampc_basis":"incl_unknown","page":3},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"FY","metric":"매출","value":8165.9,"unit":"십억원","ampc_basis":"incl_unknown","page":3},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2027,"period":"FY","metric":"매출","value":7500.6,"unit":"십억원","ampc_basis":"incl_unknown","page":3},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"3Q","metric":"영업이익","value":-155.7,"unit":"십억원","ampc_basis":"incl_unknown","page":3},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"4Q","metric":"영업이익","value":-128.0,"unit":"십억원","ampc_basis":"incl_unknown","page":3},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2026,"period":"FY","metric":"영업이익","value":188.9,"unit":"십억원","ampc_basis":"incl_unknown","page":3},
+    {"company":"SK온","segment":"배터리","segment_std":"배터리합계","fy":2027,"period":"FY","metric":"영업이익","value":-723.8,"unit":"십억원","ampc_basis":"incl_unknown","page":3}
+  ],
+  "stances": [
+    {"issue":"OEM보상금","company":"SK온","stance_score":1,"summary":"2Q 흑자에 고객 보상 등 일회성 요인이 포함됐지만 하반기 손실 축소와 재무 부담 완화의 계기로 본다.","page":1},
+    {"issue":"AMPC","company":"SK온","stance_score":2,"summary":"AMPC가 2Q 배터리 손익 개선에 기여했으나 개별 금액은 제시하지 않았다.","page":1},
+    {"issue":"밸류에이션","company":"SK이노베이션","stance_score":6,"summary":"비배터리 사업의 현금흐름 회복과 2026년 배터리 손실 하방 제한을 근거로 4년 만에 매수로 상향했다.","page":1},
+    {"issue":"북미CAPEX","company":"SK온","stance_score":3,"summary":"북미 사업 구조조정과 고정비 감소가 배터리의 현금 소진 속도를 낮출 것으로 본다.","page":1}
+  ],
+  "industry_views": [],
+  "top_picks": [],
+  "body": {
+    "summary": "2Q에는 재고 관련 이익, AMPC, 고객 보상 등 일회성 효과가 반영됐다. 2026년 배터리 손실의 추가 악화 가능성은 제한적이며 비배터리 사업의 현금흐름 회복을 긍정적으로 평가했다.",
+    "valuation": "투자의견을 중립에서 매수로 상향하고 목표주가를 125,000원에서 180,000원으로 높였다.",
+    "segment_pl": "SK온 매출은 3Q26 1,729.3십억원, 4Q26 1,699.4십억원을 전망한다. 영업이익은 각각 -155.7십억원, -128.0십억원이며 FY2026은 188.9십억원이다.",
+    "issue_comments": "일회성 효과가 사라지는 하반기에는 다시 적자를 예상하지만, 구조조정과 비배터리 현금창출로 그룹 차원의 재무 부담은 완화될 것으로 봤다.",
+    "risks": "전기차 수요 부진이 장기화되거나 구조조정 효과가 예상보다 작으면 2027년 큰 폭의 배터리 적자가 이어질 수 있다.",
+    "quotes": "\"4년 만에 투자의견을 매수로 상향한다.\" (p.1)"
+  }
+}

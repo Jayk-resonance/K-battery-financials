@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "document_id": "2026_2Q_SK온",
+  "document_type": "earnings_call",
+  "company": "SK온",
+  "fy": 2026,
+  "period": "2Q",
+  "announcement_date": "2026-07-30",
+  "sources": [
+    {
+      "kind": "ir_deck",
+      "file": "SK Innovation_Earnings Release_2Q26 (Korean).pdf"
+    }
+  ],
+  "actuals": [
+    {
+      "segment": "배터리사업",
+      "segment_std": "배터리합계",
+      "metric": "매출",
+      "value": 2946.0,
+      "unit": "십억원",
+      "ampc_basis": "incl_unknown",
+      "source_file": "SK Innovation_Earnings Release_2Q26 (Korean).pdf",
+      "page": 6,
+      "note": "SK온 회사별 실적. 고객 보상금과 AMPC의 개별 매출 반영액은 별도 공시되지 않음"
+    },
+    {
+      "segment": "배터리사업",
+      "segment_std": "배터리합계",
+      "metric": "영업이익",
+      "value": 821.8,
+      "unit": "십억원",
+      "ampc_basis": "incl_unknown",
+      "source_file": "SK Innovation_Earnings Release_2Q26 (Korean).pdf",
+      "page": 6,
+      "note": "아시아 판매 확대, 고객 보상금 및 전분기 대비 증가한 AMPC 포함. 개별 금액 미공시"
+    }
+  ],
+  "drivers": [
+    {
+      "segment_std": "배터리합계",
+      "summary": "아시아 지역 판매량 확대, 고객 보상금과 전분기 대비 증가한 AMPC가 반영되며 매출과 영업이익이 대폭 개선됐다.",
+      "source_file": "SK Innovation_Earnings Release_2Q26 (Korean).pdf",
+      "page": 7
+    },
+    {
+      "segment_std": "배터리합계",
+      "summary": "BOSK 합작법인 종료 후 테네시 공장이 SK온 단독 법인으로 출범해 연간 고정비와 재무 부담을 낮추고 현지 EV·ESS 수요에 독자적으로 대응할 기반을 마련했다.",
+      "source_file": "SK Innovation_Earnings Release_2Q26 (Korean).pdf",
+      "page": 4
+    }
+  ],
+  "guidance": [
+    {
+      "topic": "배터리 수익성",
+      "horizon": "2026 3Q",
+      "direction": "개선",
+      "value": null,
+      "value_max": null,
+      "unit": null,
+      "summary": "JV 종결에 따른 고정비 절감 효과와 지속적인 원가 절감 노력으로 3분기 배터리 수익성을 계속 개선할 계획.",
+      "source_file": "SK Innovation_Earnings Release_2Q26 (Korean).pdf",
+      "page": 7
+    },
+    {
+      "topic": "북미 EV·ESS 대응",
+      "horizon": "중장기",
+      "direction": "확대",
+      "value": null,
+      "value_max": null,
+      "unit": null,
+      "summary": "SK온 테네시 단독 법인의 독자적 의사결정을 바탕으로 북미 EV와 ESS 배터리 수요에 적극 대응할 계획.",
+      "source_file": "SK Innovation_Earnings Release_2Q26 (Korean).pdf",
+      "page": 4
+    }
+  ],
+  "qa": [],
+  "body": {
+    "summary": "SK온은 2Q26 매출 2,946십억원, 영업이익 821.8십억원을 기록해 7개 분기 만에 흑자 전환했다. 아시아 판매량 확대와 고객 보상금, AMPC 증가가 실적 개선을 이끌었다.",
+    "actuals": "매출은 1Q26 1,870.1십억원에서 2Q26 2,946.0십억원으로 1,075.9십억원 증가했다. 영업이익은 -349.2십억원에서 821.8십억원으로 1,171.0십억원 개선됐다.",
+    "drivers": "아시아 판매량 확대와 고객 보상금, AMPC 증가가 핵심 개선 요인이다. BOSK 합작법인 종료와 테네시 단독 법인 출범은 향후 고정비와 의사결정 구조를 개선하는 기반이다.",
+    "ampc_oneoffs": "회사 자료는 고객 보상금과 AMPC가 포함됐다고만 설명하며 개별 금액을 공시하지 않았다. 따라서 AMPC 제외 영업이익이나 보상금 제외 경상 손익은 계산하지 않는다. 각 증권사의 추정치는 회사 확정치와 분리한다.",
+    "guidance": "3분기에는 JV 종료에 따른 고정비 절감과 원가 절감 노력으로 배터리 수익성을 계속 개선할 계획이다.",
+    "capex_capacity_orders": "BOSK 합작법인 종료 후 테네시 공장이 SK온 단독 법인으로 출범했다. 회사는 해당 거점을 통해 현지 EV 및 ESS 수요에 탄력적으로 대응할 계획이다.",
+    "qa": "별도 컨퍼런스콜 스크립트가 제공되지 않아 Q&A는 수록하지 않았다.",
+    "risks": "2분기 흑자의 상당 부분에 고객 보상금과 AMPC가 포함됐지만 개별 금액이 공시되지 않았다. 일회성 효과 소멸 후 경상 수익성은 후속 분기에서 확인해야 한다.",
+    "quotes": "\"아시아 지역 판매량 확대, 고객 보상금, 전분기 대비 증가한 AMPC 등으로 매출 및 영업이익 대폭 개선\" (실적발표 자료 p.7)\n\"JV 종결에 따른 고정비 절감 효과 및 지속적 원가 절감 노력으로 배터리 수익성 지속 개선\" (실적발표 자료 p.7)"
+  }
+}
