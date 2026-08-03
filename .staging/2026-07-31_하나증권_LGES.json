@@ -10,9 +10,9 @@
   "prev_target_price": 530000,
   "key_issues": ["유럽 미드니켈", "원형 EV", "ESS 팩·링크 병목", "관세 환급", "AMPC", "GM JV 재가동", "밸류에이션"],
   "estimates": [
-    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560.2, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
     {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 113.3, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
-    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "AMPC", "value": 241, "unit": "십억원", "page": 1, "ampc_basis": "na"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "AMPC", "value": 241, "unit": "십억원", "page": 2, "ampc_basis": "na"},
     {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "매출", "value": 9000, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
     {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "영업이익", "value": 224.7, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
     {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "매출", "value": 32091.2, "unit": "십억원", "page": 1, "ampc_basis": "incl"},

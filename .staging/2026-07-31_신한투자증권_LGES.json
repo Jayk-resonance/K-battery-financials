@@ -10,7 +10,7 @@
   "prev_target_price": 550000,
   "key_issues": ["북미 ESS 생산능력", "팩·링크 설비", "AIDC", "유럽 중저가 EV", "북미 JV 재가동", "46시리즈", "밸류에이션"],
   "estimates": [
-    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560.2, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
+    {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 7560.2, "unit": "십억원", "page": 2, "ampc_basis": "incl"},
     {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 113.3, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
     {"company": "LG에너지솔루션", "segment": "중대형전지", "segment_std": "중대형", "fy": 2026, "period": "2Q", "metric": "매출", "value": 5200, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
     {"company": "LG에너지솔루션", "segment": "중대형전지", "segment_std": "중대형", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": -50.5, "unit": "십억원", "page": 1, "ampc_basis": "incl"},

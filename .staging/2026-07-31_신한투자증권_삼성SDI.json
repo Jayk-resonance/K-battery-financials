@@ -10,7 +10,7 @@
   "prev_target_price": 700000,
   "key_issues": ["본업 흑자", "북미 ESS·UPS", "미국 LFP", "AMPC", "BBU·전동공구", "유럽 EV", "밸류에이션"],
   "estimates": [
-    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 3768.8, "unit": "십억원", "page": 1, "ampc_basis": "na"},
+    {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "매출", "value": 3768.8, "unit": "십억원", "page": 2, "ampc_basis": "na"},
     {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 203.8, "unit": "십억원", "page": 1, "ampc_basis": "incl"},
     {"company": "삼성SDI", "segment": "전자재료", "segment_std": "전자재료", "fy": 2026, "period": "2Q", "metric": "매출", "value": 249.8, "unit": "십억원", "page": 1, "ampc_basis": "na"},
     {"company": "삼성SDI", "segment": "전자재료", "segment_std": "전자재료", "fy": 2026, "period": "2Q", "metric": "영업이익", "value": 44.5, "unit": "십억원", "page": 1, "ampc_basis": "na"},
