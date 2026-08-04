@@ -49,6 +49,7 @@ body{margin:0;background:var(--page);color:var(--ink);
 #nav button.on{background:var(--brand-bg);color:var(--accent);font-weight:800}
 .theme-btn{margin-top:auto;align-self:flex-start;border:1px solid var(--border);background:var(--surface);
   color:var(--ink2);border-radius:9px;padding:6px 11px;font-size:12px;cursor:pointer}
+.nav-hint{display:none}
 main{flex:1;min-width:0}
 .topbar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--page) 85%,transparent);
   backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:14px 30px}
@@ -103,15 +104,18 @@ summary{cursor:pointer;color:var(--muted);font-size:12.5px}
 .side .m{color:var(--muted);font-size:11.5px}
 .foot{color:var(--muted);font-size:11.5px;margin-top:24px;line-height:1.6}
 @media (max-width:860px){
-  .layout{flex-direction:column}
+  .layout{flex-direction:column;align-items:stretch}
   .sidebar{width:100%;flex-basis:auto;height:auto;position:static;border-right:none;border-bottom:1px solid var(--border);padding:12px 14px}
   .brand{padding-bottom:10px}
-  #nav{flex-direction:row;overflow-x:auto;gap:6px;scrollbar-width:none}
-  #nav::-webkit-scrollbar{display:none}
-  #nav button{width:auto;flex:0 0 auto}
+  #nav{flex-direction:row;overflow-x:auto;gap:6px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;scroll-behavior:smooth}
+  #nav::-webkit-scrollbar{height:4px}
+  #nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+  #nav button{width:auto;min-height:44px;flex:0 0 auto;scroll-margin-inline:14px}
+  .nav-hint{display:block;color:var(--muted);font-size:10.5px;margin:4px 0 0;text-align:center}
+  main,.topbar,.wrap{width:100%;max-width:100%}
   .theme-btn{position:absolute;top:14px;right:14px;margin:0}
   .topbar{padding:12px 16px}.wrap{padding:16px 14px 60px}
-  .card{padding:15px 15px}
+  .card{max-width:100%;padding:15px 15px}
 }
 </style>
 </head>
@@ -119,7 +123,8 @@ summary{cursor:pointer;color:var(--muted);font-size:12.5px}
 <div class="layout">
 <aside class="sidebar">
   <div class="brand"><div class="brand-mark">🔋</div><div><b>K-배터리</b><small>리포트 인텔리전스</small></div></div>
-  <nav id="nav"></nav>
+  <nav id="nav" aria-label="대시보드 메뉴" aria-describedby="nav-hint"></nav>
+  <p class="nav-hint" id="nav-hint">← 좌우로 밀어 다른 메뉴 보기 →</p>
   <button class="theme-btn" onclick="tgTheme()" title="라이트/다크 전환">☀ / ☾</button>
 </aside>
 <main>
@@ -167,6 +172,7 @@ function render(){
   const nav=$("#nav");nav.innerHTML="";
   TABS.forEach(([id,name])=>{const b=el("button",{class:tab===id?"on":""},name);
     b.onclick=()=>{tab=id;render()};nav.append(b)});
+  if(matchMedia("(max-width:860px)").matches)requestAnimationFrame(()=>nav.querySelector("button.on")?.scrollIntoView({block:"nearest",inline:"center"}));
   const v=$("#view");v.innerHTML="";
   ({overview:rOver,f1:rF1,f2:rF2,f3:rF3,f4:rF4,f6:rF6,f7:rF7,srch:rSearch})[tab](v);
 }
