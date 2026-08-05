@@ -714,21 +714,31 @@ function fomcCol(svg,dots,cx,Y,step,halfW,color,opac,hov){
       dot.addEventListener("mousemove",e=>hover(e,hov(d)));dot.addEventListener("mouseleave",unhover);
       svg.append(dot)})});
 }
-// 분석년도(2026) 아웃라이어 그룹 조회
-function f6Group(company,period){
-  return (DATA.f5_outliers.estimate_outliers||[]).find(x=>x.company===company&&String(x.fy)==="2026"&&x.period===period);
+// 데이터 생성기가 지정한 다음 미발표 분기·분석연도 아웃라이어 그룹 조회
+function f6Target(kind){
+  const direct=DATA.f5_outliers.analysis_targets?.[kind];if(direct)return direct;
+  const group=(DATA.f5_outliers.estimate_outliers||[]).find(x=>kind==="annual"?x.period==="FY":x.period!=="FY");
+  return group?{fy:group.fy,period:group.period}:null;
 }
-function f6Head(company,period){
-  const g=f6Group(company,period);const lab=period==="FY"?"FY2026":"2026.2Q";
+function f6Label(kind){
+  const t=f6Target(kind);if(!t)return kind==="annual"?"연간":"분기";
+  return t.period==="FY"?`FY${t.fy}`:`${t.fy}.${t.period}`;
+}
+function f6Group(company,kind){
+  const t=f6Target(kind);if(!t)return null;
+  return (DATA.f5_outliers.estimate_outliers||[]).find(x=>x.company===company&&Number(x.fy)===Number(t.fy)&&x.period===t.period);
+}
+function f6Head(company,kind){
+  const g=f6Group(company,kind);const lab=f6Label(kind);
   if(!g)return `${lab} 영업이익 컨센서스 분포`;
   const lo=g.houses.find(h=>h.tag==="최저 추정"),hi=g.houses.find(h=>h.tag==="최고 추정");
   if(!lo||!hi)return `${lab} 영업이익 컨센서스 중앙값 ${fmtA(g.median)} · ${g.n_houses}개사`;
   return `${lab} 영업이익 컨센서스 중앙값 ${fmtA(g.median)} — 최저 추정 ${lo.house}(${fmtA(lo.op)}) ~ 최고 추정 ${hi.house}(${fmtA(hi.op)}), 하우스 간 ${fmtA(hi.op-lo.op)} 격차 (${g.n_houses}개사)`;
 }
 // 아웃라이어 논거 패널 (상시 표시, 카테고리별)
-function outlierPanel(card,company,period){
-  const g=f6Group(company,period);if(!g)return;
-  const lab=period==="FY"?"FY2026 (분석년도)":"2026.2Q (실적 직후 분기)";
+function outlierPanel(card,company,kind){
+  const g=f6Group(company,kind);if(!g)return;
+  const lab=`${f6Label(kind)} (${kind==="annual"?"분석년도":"다음 미발표 분기"})`;
   const box=el("div",{style:"margin-top:16px;border-top:1px solid var(--border);padding-top:14px"},
     `<h2 style="font-size:14px;margin:0 0 4px">아웃라이어 분석 — ${company} ${lab}</h2>`);
   box.append(el("div",{},headMsg(F6GAP[company]||"")).firstChild);
@@ -751,7 +761,7 @@ function outlierPanel(card,company,period){
 function rF6(v){ // 산업 점도표는 ⑦ 탭으로 이동
   sel.f6p??="FY";
   const isQ=sel.f6p==="Q";
-  const card=el("div",{class:"card"},`<h2>영업이익 전망 점도표</h2>${headMsg(f6Head(sel.f6,isQ?"2Q":"FY"))}`);
+  const card=el("div",{class:"card"},`<h2>영업이익 전망 점도표</h2>${headMsg(f6Head(sel.f6,isQ?"quarter":"annual"))}`);
   const ch=el("div",{class:"chips"});COMP.forEach(c=>{const b=el("button",{class:sel.f6===c?"on":""},c);
     b.onclick=()=>{sel.f6=c;render()};ch.append(b)});
   const pm=el("div",{class:"chips"});[["FY","연간"],["Q",`${DATA.f6_dotplots.q_fy} 분기별`]].forEach(([k,n])=>{
@@ -759,7 +769,7 @@ function rF6(v){ // 산업 점도표는 ⑦ 탭으로 이동
   const m=el("div",{class:"chips"});[["latest","하우스별 최신"],["all","전체 리포트"]].forEach(([k,n])=>{
     const b=el("button",{class:sel.f6mode===k?"on":""},n);b.onclick=()=>{sel.f6mode=k;render()};m.append(b)});
   card.append(ch,pm,m);
-  if(isQ){renderF6Q(card);outlierPanel(card,sel.f6,"2Q");v.append(card);return}
+  if(isQ){renderF6Q(card);outlierPanel(card,sel.f6,"quarter");v.append(card);return}
   const grp=DATA.f6_dotplots.op_dots.find(g=>g.company===sel.f6);
   let dots=grp.dots;
   if(sel.f6mode==="latest"){const seen={};dots.slice().sort((a,b)=>b.report_date.localeCompare(a.report_date))
@@ -775,7 +785,7 @@ function rF6(v){ // 산업 점도표는 ⑦ 탭으로 이동
   for(let l=loL;l<=hiL;l++){const y=Y(l*step);
     if((l-loL)%labEvery===0)axisY(svg,L,W-16,y,l*step===0?"0":fmtA(l*step));
     else svg.append(sv("line",{x1:L,x2:W-16,y1:y,y2:y,stroke:"var(--grid)","stroke-dasharray":"1 3","stroke-opacity":.55}))}
-  const ANA=2026; // 아웃라이어 분석 대상 연도
+  const ANA=f6Target("annual")?.fy; // 데이터 생성기가 지정한 분석 대상 연도
   if(FYs.includes(ANA))svg.append(sv("rect",{x:X(ANA)-half-9,y:T-4,width:(half+9)*2,height:(H-B)-(T-4),fill:"var(--accent)","fill-opacity":.07,rx:6}));
   FYs.forEach(fy=>{
     const act=DATA.f6_dotplots.fy_actuals?.[sel.f6]?.[String(fy)];
@@ -794,8 +804,8 @@ function rF6(v){ // 산업 점도표는 ⑦ 탭으로 이동
     const mt=sv("text",{x:last?X(fy)-half-3:X(fy)+half+3,y:Y(med)+4,class:"lbl","text-anchor":last?"end":"start"});mt.setAttribute("fill","var(--ink2)");mt.textContent=`중앙값 ${fmtA(med)}`;svg.append(mt);
     fomcCol(svg,col,X(fy),Y,step,half,CCOL[sel.f6],null,
       d=>`<b>${d.house}</b> ${d.report_date}<br>FY${d.fy} OP <b>${fmt(d.op)}원</b><br><i>${d.basis}</i>`)});
-  card.append(svg,el("p",{class:"note"},"점 1개 = 리포트 1건의 영업이익 추정(AMPC 포함), 같은 구간은 같은 높이에 배치. <b>검은 점 = 발표된 실적</b>, 회색선 = 미발표 연도의 컨센서스 중앙값. <b>음영 = 아웃라이어 분석 대상(FY2026)</b>. 모수: '하우스별 최신' = 증권사별 최근 리포트 1건 / '전체 리포트' = 모든 점."));
-  outlierPanel(card,sel.f6,"FY");
+  card.append(svg,el("p",{class:"note"},`점 1개 = 리포트 1건의 영업이익 추정(AMPC 포함), 같은 구간은 같은 높이에 배치. <b>검은 점 = 발표된 실적</b>, 회색선 = 미발표 연도의 컨센서스 중앙값. <b>음영 = 아웃라이어 분석 대상(${f6Label("annual")})</b>. 모수: '하우스별 최신' = 증권사별 최근 리포트 1건 / '전체 리포트' = 모든 점.`));
+  outlierPanel(card,sel.f6,"annual");
   v.append(card);
 }
 function renderF6Q(card){ // 2026 분기별 점도표
@@ -818,7 +828,8 @@ function renderF6Q(card){ // 2026 분기별 점도표
   for(let l=loL;l<=hiL;l++){const y=Y(l*step);
     if((l-loL)%labEvery===0)axisY(svg,L,W-16,y,l*step===0?"0":fmtA(l*step));
     else svg.append(sv("line",{x1:L,x2:W-16,y1:y,y2:y,stroke:"var(--grid)","stroke-dasharray":"1 3","stroke-opacity":.55}))}
-  const ANAQ=QS.find(q=>qact[q]==null)||QS[QS.length-1]; // 회사별 첫 미발표 분기
+  const qt=f6Target("quarter");
+  const ANAQ=qt&&Number(qt.fy)===Number(qfy)&&QS.includes(qt.period)?qt.period:(QS.find(q=>qact[q]==null)||QS[QS.length-1]);
   svg.append(sv("rect",{x:X(ANAQ)-half-9,y:T-4,width:(half+9)*2,height:(H-B)-(T-4),fill:"var(--accent)","fill-opacity":.07,rx:6}));
   QS.forEach(q=>{
     const act=qact[q];

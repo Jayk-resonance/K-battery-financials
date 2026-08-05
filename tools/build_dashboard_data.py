@@ -271,9 +271,14 @@ if _last_q == "4Q":
 else:
     _nq_fy, _nq = _last_fy, _QS[_QS.index(_last_q) + 1]
 _ana_fy = _last_fy if _QS.index(_last_q) < 2 else _last_fy + 1
-F5_TARGETS = [(_nq_fy, _nq), (_ana_fy, "FY")]
+F5_ANALYSIS_TARGETS = {
+    "quarter": {"fy": _nq_fy, "period": _nq},
+    "annual": {"fy": _ana_fy, "period": "FY"},
+}
+F5_TARGETS = [(t["fy"], t["period"]) for t in F5_ANALYSIS_TARGETS.values()]
 
-f5 = {"estimate_outliers": [], "stance_outliers": []}
+f5 = {"analysis_targets": F5_ANALYSIS_TARGETS,
+      "estimate_outliers": [], "stance_outliers": []}
 for comp, seg in [("LGES","전사"),("삼성SDI","전사"),("SK온","배터리합계")]:
     for fy, period in F5_TARGETS:
         latest = {}
@@ -347,8 +352,8 @@ for comp, seg in [("LGES","전사"),("삼성SDI","전사"),("SK온","배터리�
                              "fy": fy, "op": op, "basis": basis, "report_id": rid})
     f6["op_dots"].append({"company": comp, "segment": seg, "dots": dots})
 
-# 2026년 분기별 점도표 (+ 발표된 분기의 실적선)
-QFY = 2026
+# 다음 미발표 분기가 속한 연도의 분기별 점도표 (+ 발표된 분기의 실적선)
+QFY = F5_ANALYSIS_TARGETS["quarter"]["fy"]
 q_act = {}
 for a in actuals:
     seg_t = "배터리합계" if a["company"] == "SK온" else "전사"
