@@ -116,8 +116,24 @@ class EarningsPipelineTest(unittest.TestCase):
         path = os.path.join(ROOT, "projects", "dashboard", "dashboard_template.html")
         with open(path, encoding="utf-8") as f:
             template = f.read()
-        self.assertIn('QS.find(q=>qact[q]==null)', template)
-        self.assertNotIn('const ANAQ="2Q"', template)
+        self.assertIn('f6Head(sel.f6,isQ?"quarter":"annual")', template)
+        self.assertIn('outlierPanel(card,sel.f6,"quarter")', template)
+        self.assertIn('const qt=f6Target("quarter")', template)
+        self.assertNotIn('outlierPanel(card,sel.f6,"2Q")', template)
+
+        with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
+                  encoding="utf-8") as f:
+            data = json.load(f)
+        outliers = data["f5_outliers"]
+        quarter = outliers["analysis_targets"]["quarter"]
+        annual = outliers["analysis_targets"]["annual"]
+        self.assertEqual({"fy": 2026, "period": "3Q"}, quarter)
+        self.assertEqual({"fy": 2026, "period": "FY"}, annual)
+        groups = {(x["company"], x["fy"], x["period"])
+                  for x in outliers["estimate_outliers"]}
+        for company in ("LGES", "삼성SDI", "SK온"):
+            self.assertIn((company, quarter["fy"], quarter["period"]), groups)
+            self.assertIn((company, annual["fy"], annual["period"]), groups)
 
 
 if __name__ == "__main__":
