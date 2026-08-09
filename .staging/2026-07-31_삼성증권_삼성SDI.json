@@ -20,7 +20,7 @@
     {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "3Q", "metric": "AMPC", "value": 135, "unit": "십억원", "page": 1, "ampc_basis": "na"}
   ],
   "stances": [
-    {"issue": "관세", "company": "삼성SDI", "stance_score": 5, "summary": "미국향 셀 관세 환입 1,000억원 후반대가 2Q 어닝 서프라이즈의 주된 원인.", "page": 1},
+    {"issue": "관세환급", "company": "삼성SDI", "stance_score": 5, "summary": "미국향 셀 관세 환입 1,000억원 후반대가 2Q 어닝 서프라이즈의 주된 원인.", "page": 1},
     {"issue": "AMPC", "company": "삼성SDI", "stance_score": 5, "summary": "3Q 북미 ESS 출하 증가로 AMPC가 1,350억원까지 확대될 전망.", "page": 1},
     {"issue": "ESS", "company": "삼성SDI", "stance_score": 6, "summary": "고수익 UPS 판매와 북미 현지 ESS 출하 증가가 3Q 중대형전지 흑자를 지지할 전망.", "page": 1},
     {"issue": "소형전지", "company": "삼성SDI", "stance_score": 5, "summary": "BBU와 전동공구 판매 호조로 3Q 풀가동 수준과 흑자전환을 예상.", "page": 1},

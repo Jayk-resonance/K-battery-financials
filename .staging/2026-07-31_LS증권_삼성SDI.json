@@ -19,6 +19,13 @@
     {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "AMPC", "value": 438, "unit": "십억원", "page": 2, "ampc_basis": "na"}
   ],
   "stances": [
+    {
+      "issue": "관세환급",
+      "company": "삼성SDI",
+      "stance_score": 2,
+      "summary": "약 2,000억원의 관세 환급이 호실적의 주된 원인이어서 사업 성과와 구분해야 한다.",
+      "page": 1
+    },
     {"issue": "ESS", "company": "삼성SDI", "stance_score": 5, "summary": "ESS 셀 증설과 판매가 하반기 수익성과 AMPC의 핵심이라고 본다.", "page": 1},
     {"issue": "전고체", "company": "삼성SDI", "stance_score": -2, "summary": "시장 본격 개화까지 시간이 필요하고 초기 수요도 제한적일 수 있다고 본다.", "page": 1},
     {"issue": "밸류에이션", "company": "삼성SDI", "stance_score": -5, "summary": "삼성디스플레이 지분 매각 뒤 기업가치 하락 가능성을 경계한다.", "page": 1}

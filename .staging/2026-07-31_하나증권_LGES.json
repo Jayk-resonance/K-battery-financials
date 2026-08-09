@@ -21,6 +21,13 @@
     {"company": "LG에너지솔루션", "segment": "전사", "segment_std": "전사", "fy": 2027, "period": "FY", "metric": "영업이익", "value": 3645.3, "unit": "십억원", "page": 1, "ampc_basis": "incl"}
   ],
   "stances": [
+    {
+      "issue": "관세환급",
+      "company": "LG에너지솔루션",
+      "stance_score": 2,
+      "summary": "관세 환급이 2Q26 ESS 손익을 보완했지만 팩·링크 병목과 초기비용으로 적자가 이어졌다.",
+      "page": 1
+    },
     {"issue": "유럽EV", "company": "LG에너지솔루션", "stance_score": 5, "summary": "유럽 중저가 미드니켈 출하 증가로 7개 분기 연속의 중대형 EV 매출 감소가 멈췄고 3Q 가동률 60%를 전망.", "page": 1},
     {"issue": "소형전지", "company": "LG에너지솔루션", "stance_score": 4, "summary": "Tesla향 원형 EV 배터리 출하 증가와 높은 한 자릿수 영업이익률을 긍정적으로 평가.", "page": 1},
     {"issue": "ESS", "company": "LG에너지솔루션", "stance_score": 4, "summary": "팩·링크 공급 병목으로 2Q 적자가 지속됐지만 3Q 북미 출하 +50% 이상과 생산성 개선을 전망.", "page": 1},

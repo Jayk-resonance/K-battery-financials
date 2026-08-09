@@ -19,6 +19,13 @@
     {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "AMPC", "value": 575, "unit": "십억원", "page": 2, "ampc_basis": "na"}
   ],
   "stances": [
+    {
+      "issue": "관세환급",
+      "company": "삼성SDI",
+      "stance_score": 3,
+      "summary": "관세 환급을 제외해도 기초 이익 체력이 회복됐다고 평가해 본업 개선을 함께 확인했다.",
+      "page": 1
+    },
     {"issue": "AMPC", "company": "삼성SDI", "stance_score": 8, "summary": "3분기부터 AMPC를 제외해도 영업 흑자 구간에 진입할 것으로 판단한다.", "page": 1},
     {"issue": "밸류에이션", "company": "삼성SDI", "stance_score": 9, "summary": "주가 하락으로 과거 사이클과 글로벌 경쟁사 대비 의미 있는 비중확대 구간에 들어왔다고 본다.", "page": 1},
     {"issue": "소형전지", "company": "삼성SDI", "stance_score": 7, "summary": "BBU와 전동공구 수요로 소형전지 이익 추정치를 상향했다.", "page": 1}

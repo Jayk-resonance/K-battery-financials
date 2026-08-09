@@ -15,7 +15,7 @@
   "stances": [
     {"issue":"OEM보상금","company":"SK온","stance_score":1,"summary":"고객사 보상금 수령이 2Q26 흑자전환을 이끈 일회성 요인으로 평가한다.","page":1},
     {"issue":"AMPC","company":"SK온","stance_score":3,"summary":"AMPC 증가가 SK온의 2Q26 영업이익 개선에 기여했다고 판단한다.","page":1},
-    {"issue":"관세","company":"SK온","stance_score":2,"summary":"관세 환급이 2Q26 이익에 추가로 기여했으나 반복 가능성은 확인이 필요하다.","page":1}
+    {"issue":"관세환급","company":"SK온","stance_score":2,"summary":"관세 환급이 2Q26 이익에 추가로 기여했으나 반복 가능성은 확인이 필요하다.","page":1}
   ],
   "industry_views": [],
   "top_picks": [],

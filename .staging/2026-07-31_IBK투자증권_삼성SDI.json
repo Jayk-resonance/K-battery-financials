@@ -21,7 +21,7 @@
   "stances": [
     {"issue": "ESS", "company": "삼성SDI", "stance_score": 9, "summary": "북미 LFP 증설과 하반기 출하 증가를 가장 강한 성장 동력으로 본다.", "page": 1},
     {"issue": "유럽EV", "company": "삼성SDI", "stance_score": 3, "summary": "유럽 프리미엄 EV 판매 확대는 긍정적이나 전반적인 EV 수요는 아직 약하다.", "page": 1},
-    {"issue": "관세", "company": "삼성SDI", "stance_score": 4, "summary": "2분기 약 2,000억원의 관세 환급이 실적을 끌어올렸으나 이를 제외해도 흑자라고 평가한다.", "page": 1}
+    {"issue": "관세환급", "company": "삼성SDI", "stance_score": 4, "summary": "2분기 약 2,000억원의 관세 환급이 실적을 끌어올렸으나 이를 제외해도 흑자라고 평가한다.", "page": 1}
   ],
   "industry_views": [],
   "top_picks": [],

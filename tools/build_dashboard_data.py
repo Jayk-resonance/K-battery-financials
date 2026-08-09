@@ -23,6 +23,10 @@ ANNOUNCE = {("LGES", 2026, "1Q"): "2026-04-08", ("삼성SDI", 2026, "1Q"): "2026
             ("SK온", 2026, "1Q"): "2026-05-13",
             ("LGES", 2026, "2Q"): "2026-07-30", ("삼성SDI", 2026, "2Q"): "2026-07-30",
             ("SK온", 2026, "2Q"): "2026-07-30"}
+PREVIEW_START = {("LGES", 2026, "1Q"): "2026-02-01", ("삼성SDI", 2026, "1Q"): "2026-02-01",
+                 ("SK온", 2026, "1Q"): "2026-02-01",
+                 ("LGES", 2026, "2Q"): "2026-04-08", ("삼성SDI", 2026, "2Q"): "2026-04-28",
+                 ("SK온", 2026, "2Q"): "2026-05-13"}
 
 est = list(csv.DictReader(open(f"{IDX}/estimates.csv", encoding="utf-8")))
 stances = list(csv.DictReader(open(f"{IDX}/stances.csv", encoding="utf-8")))
@@ -33,6 +37,8 @@ drivers = list(csv.DictReader(open(f"{IDX}/drivers.csv", encoding="utf-8")))
 
 CUR = os.path.join(OUT, "narratives.json")  # 큐레이션 내러티브 (수기)
 narratives = json.load(open(CUR, encoding="utf-8")) if os.path.exists(CUR) else {}
+QOQ = os.path.join(OUT, "qoq_supplements.json")  # 2026 QoQ 구조화 보충 설명 (수기)
+qoq_supplements = json.load(open(QOQ, encoding="utf-8")) if os.path.exists(QOQ) else {}
 # 이슈별 긍정/부정 요약 (생성물, issue|company 키). 하우스 구성이 바뀌면 재생성 필요.
 ISUM = os.path.join(OUT, "issue_summaries.json")
 issue_summaries = json.load(open(ISUM, encoding="utf-8")) if os.path.exists(ISUM) else {}
@@ -142,7 +148,8 @@ def skon_quarters():
 f1 = {"actuals_grid": {f"{k[0]}|{k[1]}|{k[2]}": v for k, v in actual_grid().items()},
       "skon_quarters": skon_quarters(),
       "company_drivers": [dict(d) for d in drivers],
-      "narratives": narratives.get("f1", {})}
+      "narratives": narratives.get("f1", {}),
+      "qoq_supplements": qoq_supplements.get("companies", {})}
 
 # ---------- F2: 이슈별 스탠스 매트릭스 ----------
 ISSUE_ALIAS = {"배터리판매량":"판매량","북미EV":"북미수요","유럽EV":"유럽수요","북미ESS":"ESS"}
@@ -201,6 +208,7 @@ f3 = dict(f3)
 # ---------- F4: 컨센서스 적중률 ----------
 f4 = {"events": []}
 for (comp, fy, period), adate in ANNOUNCE.items():
+    preview_start = PREVIEW_START[(comp, fy, period)]
     seg_t = "배터리합계" if comp == "SK온" else "전사"
     act_rows = [a for a in actuals if a["company"] == comp and a["fy"] == str(fy)
                 and a["period"] == period and a["segment_std"] == seg_t]
@@ -209,26 +217,27 @@ for (comp, fy, period), adate in ANNOUNCE.items():
         act.setdefault(a["metric"], float(a["value"]))
     if not act:
         continue
-    preds = []
+    latest_by_house = {}
     for rid, rows in by_report.items():
         rm = rmeta.get(rid)
-        if not rm or rm["date"] >= adate or rm["coverage"] != comp:
+        if not rm or not (preview_start <= rm["date"] < adate) or rm["coverage"] != comp:
             continue
-        if rm["date"] < "2026-02-01":
-            continue  # 직전 프리뷰 시즌만
         op, basis = op_incl(rows, comp, seg_t, fy, period)
+        if op is None:
+            continue
         rev = next((r["value"] for r in rows if r["company"] == comp
                     and r["segment_std"] == seg_t and r["fy"] == str(fy)
                     and r["period"] == period and r["metric"] == "매출"), None)
-        if op is None and rev is None:
-            continue
         e = {"house": rm["house"], "date": rm["date"], "report_id": rid,
              "op_est": op, "op_basis": basis, "rev_est": rev}
         if op is not None and act.get("영업이익") is not None:
             e["op_err"] = round(op - act["영업이익"], 1)
         if rev is not None and act.get("매출") is not None:
             e["rev_err_pct"] = round((rev - act["매출"]) / act["매출"] * 100, 1)
-        preds.append(e)
+        previous = latest_by_house.get(rm["house"])
+        if previous is None or (e["date"], e["report_id"]) > (previous["date"], previous["report_id"]):
+            latest_by_house[rm["house"]] = e
+    preds = sorted(latest_by_house.values(), key=lambda x: (x["house"], x["date"]))
     # 이벤트 결론: 프리뷰 컨센서스(중앙값) 대비 실제가 얼마나 벗어났나
     ops = [p["op_est"] for p in preds if p["op_est"] is not None]
     med = round(st.median(ops), 1) if ops else None
@@ -239,7 +248,9 @@ for (comp, fy, period), adate in ANNOUNCE.items():
         verdict = ("어닝 서프라이즈" if diff > thr
                    else "어닝 쇼크" if diff < -thr else "컨센서스 부합")
     f4["events"].append({"company": comp, "fy": fy, "period": period,
-                         "announce_date": adate, "actual": act, "preds": preds,
+                         "preview_start": preview_start, "announce_date": adate,
+                         "selection_rule": "발표 전 프리뷰 기간의 하우스별 최신 영업이익 추정 1건",
+                         "n_houses": len(preds), "actual": act, "preds": preds,
                          "consensus_median": med, "diff": diff, "verdict": verdict})
 
 # FY2025 빈티지 적중률 (2023~25년 리포트의 FY2025 전망 vs 실제)

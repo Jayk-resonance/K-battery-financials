@@ -18,6 +18,13 @@
     {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "영업이익", "value": 772, "unit": "십억원", "page": 1, "ampc_basis": "incl"}
   ],
   "stances": [
+    {
+      "issue": "관세환급",
+      "company": "삼성SDI",
+      "stance_score": 3,
+      "summary": "관세 환급 효과를 제외해도 7개 분기 만의 흑자전환에 성공했다고 평가한다.",
+      "page": 1
+    },
     {"issue": "유럽EV", "company": "삼성SDI", "stance_score": 7, "summary": "산업가속화법 수혜와 유럽향 신규 EV 수주를 기대한다.", "page": 1},
     {"issue": "ESS", "company": "삼성SDI", "stance_score": 8, "summary": "북미 LFP 양산과 이연 물량 반영으로 하반기 ESS 성장을 전망한다.", "page": 1},
     {"issue": "소형전지", "company": "삼성SDI", "stance_score": 6, "summary": "전동공구·BBU 확판으로 소형전지 실적이 추가 개선될 것으로 본다.", "page": 1}
