@@ -373,14 +373,35 @@ function rF1(v){
 
 const SEGCOL={"EV":"var(--lges)","ESS":"#1baf7a","소형":"#eda100","전자재료":"#e87ba4","중대형":"#4a3aa7",
   "AMPC(전사)":"#4a3aa7","AMPC(EV)":"#6c5fc7","AMPC(ESS)":"#a99ee8","AMPC":"#8d84c9","합계":"var(--ink2)"};
+function segmentActual(comp,fy,p,seg,metric){
+  const g=DATA.f1_quarterly.actuals_grid[`${comp}|${fy}|${p}`]||{};
+  if(metric==="영업이익"&&seg==="전사"&&g["전사|영업이익_AMPC제외|excl"]!=null)
+    return {v:g["전사|영업이익_AMPC제외|excl"],basis:"excl"};
+  const bases=metric==="매출"?["excl","na","incl","incl_unknown"]
+    :metric==="영업이익"?["excl","na","incl","incl_unknown"]
+    :["na","excl","incl","incl_unknown"];
+  for(const basis of bases){const v=g[`${seg}|${metric}|${basis}`];if(v!=null)return {v,basis}}
+  return null;
+}
+function segmentBasisLabel(basis){
+  return ({excl:"AMPC 제외",incl:"AMPC 포함",incl_unknown:"AMPC·일회성 포함 여부 미분리",na:"회사 공시 기준"})[basis]||basis;
+}
+function segmentPointSource(p){
+  if(p.actual)return `회사 IR 확정치 · ${segmentBasisLabel(p.basis)}`;
+  return p.reported?`증권사 부문 추정 중앙값 · 회사 미공시`:`증권사 전망 중앙값`;
+}
 function segSeries(comp,metric){
   const Q=[[2025,"1Q"],[2025,"2Q"],[2025,"3Q"],[2025,"4Q"],[2026,"1Q"],[2026,"2Q"],[2026,"3Q"],[2026,"4Q"]];
   // 중대형(EV+ESS 합산)은 기본 제외 — 단, 삼성SDI 영업이익은 EV/ESS 분해 공시가 적어 중대형을 표시
   const segs=(comp==="삼성SDI"&&metric==="영업이익")?["EV","ESS","중대형","소형","전자재료"]:["EV","ESS","소형","전자재료"];
   const sc=DATA.f1_quarterly.seg_consensus?.[comp]||{};
   const out=[];
+  const reported=Q.map(([fy,p])=>Object.keys(DATA.f1_quarterly.actuals_grid[`${comp}|${fy}|${p}`]||{}).length>0);
+  const lastReported=reported.reduce((last,x,i)=>x?i:last,-1);
   const mkpts=(g,mk)=>Q.map(([fy,p],i)=>{const c=sc[`${fy}|${p}`]?.[g]?.[mk];
-      return {i,label:`${String(fy).slice(2)}.${p}`,v:c?c.median:null,n:c?c.n:0,c}});
+      const a=segmentActual(comp,fy,p,g,mk);
+      return {i,label:`${String(fy).slice(2)}.${p}`,v:a?.v??c?.median??null,n:a?0:(c?.n||0),
+        c:a?null:c,actual:!!a,reported:reported[i],basis:a?.basis||null}});
   segs.forEach(g=>{
     const pts=mkpts(g,metric);
     if(pts.some(p=>p.v!=null))out.push({g,pts});
@@ -398,21 +419,23 @@ function segSeries(comp,metric){
     }
   }
   // 전체 합계(전사/배터리합계) — 스케일이 크므로 상단 숫자 행
-  const totSeg=comp==="SK온"?"배터리합계":"전사";
+  const totSeg=comp==="LGES"?"전사":"배터리합계";
   const tpts=mkpts(totSeg,metric);
   if(tpts.some(p=>p.v!=null))out.push({g:"합계",seg:totSeg,pts:tpts,total:true});
-  return {out,labels:Q.map(([fy,p],i)=>`${String(fy).slice(2)}.${p}${i>=5?"E":""}`),ampcDetail};
+  return {out,labels:Q.map(([fy,p],i)=>`${String(fy).slice(2)}.${p}${reported[i]?"":"E"}`),ampcDetail,lastReported};
 }
 function segDetailCard(v,metric,ckey,okey,title,headMap){
   const card=el("div",{class:"card"},`<h2>${title}</h2>`);
   const comp=sel[ckey]||"LGES";
-  if(headMap&&headMap[comp])card.append(el("div",{},headMsg(headMap[comp])).firstChild);
+  const latest=DATA.f1_quarterly.segment_latest?.[comp];
+  const latestHead=latest?.[metric==="매출"?"segment_revenue_summary":"segment_operating_profit_summary"];
+  if(latestHead||(headMap&&headMap[comp]))card.append(el("div",{},headMsg(latestHead||headMap[comp])).firstChild);
   const cch=el("div",{class:"chips",style:"margin-top:2px"});
   COMP.forEach(c=>{const b=el("button",{class:comp===c?"on":""},c);
     b.onclick=()=>{sel[ckey]=c;render()};cch.append(b)});
   card.append(cch);
-  const noteHtml=`${comp} — 부문별 ${metric} 컨센서스 추이 · `+(metric==="영업이익"?"AMPC 제외(excl) 중앙값":"AMPC 제외 기준 중앙값")+` · 점 = 참여 증권사 중앙값(클릭 시 증권사별) · 실선 = 실적 구간, 점선 = 전망(26.2Q~, 속 빈 점) · <b>합계는 차트 상단 숫자 행</b>`+(metric==="영업이익"?` · AMPC는 가는 보라 별도 시리즈`+(comp==="LGES"?" — EV/ESS 분해는 아래 'AMPC 상세'":""):"");
-  const {out,labels,ampcDetail}=segSeries(comp,metric);
+  const noteHtml=`${comp} — ● 회사 IR 확정치 · ○ 회사 미공시 세부 부문의 증권사 중앙값 · 점선 = 아직 발표되지 않은 분기 전망 · `+(metric==="영업이익"?"증권사 추정선은 AMPC 제외(excl), 회사 확정치는 공시 기준을 툴팁에 표시":"증권사 추정선은 중앙값")+` · <b>${comp==="LGES"?"전사":"배터리합계"}는 차트 상단 숫자 행</b>`+(metric==="영업이익"?` · AMPC는 가는 보라 별도 시리즈`+(comp==="LGES"?" — EV/ESS 분해는 아래 'AMPC 상세'":""):"");
+  const {out,labels,ampcDetail,lastReported}=segSeries(comp,metric);
   if(!out.length){card.append(el("p",{class:"note"},"이 회사는 부문별 분기 컨센서스 데이터가 없습니다 (리포트가 부문 분해를 제공하지 않음)."));v.append(card);return}
   const prim=out.filter(s2=>!s2.total),tot=out.find(s2=>s2.total);
   if(prim.length&&prim.every(s2=>s2.ampc))
@@ -422,11 +445,11 @@ function segDetailCard(v,metric,ckey,okey,title,headMap){
   const X=i=>lin(i,0,labels.length-1,L,W-R);
   // 합계(전사/배터리합계)는 스케일이 커서 선 대신 상단 숫자 행으로
   if(tot){
-    const hl=sv("text",{x:4,y:14,"text-anchor":"start",class:"lbl"});hl.setAttribute("fill","var(--ink2)");hl.textContent=`합계`;svg.append(hl);
+    const hl=sv("text",{x:4,y:14,"text-anchor":"start",class:"lbl"});hl.setAttribute("fill","var(--ink2)");hl.textContent=tot.seg;svg.append(hl);
     tot.pts.forEach(p=>{if(p.v==null)return;
       const t=sv("text",{x:X(p.i),y:14,"text-anchor":"middle",class:"lbl",style:"font-weight:700"});
-      t.setAttribute("fill",p.i>=5?"var(--muted)":"var(--ink2)");t.textContent=fmtA(p.v);
-      t.addEventListener("mousemove",e=>hover(e,`<b>합계(${tot.seg})</b> ${p.label}${p.i>=5?" <i>(전망)</i>":""}<br>${metric} 중앙값 ${fmt(p.v)}원 (n=${p.n})`));
+      t.setAttribute("fill",p.actual?"var(--ink2)":"var(--muted)");t.textContent=fmtA(p.v);
+      t.addEventListener("mousemove",e=>hover(e,`<b>${tot.seg}</b> ${p.label}<br>${metric} ${fmt(p.v)}원<br><i>${segmentPointSource(p)}${p.n?` (n=${p.n})`:""}</i>`));
       t.addEventListener("mouseleave",unhover);svg.append(t)});
     svg.append(sv("line",{x1:L-4,x2:W-R+4,y1:22,y2:22,stroke:"var(--grid)"}));
   }
@@ -442,17 +465,17 @@ function segDetailCard(v,metric,ckey,okey,title,headMap){
     const pts=s2.pts.filter(p=>p.v!=null);
     const mname=s2.ampc?"AMPC":metric;
     const thin=s2.ampc?1.5:2;
-    // 실적 구간(~26.1Q, i<=4) 실선 / 전망 구간(26.2Q~, i>=4 커넥터부터) 점선
-    const seg1=pts.filter(p=>p.i<=4),seg2=pts.filter(p=>p.i>=4);
+    // 최신 확정 분기까지 실선 / 그 다음 미발표 분기부터 점선
+    const seg1=pts.filter(p=>p.i<=lastReported),seg2=pts.filter(p=>p.i>=lastReported);
     if(seg1.length>1)svg.append(sv("polyline",{points:seg1.map(p=>`${X(p.i)},${Y(p.v)}`).join(" "),fill:"none",stroke:col,"stroke-width":thin,"stroke-linejoin":"round"}));
     if(seg2.length>1)svg.append(sv("polyline",{points:seg2.map(p=>`${X(p.i)},${Y(p.v)}`).join(" "),fill:"none",stroke:col,"stroke-width":thin,"stroke-dasharray":"5 4","stroke-linejoin":"round"}));
-    pts.forEach(p=>{const dot=p.i>=5
-        ?sv("circle",{cx:X(p.i),cy:Y(p.v),r:s2.ampc?3:4,fill:"var(--surface)",stroke:col,"stroke-width":2})
-        :sv("circle",{cx:X(p.i),cy:Y(p.v),r:s2.ampc?3:4,fill:col,stroke:"var(--surface)","stroke-width":2});
+    pts.forEach(p=>{const dot=p.actual
+        ?sv("circle",{cx:X(p.i),cy:Y(p.v),r:s2.ampc?3:4,fill:col,stroke:"var(--surface)","stroke-width":2})
+        :sv("circle",{cx:X(p.i),cy:Y(p.v),r:s2.ampc?3:4,fill:"var(--surface)",stroke:col,"stroke-width":2});
       const hit=sv("circle",{cx:X(p.i),cy:Y(p.v),r:11,fill:"transparent"});
-      hit.addEventListener("mousemove",e=>hover(e,`<b>${s2.g}</b> ${p.label}${p.i>=5?" <i>(전망)</i>":""}<br>${mname} 중앙값 ${fmt(p.v)}원 (n=${p.n})<br><i>클릭 → 증권사별</i>`));
-      hit.addEventListener("mouseleave",unhover);hit.style.cursor="pointer";
-      hit.addEventListener("click",()=>{const old2=card.querySelector(".segside");old2&&old2.remove();
+      hit.addEventListener("mousemove",e=>hover(e,`<b>${s2.g}</b> ${p.label}<br>${mname} ${fmt(p.v)}원<br><i>${segmentPointSource(p)}${p.n?` (n=${p.n})`:""}${p.c?" · 클릭 → 증권사별":""}</i>`));
+      hit.addEventListener("mouseleave",unhover);if(p.c)hit.style.cursor="pointer";
+      if(p.c)hit.addEventListener("click",()=>{const old2=card.querySelector(".segside");old2&&old2.remove();
         if(!p.c)return;
         const sd=el("div",{class:"segside"},`<h2 style="font-size:14px;margin:14px 0 4px">${comp} · ${p.label} · ${s2.g} · ${mname} — 증권사별</h2>`);
         p.c.houses.slice().sort((a,b)=>b.value-a.value).forEach(h=>sd.append(el("div",{class:"side"},
@@ -487,16 +510,16 @@ function segDetailCard(v,metric,ckey,okey,title,headMap){
       ampcDetail.forEach(s2=>{
         const col=SEGCOL[s2.g]||"var(--muted)";
         const pts=s2.pts.filter(p=>p.v!=null);
-        const seg1=pts.filter(p=>p.i<=4),seg2=pts.filter(p=>p.i>=4);
+        const seg1=pts.filter(p=>p.i<=lastReported),seg2=pts.filter(p=>p.i>=lastReported);
         if(seg1.length>1)s3.append(sv("polyline",{points:seg1.map(p=>`${X(p.i)},${Y3(p.v)}`).join(" "),fill:"none",stroke:col,"stroke-width":2,"stroke-linejoin":"round"}));
         if(seg2.length>1)s3.append(sv("polyline",{points:seg2.map(p=>`${X(p.i)},${Y3(p.v)}`).join(" "),fill:"none",stroke:col,"stroke-width":2,"stroke-dasharray":"5 4","stroke-linejoin":"round"}));
-        pts.forEach(p=>{const dot=p.i>=5
-            ?sv("circle",{cx:X(p.i),cy:Y3(p.v),r:3.5,fill:"var(--surface)",stroke:col,"stroke-width":2})
-            :sv("circle",{cx:X(p.i),cy:Y3(p.v),r:3.5,fill:col,stroke:"var(--surface)","stroke-width":2});
+        pts.forEach(p=>{const dot=p.actual
+            ?sv("circle",{cx:X(p.i),cy:Y3(p.v),r:3.5,fill:col,stroke:"var(--surface)","stroke-width":2})
+            :sv("circle",{cx:X(p.i),cy:Y3(p.v),r:3.5,fill:"var(--surface)",stroke:col,"stroke-width":2});
           const hit=sv("circle",{cx:X(p.i),cy:Y3(p.v),r:10,fill:"transparent"});
-          hit.addEventListener("mousemove",e=>hover(e,`<b>${s2.g}</b> ${p.label}${p.i>=5?" <i>(전망)</i>":""}<br>중앙값 ${fmt(p.v)}원 (n=${p.n})<br><i>클릭 → 증권사별</i>`));
-          hit.addEventListener("mouseleave",unhover);hit.style.cursor="pointer";
-          hit.addEventListener("click",()=>{const old3=card.querySelector(".segside");old3&&old3.remove();
+          hit.addEventListener("mousemove",e=>hover(e,`<b>${s2.g}</b> ${p.label}<br>${fmt(p.v)}원<br><i>${segmentPointSource(p)}${p.n?` (n=${p.n})`:""}${p.c?" · 클릭 → 증권사별":""}</i>`));
+          hit.addEventListener("mouseleave",unhover);if(p.c)hit.style.cursor="pointer";
+          if(p.c)hit.addEventListener("click",()=>{const old3=card.querySelector(".segside");old3&&old3.remove();
             if(!p.c)return;
             const sd=el("div",{class:"segside"},`<h2 style="font-size:14px;margin:14px 0 4px">${comp} · ${p.label} · ${s2.g} — 증권사별</h2>`);
             p.c.houses.slice().sort((a,b)=>b.value-a.value).forEach(h=>sd.append(el("div",{class:"side"},
@@ -516,7 +539,7 @@ function segDetailCard(v,metric,ckey,okey,title,headMap){
   const det=el("details",{},"<summary>표로 보기</summary>");const tb=el("table");
   tb.append(el("tr",{},`<th>분기</th>${out.map(s2=>`<th style="text-align:right">${s2.g}</th>`).join("")}`));
   labels.forEach((lb,i)=>{if(out.some(s2=>s2.pts[i].v!=null))
-    tb.append(el("tr",{},`<td>${lb}</td>${out.map(s2=>`<td class="num">${s2.pts[i].v!=null?fmt(s2.pts[i].v)+` <span style='color:var(--muted)'>(${s2.pts[i].n})</span>`:"–"}</td>`).join("")}`))});
+    tb.append(el("tr",{},`<td>${lb}</td>${out.map(s2=>{const p=s2.pts[i];return `<td class="num">${p.v!=null?fmt(p.v)+` <span style='color:var(--muted)'>(${p.actual?"확정":`추정 n=${p.n}`})</span>`:"–"}</td>`}).join("")}`))});
   det.append(tb);card.append(det);
   v.append(card);
 }
