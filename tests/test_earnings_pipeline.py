@@ -157,6 +157,7 @@ class EarningsPipelineTest(unittest.TestCase):
             template = f.read()
         self.assertIn("segmentActual", template)
         self.assertIn("segment_latest", template)
+        self.assertIn('mkpts(totSeg,"영업이익(incl)","영업이익",true)', template)
         self.assertNotIn('점선 = 전망(26.2Q~', template)
 
     def test_qoq_supplements_cover_both_2026_quarters(self):
