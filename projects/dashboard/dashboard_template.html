@@ -96,6 +96,16 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .qcard{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin:8px 0}
 .qcard b{font-size:13px}
 .qcard p{margin:6px 0 0;color:var(--ink2);font-size:13px}
+.qcard .qheadline{color:var(--ink);font-weight:750;margin-top:7px}
+.qsections{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.qsection{background:var(--chip);border-radius:8px;padding:9px 10px;min-width:0}
+.qsection h3{font-size:11.5px;margin:0 0 4px;color:var(--ink);letter-spacing:.01em}
+.qsection ul{margin:0;padding-left:17px;color:var(--ink2);font-size:12.5px;line-height:1.45}
+.qsection li+li{margin-top:3px}
+.qsection.normalized{grid-column:1/-1;border-left:3px solid var(--accent)}
+.qsources{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.qsource{font-size:10.5px;color:var(--ink2);border:1px solid var(--border);border-radius:9px;padding:2px 6px}
+@media(max-width:560px){.qsections{grid-template-columns:1fr}.qsection.normalized{grid-column:auto}}
 details{margin-top:10px}
 summary{cursor:pointer;color:var(--muted);font-size:12.5px}
 .cell{cursor:pointer}
@@ -104,6 +114,7 @@ summary{cursor:pointer;color:var(--muted);font-size:12.5px}
 .foot{color:var(--muted);font-size:11.5px;margin-top:24px;line-height:1.6}
 @media (max-width:860px){
   .layout{flex-direction:column}
+  main,.wrap,#view{width:100%;max-width:100%}
   .sidebar{width:100%;flex-basis:auto;height:auto;position:static;border-right:none;border-bottom:1px solid var(--border);padding:12px 14px}
   .brand{padding-bottom:10px}
   #nav{flex-direction:row;overflow-x:auto;gap:6px;scrollbar-width:none}
@@ -111,7 +122,7 @@ summary{cursor:pointer;color:var(--muted);font-size:12.5px}
   #nav button{width:auto;flex:0 0 auto}
   .theme-btn{position:absolute;top:14px;right:14px;margin:0}
   .topbar{padding:12px 16px}.wrap{padding:16px 14px 60px}
-  .card{padding:15px 15px}
+  .card{padding:15px 15px;max-width:100%}
 }
 </style>
 </head>
@@ -338,8 +349,17 @@ function rF1(v){
   const ch=el("div",{class:"chips"});COMP.forEach(c=>{const b=el("button",{class:sel.f1===c?"on":""},c);
     b.onclick=()=>{sel.f1=c;render()};ch.append(b)});card.append(ch);
   const n=DATA.f1_quarterly.narratives[sel.f1]||{};
+  const sq=DATA.f1_quarterly.qoq_supplements?.[sel.f1]||{};
   const qcard=(q,txt)=>el("div",{class:"qcard"},`<b>${q.replace("-"," ")}</b><p>${txt.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>")}</p>`);
-  const ent=Object.entries(n), y26=ent.filter(([q])=>!q.startsWith("2025")), y25=ent.filter(([q])=>q.startsWith("2025"));
+  const structuredCard=(q,d)=>{
+    const list=(title,items,cls="")=>`<div class="qsection ${cls}"><h3>${title}</h3><ul>${(items||[]).map(x=>`<li>${x}</li>`).join("")}</ul></div>`;
+    const src=(d.sources||[]).map(s=>`<span class="qsource">${s.type} · ${s.label}${s.page?` p.${s.page}`:""}</span>`).join("");
+    return el("div",{class:"qcard"},`<b>${q.replace("-"," ")}</b><p class="qheadline">${d.headline}</p><div class="qsections">
+      ${list("경상 이벤트",d.operating_events)}${list("정책·반복 기여",d.recurring_policy_events)}
+      ${list("비경상 이벤트",d.non_recurring_events)}${list("정상화 해석",[d.normalized_view],"normalized")}
+      </div><div class="qsources">${src}</div>`)};
+  Object.entries(sq).forEach(([q,d])=>card.append(structuredCard(q,d)));
+  const ent=Object.entries(n), y26=ent.filter(([q])=>!q.startsWith("2025")&&!sq[q]), y25=ent.filter(([q])=>q.startsWith("2025"));
   y26.forEach(([q,txt])=>card.append(qcard(q,txt)));
   if(y25.length){
     const tg=el("button",{class:"chips-toggle",style:"margin-top:8px;border:1px solid var(--border);background:var(--chip);color:var(--ink2);padding:6px 14px;border-radius:14px;font:600 12.5px system-ui;cursor:pointer"},
@@ -504,7 +524,7 @@ function segDetailCard(v,metric,ckey,okey,title,headMap){
 /* ---------- F2 스탠스 매트릭스 ---------- */
 // 이슈 카테고리 (정책/보조금·EV·ESS·제품·기술). 밸류에이션은 제외, 북미ESS는 ESS로 통합(빌드 alias)
 const ISSUE_CAT={
-  "AMPC":"정책/보조금","OEM보상금":"정책/보조금","관세":"정책/보조금",
+  "AMPC":"정책/보조금","OEM보상금":"정책/보조금","관세":"정책/보조금","관세환급":"정책/보조금",
   "북미수요":"EV","유럽수요":"EV","중국경쟁":"EV","북미증설(EV)":"EV",
   "ESS":"ESS","북미증설(ESS)":"ESS",
   "LFP":"제품·기술","46파이":"제품·기술","전고체":"제품·기술","소형전지":"제품·기술","파우치":"제품·기술","수율":"제품·기술","로봇":"제품·기술"};
@@ -611,9 +631,12 @@ function rF3(v){
 
 /* ---------- F4 적중률 ---------- */
 const F4WHY={
- "LGES":"다수 증권사가 예상하지 못한 GM 합작공장(얼티엄셀즈) 생산 일시중단으로 EV 출하가 급감했고, 북미 ESS 램프업 초기비용과 AMPC 감소가 겹쳐 컨센서스를 하회했습니다.",
- "삼성SDI":"전력용·데이터센터향 ESS와 UPS/BBU 수요가 예상보다 강했고 미국 현지생산 ESS 판매가 늘며, 적자폭이 컨센서스 전망보다 작았습니다.",
- "SK온":"고객 보상금과 AMPC가 반영되며 기존 적자 컨센서스를 크게 상회했지만, 회사가 개별 금액을 공시하지 않아 경상 손익은 분리하지 않았습니다."};
+ "LGES|2026|1Q":"GM 합작공장 생산 일시중단으로 EV 출하가 급감했고, 북미 ESS 램프업 초기비용과 AMPC 감소가 겹쳤습니다.",
+ "LGES|2026|2Q":"유럽 EV·원통형·북미 ESS 물량과 AMPC는 회복됐지만, ESS 초기비용과 팩 병목이 남았습니다. 증권사 추정 관세환급은 회사 공시액이 아니므로 컨센서스 오차와 별도로 봐야 합니다.",
+ "삼성SDI|2026|1Q":"전력용·데이터센터향 ESS와 UPS/BBU 수요, 미국 현지생산 ESS 판매가 늘며 적자폭이 예상보다 작았습니다.",
+ "삼성SDI|2026|2Q":"본업도 개선됐지만 다수 증권사가 약 1,900~2,000억원으로 추정한 관세환급이 서프라이즈의 핵심 일회성 요인이었습니다.",
+ "SK온|2026|1Q":"북미 판매와 유럽·아시아 물량 회복으로 손실은 줄었지만 낮은 가동률 부담이 계속됐습니다.",
+ "SK온|2026|2Q":"아시아 판매 증가에 고객 보상금과 AMPC가 더해졌습니다. 개별 금액이 미공시라 경상 손익은 분리하지 않았습니다."};
 function rF4(v){
   const evs=DATA.f4_accuracy.events;
   const card=el("div",{class:"card"},`<h2>컨센서스 적중률 — 발표된 분기 실적 대비 검증</h2>
@@ -623,8 +646,9 @@ function rF4(v){
   const ev=evs[sel.f4],preds=ev.preds.filter(p=>p.op_err!=null).sort((a,b)=>Math.abs(a.op_err)-Math.abs(b.op_err));
   const vcol=ev.verdict==="어닝 서프라이즈"?"var(--pos)":ev.verdict==="어닝 쇼크"?"var(--neg)":"var(--ink2)";
   const best=preds[0];
-  card.append(el("div",{},headMsg(`<b style="color:${vcol}">${ev.verdict}</b> · 실제 ${fmtA(ev.actual["영업이익"])} vs 프리뷰 컨센서스 중앙값 ${fmtA(ev.consensus_median)} (실제가 ${ev.diff>0?"+":""}${fmtA(ev.diff)} ${ev.diff>0?"상회":"하회"}) — ${F4WHY[ev.company]||""}${best?` <b>가장 근접: ${best.house}</b>(추정−실제 ${best.op_err>0?"+":""}${fmtA(best.op_err)}).`:""}`)).firstChild);
-  card.append(el("p",{class:"note",style:"margin-bottom:2px"},`<b>막대 = 추정 − 실제 (억원)</b> · <span style="color:var(--pos)">오른쪽(+) = 과대추정</span> · <span style="color:var(--neg)">왼쪽(−) = 과소추정</span> · 0에 가까울수록 정확 · ${ev.announce_date} 발표, 예측 ${preds.length}건`));
+  const why=F4WHY[`${ev.company}|${ev.fy}|${ev.period}`]||"";
+  card.append(el("div",{},headMsg(`<b style="color:${vcol}">${ev.verdict}</b> · 실제 ${fmtA(ev.actual["영업이익"])} vs 프리뷰 컨센서스 중앙값 ${fmtA(ev.consensus_median)} (실제가 ${ev.diff>0?"+":""}${fmtA(ev.diff)} ${ev.diff>0?"상회":"하회"}) — ${why}${best?` <b>가장 근접: ${best.house}</b>(추정−실제 ${best.op_err>0?"+":""}${fmtA(best.op_err)}).`:""}`)).firstChild);
+  card.append(el("p",{class:"note",style:"margin-bottom:2px"},`<b>막대 = 추정 − 실제 (억원)</b> · <span style="color:var(--pos)">오른쪽(+) = 과대추정</span> · <span style="color:var(--neg)">왼쪽(−) = 과소추정</span> · 0에 가까울수록 정확 · ${ev.preview_start}~${ev.announce_date} 발표 전, 하우스별 최신 ${ev.n_houses}개사`));
   const W=680,rowH=26,L=110,R=60,H=preds.length*rowH+30;
   const svg=sv("svg",{viewBox:`0 0 ${W} ${H}`,width:"100%",style:"min-width:560px"});
   const mx=Math.max(...preds.map(p=>Math.abs(p.op_err)))*1.15;
@@ -640,7 +664,7 @@ function rF4(v){
     const vt=sv("text",{x:X(p.op_err)+(p.op_err>=0?5:-5),y:y+4,"text-anchor":p.op_err>=0?"start":"end"});
     vt.textContent=(p.op_err>0?"+":"")+Math.round(p.op_err*10).toLocaleString();svg.append(vt)});
   const z=sv("text",{x:X(0),y:H-8,"text-anchor":"middle"});z.textContent="0 = 정확";svg.append(z);
-  card.append(svg,el("p",{class:"note"},"프리뷰 = 발표 직전 리포트. 판정 임계 = 컨센서스 중앙값의 15% 또는 300억원 중 큰 값(초과 시 쇼크/서프라이즈)."));
+  card.append(svg,el("p",{class:"note"},"프리뷰 = 직전 실적 발표일부터 해당 분기 발표 전날까지, 영업이익 추정치가 있는 하우스별 최신 리포트 1건. 판정 임계 = 컨센서스 중앙값의 15% 또는 300억원 중 큰 값(초과 시 쇼크/서프라이즈)."));
   v.append(card);
 }
 

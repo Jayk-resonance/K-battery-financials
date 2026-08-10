@@ -26,7 +26,7 @@
     {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2027, "period": "FY", "metric": "영업이익", "value": 1756, "unit": "십억원", "page": 1, "ampc_basis": "incl"}
   ],
   "stances": [
-    {"issue": "관세", "company": "삼성SDI", "stance_score": 4, "summary": "미국 상호관세 환급 약 1,900억원이 2Q26 일회성 이익으로 반영됐고 이를 제외해도 소폭 흑자를 기록.", "page": 1},
+    {"issue": "관세환급", "company": "삼성SDI", "stance_score": 4, "summary": "미국 상호관세 환급 약 1,900억원이 2Q26 일회성 이익으로 반영됐고 이를 제외해도 소폭 흑자를 기록.", "page": 1},
     {"issue": "ESS", "company": "삼성SDI", "stance_score": 7, "summary": "3Q 국내 이연 물량과 4Q 미국 LFP 가동으로 ESS 중심의 사업 전환과 수익성 개선이 가속할 전망.", "page": 1},
     {"issue": "LFP", "company": "삼성SDI", "stance_score": 5, "summary": "4Q26 미국 LFP 라인 본격 가동과 향후 GM 합작 라인의 ESS 활용 가능성을 성장 요인으로 평가.", "page": 1},
     {"issue": "AMPC", "company": "삼성SDI", "stance_score": 5, "summary": "미국 ESS 생산 확대와 라인 가동률 상승으로 AMPC 수혜가 중장기 손익 개선에 기여할 전망.", "page": 1},

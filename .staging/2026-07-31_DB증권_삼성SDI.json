@@ -19,6 +19,13 @@
     {"company": "삼성SDI", "segment": "전사", "segment_std": "전사", "fy": 2026, "period": "FY", "metric": "AMPC", "value": 524, "unit": "십억원", "page": 2, "ampc_basis": "na"}
   ],
   "stances": [
+    {
+      "issue": "관세환급",
+      "company": "삼성SDI",
+      "stance_score": 4,
+      "summary": "관세 환급과 AMPC가 2Q26 흑자전환과 서프라이즈를 만들었지만 환급은 일회성 요인이다.",
+      "page": 1
+    },
     {"issue": "ESS", "company": "삼성SDI", "stance_score": 8, "summary": "북미 ESS 판매 확대와 추가 증설 가능성을 하반기 핵심 모멘텀으로 본다.", "page": 1},
     {"issue": "소형전지", "company": "삼성SDI", "stance_score": 7, "summary": "BBU·파워툴 믹스 개선으로 3분기 흑자전환을 기대한다.", "page": 1},
     {"issue": "AMPC", "company": "삼성SDI", "stance_score": 6, "summary": "ESS 생산 확대가 AMPC 기여 증가로 이어질 전망이다.", "page": 1}

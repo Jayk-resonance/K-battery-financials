@@ -42,13 +42,14 @@ EARNINGS_BODY_KEYS = ("summary", "actuals", "drivers", "ampc_oneoffs", "guidance
 # stances.issue와 themes.theme의 집계 키. key_issues와 summary는 원문 세부 표현을 보존한다.
 ISSUES = {"LFP", "46파이", "ESS", "북미CAPEX", "수율", "AMPC", "OEM보상금",
           "파우치", "전고체", "밸류에이션", "소형전지", "유럽EV", "북미EV",
-          "중국경쟁", "관세", "로봇", "배터리판매량"}
+          "중국경쟁", "관세", "관세환급", "로봇", "배터리판매량"}
 ISSUE_STD = {"북미 ESS": "ESS", "북미ESS": "ESS",
              "IRA AMPC": "AMPC", "IRA AMPC 수혜": "AMPC",
              "4680": "46파이", "46 시리즈": "46파이", "46시리즈": "46파이",
              "북미 CAPEX": "북미CAPEX", "OEM 보상금": "OEM보상금",
              "소형 전지": "소형전지", "유럽 EV": "유럽EV", "북미 EV": "북미EV",
-             "중국 경쟁": "중국경쟁", "배터리 판매량": "배터리판매량"}
+              "중국 경쟁": "중국경쟁", "관세 환급": "관세환급", "관세 환입": "관세환급",
+              "배터리 판매량": "배터리판매량"}
 REGION_STD = {"미국": "북미", "캐나다": "북미", "독일": "유럽", "프랑스": "유럽",
               "영국": "유럽", "이탈리아": "유럽", "스페인": "유럽", "EU": "유럽",
               "일본": "기타", "인도": "기타", "아세안": "기타"}
@@ -523,7 +524,7 @@ def main(check_only=False, force=False, strict_ids=None):
 
     # --- stances.csv ---
     with open(os.path.join(idx, "stances.csv"), "w", encoding="utf-8", newline="") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["report_id", "date", "house", "company", "issue",
                     "stance_score", "summary", "source_page"])
         for r in sorted(reports, key=lambda x: x["date"]):

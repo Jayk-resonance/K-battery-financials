@@ -135,6 +135,77 @@ class EarningsPipelineTest(unittest.TestCase):
             self.assertIn((company, quarter["fy"], quarter["period"]), groups)
             self.assertIn((company, annual["fy"], annual["period"]), groups)
 
+    def test_qoq_supplements_cover_both_2026_quarters(self):
+        with open(os.path.join(ROOT, "projects", "dashboard", "qoq_supplements.json"),
+                  encoding="utf-8") as f:
+            supplements = json.load(f)["companies"]
+        required = {"headline", "operating_events", "recurring_policy_events",
+                    "non_recurring_events", "normalized_view", "sources"}
+        for company in ("LGES", "삼성SDI", "SK온"):
+            self.assertEqual({"2026-1Q", "2026-2Q"}, set(supplements[company]))
+            for quarter in supplements[company].values():
+                self.assertTrue(required.issubset(quarter))
+                self.assertTrue(quarter["operating_events"])
+                self.assertTrue(quarter["sources"])
+        sdi_2q = supplements["삼성SDI"]["2026-2Q"]
+        self.assertIn("관세환급", " ".join(sdi_2q["non_recurring_events"]))
+        self.assertIn("증권사 추정", {source["type"] for source in sdi_2q["sources"]})
+
+    def test_tariff_refund_backfill_is_limited_to_22_reports(self):
+        expected = {
+            "2026-06-25_NH투자증권_LGES", "2026-06-25_NH투자증권_삼성SDI",
+            "2026-06-26_미래에셋증권_삼성SDI", "2026-06-30_iM증권_LGES",
+            "2026-07-30_KB증권_LGES", "2026-07-30_삼성증권_LGES",
+            "2026-07-31_DB증권_삼성SDI", "2026-07-31_DS투자증권_LGES",
+            "2026-07-31_IBK투자증권_SK온", "2026-07-31_IBK투자증권_삼성SDI",
+            "2026-07-31_LS증권_삼성SDI", "2026-07-31_NH투자증권_삼성SDI",
+            "2026-07-31_iM증권_삼성SDI", "2026-07-31_대신증권_삼성SDI",
+            "2026-07-31_미래에셋증권_삼성SDI", "2026-07-31_삼성증권_삼성SDI",
+            "2026-07-31_신영증권_삼성SDI", "2026-07-31_신한투자증권_LGES",
+            "2026-07-31_신한투자증권_삼성SDI", "2026-07-31_키움증권_삼성SDI",
+            "2026-07-31_하나증권_LGES", "2026-07-31_하나증권_삼성SDI"
+        }
+        tagged = {}
+        old_refund_rows = []
+        staging = os.path.join(ROOT, ".staging")
+        for name in os.listdir(staging):
+            if not name.endswith(".json"):
+                continue
+            with open(os.path.join(staging, name), encoding="utf-8") as f:
+                data = json.load(f)
+            if not isinstance(data, dict):
+                continue
+            report_id = data.get("report_id")
+            if not report_id:
+                continue
+            refund_rows = [row for row in data.get("stances", [])
+                           if row.get("issue") == "관세환급"]
+            if refund_rows:
+                tagged[report_id] = refund_rows
+            old_refund_rows.extend(
+                (report_id, row) for row in data.get("stances", [])
+                if row.get("issue") == "관세"
+                and any(word in row.get("summary", "") for word in ("환급", "환입"))
+            )
+        self.assertEqual(expected, set(tagged))
+        self.assertTrue(all(len(rows) == 1 for rows in tagged.values()))
+        self.assertEqual([], old_refund_rows)
+
+    def test_accuracy_uses_one_latest_preview_per_house(self):
+        with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
+                  encoding="utf-8") as f:
+            events = json.load(f)["f4_accuracy"]["events"]
+        q2_expected = {"LGES": 22, "삼성SDI": 10, "SK온": 10}
+        for event in events:
+            houses = [pred["house"] for pred in event["preds"]]
+            self.assertEqual(len(houses), len(set(houses)))
+            self.assertEqual(event["n_houses"], len(houses))
+            self.assertTrue(all(event["preview_start"] <= pred["date"] < event["announce_date"]
+                                for pred in event["preds"]))
+            self.assertTrue(all(pred["op_est"] is not None for pred in event["preds"]))
+            if event["period"] == "2Q":
+                self.assertEqual(q2_expected[event["company"]], event["n_houses"])
+
 
 if __name__ == "__main__":
     unittest.main()
