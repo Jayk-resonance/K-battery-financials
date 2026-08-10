@@ -373,12 +373,12 @@ function rF1(v){
 
 const SEGCOL={"EV":"var(--lges)","ESS":"#1baf7a","소형":"#eda100","전자재료":"#e87ba4","중대형":"#4a3aa7",
   "AMPC(전사)":"#4a3aa7","AMPC(EV)":"#6c5fc7","AMPC(ESS)":"#a99ee8","AMPC":"#8d84c9","합계":"var(--ink2)"};
-function segmentActual(comp,fy,p,seg,metric){
+function segmentActual(comp,fy,p,seg,metric,preferIncl=false){
   const g=DATA.f1_quarterly.actuals_grid[`${comp}|${fy}|${p}`]||{};
-  if(metric==="영업이익"&&seg==="전사"&&g["전사|영업이익_AMPC제외|excl"]!=null)
+  if(metric==="영업이익"&&!preferIncl&&seg==="전사"&&g["전사|영업이익_AMPC제외|excl"]!=null)
     return {v:g["전사|영업이익_AMPC제외|excl"],basis:"excl"};
   const bases=metric==="매출"?["excl","na","incl","incl_unknown"]
-    :metric==="영업이익"?["excl","na","incl","incl_unknown"]
+    :metric==="영업이익"?(preferIncl?["incl","incl_unknown","na","excl"]:["excl","na","incl","incl_unknown"])
     :["na","excl","incl","incl_unknown"];
   for(const basis of bases){const v=g[`${seg}|${metric}|${basis}`];if(v!=null)return {v,basis}}
   return null;
@@ -398,8 +398,8 @@ function segSeries(comp,metric){
   const out=[];
   const reported=Q.map(([fy,p])=>Object.keys(DATA.f1_quarterly.actuals_grid[`${comp}|${fy}|${p}`]||{}).length>0);
   const lastReported=reported.reduce((last,x,i)=>x?i:last,-1);
-  const mkpts=(g,mk)=>Q.map(([fy,p],i)=>{const c=sc[`${fy}|${p}`]?.[g]?.[mk];
-      const a=segmentActual(comp,fy,p,g,mk);
+  const mkpts=(g,mk,actualMetric=mk,preferIncl=false)=>Q.map(([fy,p],i)=>{const c=sc[`${fy}|${p}`]?.[g]?.[mk];
+      const a=segmentActual(comp,fy,p,g,actualMetric,preferIncl);
       return {i,label:`${String(fy).slice(2)}.${p}`,v:a?.v??c?.median??null,n:a?0:(c?.n||0),
         c:a?null:c,actual:!!a,reported:reported[i],basis:a?.basis||null}});
   segs.forEach(g=>{
@@ -420,7 +420,7 @@ function segSeries(comp,metric){
   }
   // 전체 합계(전사/배터리합계) — 스케일이 크므로 상단 숫자 행
   const totSeg=comp==="LGES"?"전사":"배터리합계";
-  const tpts=mkpts(totSeg,metric);
+  const tpts=metric==="영업이익"?mkpts(totSeg,"영업이익(incl)","영업이익",true):mkpts(totSeg,metric);
   if(tpts.some(p=>p.v!=null))out.push({g:"합계",seg:totSeg,pts:tpts,total:true});
   return {out,labels:Q.map(([fy,p],i)=>`${String(fy).slice(2)}.${p}${reported[i]?"":"E"}`),ampcDetail,lastReported};
 }
@@ -434,7 +434,7 @@ function segDetailCard(v,metric,ckey,okey,title,headMap){
   COMP.forEach(c=>{const b=el("button",{class:comp===c?"on":""},c);
     b.onclick=()=>{sel[ckey]=c;render()};cch.append(b)});
   card.append(cch);
-  const noteHtml=`${comp} — ● 회사 IR 확정치 · ○ 회사 미공시 세부 부문의 증권사 중앙값 · 점선 = 아직 발표되지 않은 분기 전망 · `+(metric==="영업이익"?"증권사 추정선은 AMPC 제외(excl), 회사 확정치는 공시 기준을 툴팁에 표시":"증권사 추정선은 중앙값")+` · <b>${comp==="LGES"?"전사":"배터리합계"}는 차트 상단 숫자 행</b>`+(metric==="영업이익"?` · AMPC는 가는 보라 별도 시리즈`+(comp==="LGES"?" — EV/ESS 분해는 아래 'AMPC 상세'":""):"");
+  const noteHtml=`${comp} — ● 회사 IR 확정치 · ○ 회사 미공시 세부 부문의 증권사 중앙값 · 점선 = 아직 발표되지 않은 분기 전망 · `+(metric==="영업이익"?"세부 부문선은 AMPC 제외(excl), 차트 상단 합계는 AMPC 포함(incl) 기준":"증권사 추정선은 중앙값")+` · <b>${comp==="LGES"?"전사":"배터리합계"}는 차트 상단 숫자 행</b>`+(metric==="영업이익"?` · AMPC는 가는 보라 별도 시리즈`+(comp==="LGES"?" — EV/ESS 분해는 아래 'AMPC 상세'":""):"");
   const {out,labels,ampcDetail,lastReported}=segSeries(comp,metric);
   if(!out.length){card.append(el("p",{class:"note"},"이 회사는 부문별 분기 컨센서스 데이터가 없습니다 (리포트가 부문 분해를 제공하지 않음)."));v.append(card);return}
   const prim=out.filter(s2=>!s2.total),tot=out.find(s2=>s2.total);
