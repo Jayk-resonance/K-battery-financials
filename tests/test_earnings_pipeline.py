@@ -135,6 +135,30 @@ class EarningsPipelineTest(unittest.TestCase):
             self.assertIn((company, quarter["fy"], quarter["period"]), groups)
             self.assertIn((company, annual["fy"], annual["period"]), groups)
 
+    def test_segment_charts_use_latest_actual_quarter_and_summary(self):
+        with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
+                  encoding="utf-8") as f:
+            data = json.load(f)
+        f1 = data["f1_quarterly"]
+        for company in ("LGES", "삼성SDI", "SK온"):
+            latest = f1["segment_latest"][company]
+            self.assertEqual((latest["fy"], latest["period"]), (2026, "2Q"))
+            self.assertTrue(latest["segment_revenue_summary"])
+            self.assertTrue(latest["segment_operating_profit_summary"])
+
+        actuals = f1["actuals_grid"]
+        self.assertEqual(actuals["삼성SDI|2026|2Q"]["배터리합계|매출|na"], 3519.0)
+        self.assertEqual(actuals["삼성SDI|2026|2Q"]["배터리합계|영업이익|incl"], 159.3)
+        self.assertEqual(actuals["SK온|2026|2Q"]["배터리합계|매출|incl_unknown"], 2946.0)
+        self.assertEqual(actuals["SK온|2026|2Q"]["배터리합계|영업이익|incl_unknown"], 821.8)
+
+        path = os.path.join(ROOT, "projects", "dashboard", "dashboard_template.html")
+        with open(path, encoding="utf-8") as f:
+            template = f.read()
+        self.assertIn("segmentActual", template)
+        self.assertIn("segment_latest", template)
+        self.assertNotIn('점선 = 전망(26.2Q~', template)
+
     def test_qoq_supplements_cover_both_2026_quarters(self):
         with open(os.path.join(ROOT, "projects", "dashboard", "qoq_supplements.json"),
                   encoding="utf-8") as f:

@@ -151,6 +151,34 @@ f1 = {"actuals_grid": {f"{k[0]}|{k[1]}|{k[2]}": v for k, v in actual_grid().item
       "narratives": narratives.get("f1", {}),
       "qoq_supplements": qoq_supplements.get("companies", {})}
 
+SEGMENT_SUMMARY_FIELDS = ("segment_revenue_summary", "segment_operating_profit_summary")
+
+
+def latest_segment_summaries():
+    """최신 확정 분기와 같은 시점의 부문 설명이 없으면 빌드를 중단한다."""
+    q_order = {"1Q": 1, "2Q": 2, "3Q": 3, "4Q": 4}
+    out = {}
+    supplements = qoq_supplements.get("companies", {})
+    for comp in COMPANIES:
+        quarters = {(int(a["fy"]), a["period"]) for a in actuals
+                    if a["company"] == comp and a["period"] in q_order}
+        if not quarters:
+            continue
+        fy, period = max(quarters, key=lambda x: (x[0], q_order[x[1]]))
+        period_key = f"{fy}-{period}"
+        entry = supplements.get(comp, {}).get(period_key, {})
+        missing = [field for field in SEGMENT_SUMMARY_FIELDS if not entry.get(field)]
+        if missing:
+            raise ValueError(
+                f"{comp} {period_key} 최신 확정 분기의 부문 설명 누락: {', '.join(missing)}"
+            )
+        out[comp] = {"fy": fy, "period": period,
+                     **{field: entry[field] for field in SEGMENT_SUMMARY_FIELDS}}
+    return out
+
+
+f1["segment_latest"] = latest_segment_summaries()
+
 # ---------- F2: 이슈별 스탠스 매트릭스 ----------
 ISSUE_ALIAS = {"배터리판매량":"판매량","북미EV":"북미수요","유럽EV":"유럽수요","북미ESS":"ESS"}
 mat = collections.defaultdict(list)
