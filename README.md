@@ -28,6 +28,7 @@ frontmatter 필드가 곧 "DB 컬럼"이다. 표준 양식은 [`schema/template.
 ├── schema/
 │   ├── template.md            # 표준 MD 양식 + 인제스트 입력 형식(부록)
 │   ├── earnings_template.md   # 실적·컨콜 전용 입력·MD 형식
+│   ├── market_company_data.md # 시장 수요·회사 판매량/생산능력 표준 스키마
 │   └── NORMALIZATION.md       # 판단 규칙(segment_std·ampc_basis·metric·이슈 통제어휘)
 ├── tools/                     # 인제스트·빌드·배포 스크립트
 ├── projects/dashboard/        # 대시보드 데이터·템플릿·자립형 산출물

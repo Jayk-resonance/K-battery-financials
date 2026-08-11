@@ -25,6 +25,7 @@ Claude 외 도구(GPT·Gemini·Cursor 등)는 이 파일을 자동 로드하지 
 1. `README.md` — 저장소 목적·폴더 구조·비개발자 사용법
 2. `schema/template.md` — MD의 표준 양식(= DB 스키마). YAML 필드 정의 + 본문 6개 섹션 + 인제스트 입력 형식(부록)
 3. `schema/NORMALIZATION.md` — 판단 규칙: segment_std 매핑, ampc_basis, metric 통제어휘, stance_score rubric(-10~+10), 이슈 통제어휘, 수요 시리즈 분류, KNOWN_OP_BASIS 자동 교정
+4. 시장 수요·회사 판매량/생산능력 작업은 `schema/market_company_data.md`를 추가로 읽는다.
 
 인제스트/분석에 들어가기 전에 최소 위 3개를 읽는다. **규칙은 내 기억이 아니라 이 문서들에 있다.**
 
