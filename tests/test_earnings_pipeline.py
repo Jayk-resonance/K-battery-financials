@@ -165,6 +165,19 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertIn("g.interpretation", template)
         self.assertNotIn("const F6GAP", template)
 
+    def test_mobile_navigation_exposes_all_tabs_and_centers_selection(self):
+        path = os.path.join(ROOT, "projects", "dashboard", "dashboard_template.html")
+        with open(path, encoding="utf-8") as f:
+            template = f.read()
+        for marker in ("navMenuToggle", "navPrev", "navNext", "navPosition"):
+            self.assertIn(marker, template)
+        self.assertIn("전체 탭", template)
+        self.assertIn("scrollIntoView", template)
+        self.assertIn("updateNavEdges", template)
+        self.assertIn("centerNavOnRender", template)
+        self.assertIn('aria-label="이전 탭 보기"', template)
+        self.assertIn('aria-label="다음 탭 보기"', template)
+
     def test_normalized_op_waterfall_uses_broker_ranges_without_double_counting(self):
         with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
                   encoding="utf-8") as f:

@@ -47,6 +47,8 @@ body{margin:0;background:var(--page);color:var(--ink);
   border-radius:10px;padding:9px 12px;cursor:pointer;font-weight:600;font-size:13px;text-align:left;white-space:nowrap}
 #nav button:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)}
 #nav button.on{background:var(--brand-bg);color:var(--accent);font-weight:800}
+.nav-strip{position:relative}
+.mobile-nav-tools,.nav-menu,.nav-edge{display:none}
 .nav-hint{display:none}
 .theme-btn{margin-top:auto;align-self:flex-start;border:1px solid var(--border);background:var(--surface);
   color:var(--ink2);border-radius:9px;padding:6px 11px;font-size:12px;cursor:pointer}
@@ -130,8 +132,23 @@ summary{cursor:pointer;color:var(--muted);font-size:12.5px}
   main,.wrap,#view{width:100%;max-width:100%}
   .sidebar{width:100%;flex-basis:auto;height:auto;position:static;border-right:none;border-bottom:1px solid var(--border);padding:12px 14px}
   .brand{padding-bottom:10px}
-  #nav{flex-direction:row;overflow-x:auto;gap:6px;scrollbar-width:thin;scroll-snap-type:x proximity;padding-bottom:4px}
-  #nav button{width:auto;flex:0 0 auto;scroll-snap-align:start}
+  .mobile-nav-tools{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 2px 7px}
+  .nav-current{min-width:0;color:var(--ink2);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nav-current b{color:var(--ink);font-size:12px}
+  .nav-current small{color:var(--muted);margin-left:4px}
+  .nav-menu-toggle{min-height:36px;flex:0 0 auto;border:1px solid var(--border);background:var(--surface);color:var(--ink2);border-radius:9px;padding:6px 10px;font:700 11.5px system-ui;cursor:pointer}
+  .nav-strip::before,.nav-strip::after{content:"";position:absolute;z-index:1;top:0;bottom:0;width:42px;pointer-events:none;opacity:0;transition:opacity .15s}
+  .nav-strip::before{left:0;background:linear-gradient(90deg,var(--surface) 20%,transparent)}
+  .nav-strip::after{right:0;background:linear-gradient(270deg,var(--surface) 20%,transparent)}
+  .nav-strip.has-left::before,.nav-strip.has-right::after{opacity:1}
+  #nav{flex-direction:row;overflow-x:auto;gap:6px;scrollbar-width:none;scroll-snap-type:x proximity;padding:0 24px 4px 2px}
+  #nav::-webkit-scrollbar{display:none}
+  #nav button{width:auto;min-height:44px;flex:0 0 auto;scroll-snap-align:center}
+  .nav-edge{position:absolute;z-index:2;top:50%;transform:translateY(-55%);width:32px;height:36px;align-items:center;justify-content:center;border:1px solid var(--border);background:var(--surface);color:var(--accent);border-radius:10px;font:800 21px/1 system-ui;box-shadow:0 2px 8px rgba(0,0,0,.08);cursor:pointer}
+  .nav-edge.show{display:flex}.nav-edge.prev{left:0}.nav-edge.next{right:0}
+  .nav-menu.open{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:7px 2px 3px;padding:8px;background:var(--page);border:1px solid var(--border);border-radius:12px}
+  .nav-menu button{min-height:44px;border:1px solid var(--border);background:var(--surface);color:var(--ink2);border-radius:9px;padding:8px 9px;font:650 11.5px/1.35 system-ui;text-align:left;cursor:pointer}
+  .nav-menu button.on{background:var(--brand-bg);border-color:color-mix(in srgb,var(--accent) 35%,var(--border));color:var(--accent);font-weight:800}
   .nav-hint{display:block;color:var(--muted);font-size:10.5px;padding:3px 4px 0}
   .theme-btn{position:absolute;top:14px;right:14px;margin:0}
   .topbar{padding:12px 16px}.wrap{padding:16px 14px 60px}
@@ -143,8 +160,17 @@ summary{cursor:pointer;color:var(--muted);font-size:12.5px}
 <div class="layout">
 <aside class="sidebar">
   <div class="brand"><div class="brand-mark">🔋</div><div><b>K-배터리</b><small>리포트 인텔리전스</small></div></div>
-  <nav id="nav"></nav>
-  <span class="nav-hint">탭을 좌우로 밀어 더 보기 →</span>
+  <div class="mobile-nav-tools">
+    <span class="nav-current">현재 <b id="navCurrent">개요</b><small id="navPosition">1 / 8</small></span>
+    <button class="nav-menu-toggle" id="navMenuToggle" type="button" aria-expanded="false" aria-controls="navMenu" onclick="toggleNavMenu()">전체 탭 8개 ▾</button>
+  </div>
+  <div class="nav-strip">
+    <button class="nav-edge prev" id="navPrev" type="button" aria-label="이전 탭 보기" onclick="scrollNav(-1)">‹</button>
+    <nav id="nav" aria-label="주요 분석 탭"></nav>
+    <button class="nav-edge next" id="navNext" type="button" aria-label="다음 탭 보기" onclick="scrollNav(1)">›</button>
+  </div>
+  <div class="nav-menu" id="navMenu" hidden></div>
+  <span class="nav-hint">옆 탭은 좌우로 밀거나 ‘전체 탭’을 눌러 볼 수 있습니다.</span>
   <button class="theme-btn" onclick="tgTheme()" title="라이트/다크 전환">☀ / ☾</button>
 </aside>
 <main>
@@ -204,14 +230,41 @@ function axisY(g,x0,x1,y,v){g.append(sv("line",{x1:x0,x2:x1,y1:y,y2:y,stroke:"va
 const TABS=[["overview","개요"],["f1","① 분기 실적"],["f6","② 전망 분포·이견"],["f4","③ 과거 추정 오차"],
  ["f2","④ 이슈별 3사 평가"],["f3","⑤ 증권사 전망 변화"],["f7","⑥ 산업 수요 전망"],["srch","🔍 검색"]];
 let tab="overview", sel={f1:"LGES",f1c:"LGES",f1p:null,f1sr:"LGES",f1so:"LGES",f1w:"삼성SDI",f1srO:false,f1soO:false,f3:"LGES",f4:0,f6:"LGES",f6mode:"latest",f7s:null};
+let navMenuOpen=false,centerNavOnRender=true;
+function selectTab(id){tab=id;navMenuOpen=false;centerNavOnRender=true;render()}
+function toggleNavMenu(){navMenuOpen=!navMenuOpen;renderNavMenu()}
+function renderNavMenu(){
+  const menu=$("#navMenu"),toggle=$("#navMenuToggle");menu.innerHTML="";
+  TABS.forEach(([id,name])=>{const b=el("button",{class:tab===id?"on":""},name);b.onclick=()=>selectTab(id);menu.append(b)});
+  menu.hidden=!navMenuOpen;menu.classList.toggle("open",navMenuOpen);
+  toggle.setAttribute("aria-expanded",String(navMenuOpen));toggle.textContent=`전체 탭 ${TABS.length}개 ${navMenuOpen?"▴":"▾"}`;
+}
+function updateNavEdges(){
+  const nav=$("#nav"),strip=$(".nav-strip"),max=Math.max(0,nav.scrollWidth-nav.clientWidth);
+  const left=max>2&&nav.scrollLeft>4,right=max>2&&nav.scrollLeft<max-4;
+  strip.classList.toggle("has-left",left);strip.classList.toggle("has-right",right);
+  $("#navPrev").classList.toggle("show",left);$("#navNext").classList.toggle("show",right);
+}
+function scrollNav(direction){const nav=$("#nav");nav.scrollBy({left:direction*nav.clientWidth*.72,behavior:"smooth"})}
+function syncMobileNav(centerActive){
+  const index=Math.max(0,TABS.findIndex(([id])=>id===tab)),active=$("#nav button.on");
+  $("#navCurrent").textContent=TABS[index][1];$("#navPosition").textContent=`${index+1} / ${TABS.length}`;
+  if(centerActive&&innerWidth<=860&&active)active.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
+  requestAnimationFrame(updateNavEdges);
+}
 function render(){
   $("#subline").textContent=`리포트 ${DATA.meta.n_reports}건 (산업 ${DATA.meta.n_industry||0}건 포함) · ${DATA.meta.houses.length}개 증권사 · ${DATA.meta.period}`;
   const nav=$("#nav");nav.innerHTML="";
   TABS.forEach(([id,name])=>{const b=el("button",{class:tab===id?"on":""},name);
-    b.onclick=()=>{tab=id;render()};nav.append(b)});
+    b.onclick=()=>selectTab(id);nav.append(b)});
+  renderNavMenu();syncMobileNav(centerNavOnRender);centerNavOnRender=false;
   const v=$("#view");v.innerHTML="";
   ({overview:rOver,f1:rF1,f2:rF2,f3:rF3,f4:rF4,f6:rF6,f7:rF7,srch:rSearch})[tab](v);
 }
+$("#nav").addEventListener("scroll",updateNavEdges,{passive:true});
+window.addEventListener("resize",()=>requestAnimationFrame(updateNavEdges));
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&navMenuOpen){navMenuOpen=false;renderNavMenu();$("#navMenuToggle").focus()}});
+document.addEventListener("click",e=>{if(navMenuOpen&&!e.target.closest?.(".mobile-nav-tools,.nav-menu")){navMenuOpen=false;renderNavMenu()}});
 
 /* ---------- 개요 ---------- */
 function rOver(v){
