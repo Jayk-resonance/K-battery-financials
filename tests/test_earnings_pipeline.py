@@ -265,6 +265,21 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertEqual(1, joined.count("동일 기간 중복"))
         self.assertNotIn("series_id 중복", joined)
 
+    def test_market_validator_rejects_monthly_value_labeled_as_fy(self):
+        row = {
+            "series_id": "monthly_as_fy", "market": "EV", "application": "전체",
+            "system_type": None, "geography_raw": "미국", "geography": "미국",
+            "parent_geography": "북미", "geography_level": "국가",
+            "metric": "판매대수", "fy": 2026, "period": "FY", "value": 81,
+            "unit": "천대", "value_type": "실적", "series_class": "월간·누적",
+            "subsegment_raw": "BEV", "basis": "2026년 5월 미국 BEV 판매량",
+            "source_kind": "조사기관", "extraction_method": "본문",
+            "value_precision": "정확", "page": 10,
+        }
+        BUILD.warnings.clear()
+        BUILD.validate_market_series("monthly", [row])
+        self.assertIn("월간 수치를 period=FY로 저장 금지", "\n".join(BUILD.warnings))
+
     def test_market_company_index_writer_creates_separate_headers(self):
         with tempfile.TemporaryDirectory() as tmp:
             BUILD.write_market_company_indexes(tmp, [])
@@ -280,6 +295,20 @@ class EarningsPipelineTest(unittest.TestCase):
                 header = f.readline()
             self.assertIn("metric,metric_raw", header)
             self.assertIn("raw_value,raw_unit", header)
+
+    def test_quant_backfill_merges_by_report_id_without_leaking_id_into_row(self):
+        reports = [{"report_id": "pilot"}]
+        backfill = {
+            "company_volume_series": [
+                {"report_id": "pilot", "series_id": "capacity", "value": 50}
+            ]
+        }
+        BUILD.warnings.clear()
+        BUILD.merge_quant_backfill(reports, backfill)
+        self.assertEqual(
+            [{"series_id": "capacity", "value": 50}],
+            reports[0]["company_volume_series"],
+        )
 
     def test_legacy_market_migration_connects_safe_annual_series(self):
         report = {
@@ -301,6 +330,40 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertTrue(all(row["parent_geography"] == "북미" for row in migrated))
         self.assertTrue(all(row["application"] == "데이터센터" for row in migrated))
         self.assertTrue(all(row["system_type"] == "UPS" for row in migrated))
+        self.assertTrue(all(row["extraction_method"] == "원천불명" for row in migrated))
+
+    def test_legacy_market_migration_preserves_installation_and_ev_subsegment(self):
+        report = {
+            "report_id": "dimensions", "date": "2026-07-31", "house": "테스트",
+            "demand_forecasts": [
+                {"region": "글로벌", "application": "ESS", "metric": "수요량",
+                 "fy": 2030, "value": 300, "value_prev": None, "unit": "GWh",
+                 "basis": "글로벌 BESS 신규 설치용량 전망 차트", "page": 8},
+                {"region": "미국", "application": "EV", "metric": "판매대수",
+                 "fy": 2027, "value": 2000, "value_prev": None, "unit": "천대",
+                 "basis": "미국 BEV 판매대수 전망 표", "page": 9},
+            ]
+        }
+        migrated, review = MARKET_MIGRATION.migrate_legacy_demands(report)
+        self.assertEqual([], review)
+        self.assertEqual("설치에너지", migrated[0]["metric"])
+        self.assertEqual("차트", migrated[0]["extraction_method"])
+        self.assertEqual("BEV", migrated[1]["subsegment_raw"])
+        self.assertEqual("서브세그먼트", migrated[1]["series_class"])
+
+    def test_legacy_market_migration_does_not_label_monthly_data_as_fy(self):
+        report = {
+            "report_id": "monthly", "date": "2026-06-08", "house": "테스트",
+            "demand_forecasts": [
+                {"region": "미국", "application": "EV", "metric": "판매대수",
+                 "fy": 2026, "value": 81, "value_prev": None, "unit": "천대",
+                 "basis": "2026년 5월 미국 BEV 판매량", "page": 10},
+            ]
+        }
+        migrated, review = MARKET_MIGRATION.migrate_legacy_demands(report)
+        self.assertEqual([], migrated)
+        self.assertEqual(1, len(review))
+        self.assertIn("월간·누적 자료는 period 재확인 필요", review[0]["review_reasons"])
 
     def test_legacy_market_migration_routes_ambiguous_rows_to_review(self):
         report = {
@@ -351,8 +414,8 @@ class EarningsPipelineTest(unittest.TestCase):
             BUILD.validate_market_series(data["report_id"], migrated)
             self.assertEqual([], BUILD.warnings, data["report_id"])
         self.assertEqual(1294, source_total)
-        self.assertEqual(813, migrated_total)
-        self.assertEqual(481, review_total)
+        self.assertEqual(765, migrated_total)
+        self.assertEqual(529, review_total)
         self.assertEqual(source_total, migrated_total + review_total)
 
     def test_normalized_op_waterfall_uses_broker_ranges_without_double_counting(self):

@@ -7,7 +7,8 @@
   python3 tools/build_indexes.py --check-id <id>  # 지정 리포트/실적 패키지 엄격 검증
   python3 tools/build_indexes.py --force   # DB 축소 안전장치 무시 (의도적 삭제 시에만)
 
-주의: .staging 을 유일한 소스로 index/ 와 reports/ 를 전량 덮어쓴다.
+주의: .staging 과 projects/market-data/quant_backfill.json을 소스로
+      index/ 와 reports/ 를 전량 덮어쓴다.
       staging 이 없거나 일부만 있으면 DB가 지워지므로, 리포트 수가 줄어드는
       재빌드는 자동으로 중단된다(--force 로만 강행).
 
@@ -24,6 +25,7 @@ import argparse, json, csv, os, sys, glob, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STAGING = os.path.join(ROOT, ".staging")
+QUANT_BACKFILL = os.path.join(ROOT, "projects", "market-data", "quant_backfill.json")
 SEG_STD = {"전사", "배터리합계", "소형", "중대형", "EV", "ESS", "전자재료", "기타"}
 AMPC_BASIS = {"excl", "incl", "incl_unknown", "na"}
 PERIODS = {"FY", "1Q", "2Q", "3Q", "4Q"}
@@ -64,7 +66,7 @@ SYSTEM_TYPES = {"UPS", "BESS", None}
 GEOGRAPHY_LEVELS = {"글로벌", "권역", "국가"}
 VALUE_TYPES = {"실적", "추정", "가이던스", "시나리오"}
 QUANT_SOURCE_KINDS = {"회사공시", "조사기관", "증권사추정", "증권사재가공", "원천불명"}
-EXTRACTION_METHODS = {"표", "차트", "본문", "계산"}
+EXTRACTION_METHODS = {"표", "차트", "본문", "계산", "원천불명"}
 VALUE_PRECISIONS = {"정확", "근사", "파생"}
 MARKET_SERIES_CLASSES = {"시장전체", "서브세그먼트", "시나리오", "월간·누적", "참고치"}
 MARKET_METRIC_UNITS = {
@@ -102,6 +104,19 @@ def has_content(value):
     if isinstance(value, list):
         return any(str(item).strip() for item in value)
     return value is not None and bool(str(value).strip())
+
+
+def merge_quant_backfill(reports, backfill):
+    """별도 보충 파일의 시장·회사 행을 report_id 기준으로 원문 리포트에 결합한다."""
+    by_id = {report["report_id"]: report for report in reports}
+    for field in ("market_series", "company_volume_series"):
+        for row in backfill.get(field, []) or []:
+            report_id = row.get("report_id")
+            if report_id not in by_id:
+                warn(report_id or "quant_backfill", f"보충 데이터 report_id 없음: {report_id}")
+                continue
+            item = {key: value for key, value in row.items() if key != "report_id"}
+            by_id[report_id].setdefault(field, []).append(item)
 
 
 def _validate_geography(rid, row, label):
@@ -149,6 +164,10 @@ def _validate_common_series(rid, rows, label, dimension_fields):
             warn(rid, f"{label} value_precision 비표준: {row.get('value_precision')}")
         if row.get("extraction_method") == "차트" and row.get("value_precision") == "정확":
             warn(rid, f"{label} 차트 판독값은 value_precision=정확 불가")
+        if row.get("period") == "FY" and isinstance(row.get("fy"), int):
+            basis = str(row.get("basis") or "")
+            if re.search(rf"{row['fy']}년\s*(1[0-2]|[1-9])월", basis):
+                warn(rid, f"{label} 월간 수치를 period=FY로 저장 금지")
         if not isinstance(row.get("page"), int) or row.get("page", 0) < 1:
             warn(rid, f"{label} 원문 페이지 누락 또는 오류: {row.get('page')}")
 
@@ -168,7 +187,8 @@ def validate_market_series(rid, rows):
     rows = rows or []
     _validate_common_series(
         rid, rows, "market_series",
-        ("market", "application", "system_type", "geography", "metric", "unit")
+        ("market", "application", "system_type", "geography", "metric", "unit",
+         "subsegment_raw")
     )
     for row in rows:
         _validate_geography(rid, row, "market_series")
@@ -693,6 +713,9 @@ def main(check_only=False, force=False, strict_ids=None):
     for rid in sorted(have - mf_ids):
         warn(rid, "manifest 원본 파일 매핑 없음")
     fmap = {m["report_id"]: m["file"] for m in mf}
+    if os.path.exists(QUANT_BACKFILL):
+        with open(QUANT_BACKFILL, encoding="utf-8") as stream:
+            merge_quant_backfill(reports, json.load(stream))
     from market_migration import migrate_legacy_demands
     legacy_migrated = legacy_review = legacy_total = 0
     for r in reports:

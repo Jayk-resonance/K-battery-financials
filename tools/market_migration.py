@@ -44,11 +44,14 @@ def _ess_dimensions(basis):
     return application, "UPS" if has_ups else "BESS" if has_bess else None, []
 
 
-def _metric(row, market):
+def _metric(row, market, basis):
     metric, unit = row.get("metric"), row.get("unit")
     if metric == "실적치":
         return None, ["실적치는 원문 지표 재확인 필요"]
     if metric == "수요량" and unit == "GWh":
+        if market == "ESS" and _contains(
+                basis, "설치량", "설치용량", "신규 설치", "설치 수요", "installation"):
+            return "설치에너지", []
         return "수요량", []
     if metric == "판매대수":
         if unit not in VEHICLE_UNITS:
@@ -69,13 +72,40 @@ def _value_type(report, row, basis):
 
 
 def _extraction(basis):
+    if _contains(basis, "계산", "증감분"):
+        return "계산", "파생"
     if _contains(basis, "본문"):
         return "본문", "근사"
     if _contains(basis, "차트"):
         return "차트", "근사"
-    if _contains(basis, "계산", "증감분"):
-        return "계산", "파생"
-    return "표", "근사"
+    if _contains(basis, "표", "table"):
+        return "표", "근사"
+    return "원천불명", "근사"
+
+
+def _ev_subsegment(basis):
+    for pattern in (
+            r"xEV", r"BEV\s*\+\s*PHEV", r"PHEV\s*\+\s*BEV",
+            r"EV\s*\+\s*PHEV", r"PHEV\s*\+\s*EV",
+            r"BEV", r"PHEV", r"HEV"):
+        match = re.search(pattern, basis, re.I)
+        if match:
+            return match.group(0)
+    for token in ("승용 전기차", "상용 전기차", "전기 버스", "전기 이륜·삼륜차"):
+        if token in basis:
+            return token
+    return None
+
+
+def _has_ambiguous_annual_period(report, row, basis):
+    fy = row.get("fy")
+    for year, _month in re.findall(r"(20\d{2})년\s*(1[0-2]|[1-9])월", basis):
+        if isinstance(fy, int) and int(year) == fy:
+            return True
+    report_year = int(str(report.get("date", "0000"))[:4])
+    has_month = bool(re.search(r"(?<!\d)(1[0-2]|[1-9])월", basis))
+    has_flow_metric = _contains(basis, "판매", "출하", "설치", "누적", "월간")
+    return fy == report_year and has_month and has_flow_metric
 
 
 def _review_row(report, position, row, reasons):
@@ -119,8 +149,10 @@ def _candidate(report, position, row):
     if geography is None:
         reasons.append(f"지원하지 않는 지역: {raw_region}")
 
-    metric, metric_reasons = _metric(row, market)
+    metric, metric_reasons = _metric(row, market, basis)
     reasons.extend(metric_reasons)
+    if _has_ambiguous_annual_period(report, row, basis):
+        reasons.append("월간·누적 자료는 period 재확인 필요")
 
     application, system_type = "전체", None
     if market == "ESS":
@@ -136,14 +168,15 @@ def _candidate(report, position, row):
     geo_name, parent, level, scope_note = geography
     extraction_method, value_precision = _extraction(basis)
     value_type = _value_type(report, row, basis)
+    subsegment_raw = _ev_subsegment(basis) if market == "EV" else None
     series_class = (
         "시나리오" if value_type == "시나리오"
-        else "서브세그먼트" if application != "전체" or scope_note
+        else "서브세그먼트" if application != "전체" or scope_note or subsegment_raw
         else "시장전체"
     )
     group = (
         market, application, system_type, raw_region, geo_name, parent, level,
-        metric, row.get("unit"), basis, scope_note, row.get("page")
+        metric, row.get("unit"), subsegment_raw, basis, scope_note, row.get("page")
     )
     digest = hashlib.sha1("\x1f".join(str(item) for item in group).encode("utf-8")).hexdigest()[:10]
     converted = {
@@ -165,7 +198,7 @@ def _candidate(report, position, row):
         "unit": row["unit"],
         "value_type": value_type,
         "series_class": series_class,
-        "subsegment_raw": None,
+        "subsegment_raw": subsegment_raw,
         "basis": basis,
         "scope_note": scope_note,
         "source_owner": None,
