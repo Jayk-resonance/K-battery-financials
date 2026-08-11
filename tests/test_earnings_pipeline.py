@@ -325,6 +325,7 @@ class EarningsPipelineTest(unittest.TestCase):
                 header = f.readline()
             self.assertIn("metric,metric_raw", header)
             self.assertIn("raw_value,raw_unit", header)
+            self.assertIn("house,source_pdf,series_id", header)
             self.assertIn("facility_raw,ownership_type,jv_name_raw,jv_partner_raw,capacity_basis", header)
 
     def test_report_catalog_keeps_publication_metadata_and_source_file(self):
@@ -361,6 +362,27 @@ class EarningsPipelineTest(unittest.TestCase):
             reports[0]["company_volume_series"],
         )
 
+    def test_quant_backfill_keeps_actuals_company_source_separate(self):
+        reports = [{"report_id": "pilot"}]
+        row = {
+            "report_id": "actuals_2025_1Q_SK온", "date": "2025-04-30",
+            "house": "SK이노베이션", "source_group": "actuals",
+            "source_file": "SK이노베이션_실적발표_1Q25 국문_F.pdf",
+            "series_id": "capacity", "value": 7,
+        }
+        BUILD.warnings.clear()
+        standalone = BUILD.merge_quant_backfill(
+            reports, {"company_volume_series": [row]}
+        )
+        self.assertNotIn("company_volume_series", reports[0])
+        self.assertEqual(1, len(standalone))
+        self.assertEqual("actuals_2025_1Q_SK온", standalone[0]["report_id"])
+        self.assertEqual(
+            [{"series_id": "capacity", "value": 7}],
+            standalone[0]["company_volume_series"],
+        )
+        self.assertEqual([], BUILD.warnings)
+
     def test_quant_backfill_dataset_passes_quant_schema_validation(self):
         path = os.path.join(ROOT, "projects", "market-data", "quant_backfill.json")
         with open(path, encoding="utf-8") as f:
@@ -376,6 +398,32 @@ class EarningsPipelineTest(unittest.TestCase):
             rows = [{key: value for key, value in row.items() if key != "report_id"}
                     for row in market_rows if row["report_id"] == report_id]
             BUILD.validate_market_series(report_id, rows)
+        company_rows = backfill["company_volume_series"]
+        company_keys = [(row["report_id"], row["series_id"], row["fy"], row["period"])
+                        for row in company_rows]
+        self.assertEqual(len(company_keys), len(set(company_keys)))
+        metadata = {"report_id", "date", "house", "source_group", "source_file"}
+        for report_id in {row["report_id"] for row in company_rows}:
+            rows = [{key: value for key, value in row.items() if key not in metadata}
+                    for row in company_rows if row["report_id"] == report_id]
+            BUILD.validate_company_volume_series(report_id, rows)
+        disclosed_totals = {
+            "2023-09-12_IBK투자증권_산업": {
+                2022: 15, 2023: 40, 2024: 80, 2025: 160,
+                2026: 216, 2027: 249, 2028: 249,
+            },
+            "2026-06-29_LS증권_SK온": {
+                2025: 111, 2026: 179, 2027: 179, 2028: 224,
+            },
+            "2023-07-06_대신증권_산업": {
+                2023: 55, 2024: 100, 2025: 197, 2026: 260,
+            },
+        }
+        for report_id, expected in disclosed_totals.items():
+            rows = [row for row in company_rows if row["report_id"] == report_id]
+            actual = {fy: sum(row["value"] for row in rows if row["fy"] == fy)
+                      for fy in expected}
+            self.assertEqual(expected, actual)
         self.assertEqual([], BUILD.warnings)
 
     def test_europe_bess_application_breakdown_preserves_source_mismatch(self):

@@ -109,16 +109,35 @@ def has_content(value):
 
 
 def merge_quant_backfill(reports, backfill):
-    """별도 보충 파일의 시장·회사 행을 report_id 기준으로 원문 리포트에 결합한다."""
+    """리포트 행은 원문에 결합하고, actuals 회사 행은 독립 출처로 반환한다."""
     by_id = {report["report_id"]: report for report in reports}
+    standalone_company = {}
     for field in ("market_series", "company_volume_series"):
         for row in backfill.get(field, []) or []:
             report_id = row.get("report_id")
             if report_id not in by_id:
+                if field == "company_volume_series" and row.get("source_group") == "actuals":
+                    metadata = {key: row.get(key) for key in
+                                ("report_id", "date", "house", "source_group", "source_file")}
+                    if not all(has_content(value) for value in metadata.values()):
+                        warn(report_id or "quant_backfill", "actuals 회사 보충 데이터 출처 메타데이터 누락")
+                        continue
+                    source = standalone_company.setdefault(report_id, {
+                        **metadata, "company_volume_series": [],
+                    })
+                    if any(source[key] != metadata[key] for key in metadata):
+                        warn(report_id, "actuals 회사 보충 데이터 출처 메타데이터 불일치")
+                        continue
+                    source["company_volume_series"].append({
+                        key: value for key, value in row.items()
+                        if key not in metadata
+                    })
+                    continue
                 warn(report_id or "quant_backfill", f"보충 데이터 report_id 없음: {report_id}")
                 continue
             item = {key: value for key, value in row.items() if key != "report_id"}
             by_id[report_id].setdefault(field, []).append(item)
+    return list(standalone_company.values())
 
 
 def _validate_geography(rid, row, label):
@@ -381,7 +400,7 @@ MARKET_SERIES_FIELDS = [
     "value_precision", "source_page"
 ]
 COMPANY_VOLUME_SERIES_FIELDS = [
-    "report_id", "date", "house", "series_id", "company_raw", "company",
+    "report_id", "date", "house", "source_pdf", "series_id", "company_raw", "company",
     "company_type", "facility_raw", "ownership_type", "jv_name_raw",
     "jv_partner_raw", "capacity_basis", "market", "application", "system_type",
     "geography_raw", "geography", "parent_geography", "geography_level", "metric", "metric_raw",
@@ -396,7 +415,7 @@ MARKET_SERIES_REVIEW_FIELDS = [
 ]
 
 
-def write_market_company_indexes(idx, reports):
+def write_market_company_indexes(idx, reports, standalone_company=None):
     """명시적 데이터와 legacy 자동 이관분을 분리된 CSV로 쓴다."""
     ordered = sorted(reports, key=lambda item: item["date"])
     with open(os.path.join(idx, "market_series.csv"), "w", encoding="utf-8", newline="") as f:
@@ -433,12 +452,17 @@ def write_market_company_indexes(idx, reports):
         writer = csv.DictWriter(f, fieldnames=COMPANY_VOLUME_SERIES_FIELDS,
                                 extrasaction="ignore")
         writer.writeheader()
-        for report in ordered:
+        company_sources = sorted(list(ordered) + list(standalone_company or []),
+                                 key=lambda item: item["date"])
+        for report in company_sources:
             for item in report.get("company_volume_series", []) or []:
                 row = dict(item)
+                source_group = report.get("source_group", "inbox")
                 row.update({
                     "report_id": report["report_id"], "date": report["date"],
-                    "house": report["house"], "source_page": item.get("page"),
+                    "house": report["house"],
+                    "source_pdf": source_group + "/" + report.get("source_file", ""),
+                    "source_page": item.get("page"),
                 })
                 writer.writerow(row)
 
@@ -770,9 +794,16 @@ def main(check_only=False, force=False, strict_ids=None):
     for rid in sorted(have - mf_ids):
         warn(rid, "manifest 원본 파일 매핑 없음")
     fmap = {m["report_id"]: m["file"] for m in mf}
+    standalone_company = []
     if os.path.exists(QUANT_BACKFILL):
         with open(QUANT_BACKFILL, encoding="utf-8") as stream:
-            merge_quant_backfill(reports, json.load(stream))
+            standalone_company = merge_quant_backfill(reports, json.load(stream))
+        for source in standalone_company:
+            validate_company_volume_series(source["report_id"],
+                                           source["company_volume_series"])
+            source_path = os.path.join(ROOT, source["source_group"], source["source_file"])
+            if not os.path.exists(source_path):
+                warn(source["report_id"], f"actuals 원본 PDF 없음: {source_path}")
     from market_migration import migrate_legacy_demands
     legacy_migrated = legacy_review = legacy_total = 0
     for r in reports:
@@ -927,7 +958,7 @@ def main(check_only=False, force=False, strict_ids=None):
                             d.get("value"), d.get("value_prev"), d.get("unit"),
                             d.get("basis"), d.get("page"),
                             c["cls"], c["label"], c["scope"]])
-    write_market_company_indexes(idx, reports)
+    write_market_company_indexes(idx, reports, standalone_company)
     write_report_catalog(idx, reports, mf)
     with open(os.path.join(idx, "themes.csv"), "w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
