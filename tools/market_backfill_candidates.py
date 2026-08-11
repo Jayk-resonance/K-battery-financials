@@ -166,11 +166,12 @@ def _load_review_status(path):
         return {}
     with path.open(encoding="utf-8-sig", newline="") as stream:
         rows = csv.DictReader(stream)
-        return {
-            (row["source_group"], row["source_file"], row["page"]): row["visual_review_status"]
-            for row in rows
-            if row.get("visual_review_status") and row["visual_review_status"] != "대기"
-        }
+        result = {}
+        for row in rows:
+            status = row.get("review_status") or row.get("visual_review_status")
+            if status and status != "대기":
+                result[(row["source_group"], row["source_file"], row["page"])] = status
+        return result
 
 
 def build_candidate_files():
@@ -182,7 +183,7 @@ def build_candidate_files():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     inventory_path = OUTPUT_DIR / "pdf_inventory.csv"
     candidate_path = OUTPUT_DIR / "backfill_candidates.csv"
-    review_status = _load_review_status(candidate_path)
+    review_status = _load_review_status(OUTPUT_DIR / "candidate_reviews.csv")
     inbox_ids, actual_ids, legacy_pages = _load_source_context()
     candidates = []
     inventory = []

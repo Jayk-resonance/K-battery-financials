@@ -16,7 +16,7 @@
        .staging/earnings_<FY>_<분기>_<회사>.json (표준 실적·컨콜 패키지)
 출력:  reports/<YYYY>/<report_id>.md
        earnings/<YYYY>/<document_id>.md
-       index/reports.jsonl, estimates.csv, stances.csv,
+       index/reports.jsonl, report_catalog.csv, estimates.csv, stances.csv,
        industry_views.csv, market_series.csv, market_series_review.csv,
        company_volume_series.csv,
        actuals.csv, drivers.csv, guidance.csv, call_qa.jsonl
@@ -441,6 +441,42 @@ def write_market_company_indexes(idx, reports):
                     "house": report["house"], "source_page": item.get("page"),
                 })
                 writer.writerow(row)
+
+
+def _report_title_from_file(source_file):
+    stem = os.path.splitext(os.path.basename(source_file or ""))[0]
+    stem = re.sub(r"_20\d{6}$", "", stem)
+    parts = stem.split("_", 2)
+    return parts[2] if len(parts) == 3 else stem
+
+
+def write_report_catalog(idx, reports, manifest):
+    manifest_by_id = {item["report_id"]: item for item in manifest}
+    fields = [
+        "report_id", "date", "house", "coverage", "report_type", "report_title",
+        "title_source", "analyst", "source_file", "source_path", "pages", "source_exists",
+    ]
+    with open(os.path.join(idx, "report_catalog.csv"), "w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        for report in sorted(reports, key=lambda item: (item["date"], item["report_id"])):
+            source = manifest_by_id.get(report["report_id"], {})
+            source_file = source.get("file", report.get("source_file", ""))
+            source_path = "inbox/" + source_file if source_file else ""
+            writer.writerow({
+                "report_id": report["report_id"],
+                "date": report["date"],
+                "house": report["house"],
+                "coverage": report.get("coverage", source.get("coverage", "")),
+                "report_type": report.get("report_type", source.get("report_type", "")),
+                "report_title": _report_title_from_file(source_file),
+                "title_source": "파일명",
+                "analyst": report.get("analyst", ""),
+                "source_file": source_file,
+                "source_path": source_path,
+                "pages": source.get("pages", ""),
+                "source_exists": "Y" if source_path and os.path.exists(os.path.join(ROOT, source_path)) else "N",
+            })
 
 
 def yflow(items, keys):
@@ -892,6 +928,7 @@ def main(check_only=False, force=False, strict_ids=None):
                             d.get("basis"), d.get("page"),
                             c["cls"], c["label"], c["scope"]])
     write_market_company_indexes(idx, reports)
+    write_report_catalog(idx, reports, mf)
     with open(os.path.join(idx, "themes.csv"), "w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
         w.writerow(["report_id", "date", "house", "theme", "direction",

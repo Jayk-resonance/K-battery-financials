@@ -68,7 +68,7 @@ class MarketBackfillCandidatesTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "candidates.csv"
             path.write_text(
-                "source_group,source_file,page,visual_review_status\n"
+                "source_group,source_file,page,review_status\n"
                 "actuals,source.pdf,18,채택\n"
                 "inbox,pending.pdf,1,대기\n",
                 encoding="utf-8-sig",

@@ -1,4 +1,5 @@
 import importlib.util
+import csv
 import json
 import os
 import subprocess
@@ -326,6 +327,26 @@ class EarningsPipelineTest(unittest.TestCase):
             self.assertIn("raw_value,raw_unit", header)
             self.assertIn("facility_raw,ownership_type,jv_name_raw,jv_partner_raw,capacity_basis", header)
 
+    def test_report_catalog_keeps_publication_metadata_and_source_file(self):
+        report = {
+            "report_id": "2026-02-26_KB증권_LGES", "date": "2026-02-26",
+            "house": "KB증권", "coverage": "LGES", "report_type": "기업",
+            "analyst": "테스트 애널리스트",
+        }
+        manifest = [{
+            "report_id": report["report_id"], "date": report["date"],
+            "house": report["house"], "coverage": "LGES", "report_type": "기업",
+            "file": "KB증권_LG에너지솔루션_미국 ESS 전망_20260226.pdf", "pages": 3,
+        }]
+        with tempfile.TemporaryDirectory() as tmp:
+            BUILD.write_report_catalog(tmp, [report], manifest)
+            with open(os.path.join(tmp, "report_catalog.csv"), encoding="utf-8") as f:
+                row = next(csv.DictReader(f))
+        self.assertEqual("미국 ESS 전망", row["report_title"])
+        self.assertEqual("테스트 애널리스트", row["analyst"])
+        self.assertEqual(manifest[0]["file"], row["source_file"])
+        self.assertEqual("inbox/" + manifest[0]["file"], row["source_path"])
+
     def test_quant_backfill_merges_by_report_id_without_leaking_id_into_row(self):
         reports = [{"report_id": "pilot"}]
         backfill = {
@@ -339,6 +360,23 @@ class EarningsPipelineTest(unittest.TestCase):
             [{"series_id": "capacity", "value": 50}],
             reports[0]["company_volume_series"],
         )
+
+    def test_quant_backfill_dataset_passes_quant_schema_validation(self):
+        path = os.path.join(ROOT, "projects", "market-data", "quant_backfill.json")
+        with open(path, encoding="utf-8") as f:
+            backfill = json.load(f)
+        market_rows = backfill["market_series"]
+        self.assertTrue(market_rows)
+        keys = [(row["report_id"], row["series_id"], row["fy"])
+                for row in market_rows]
+        self.assertEqual(len(keys), len(set(keys)))
+        BUILD.warnings.clear()
+        report_ids = {row["report_id"] for row in market_rows}
+        for report_id in report_ids:
+            rows = [{key: value for key, value in row.items() if key != "report_id"}
+                    for row in market_rows if row["report_id"] == report_id]
+            BUILD.validate_market_series(report_id, rows)
+        self.assertEqual([], BUILD.warnings)
 
     def test_legacy_market_migration_connects_safe_annual_series(self):
         report = {
