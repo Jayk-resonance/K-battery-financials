@@ -378,6 +378,27 @@ class EarningsPipelineTest(unittest.TestCase):
             BUILD.validate_market_series(report_id, rows)
         self.assertEqual([], BUILD.warnings)
 
+    def test_europe_bess_application_breakdown_preserves_source_mismatch(self):
+        path = os.path.join(ROOT, "projects", "market-data", "quant_backfill.json")
+        with open(path, encoding="utf-8") as f:
+            rows = json.load(f)["market_series"]
+        report_id = "2026-05-17_유진투자증권_산업"
+        total = next(row for row in rows
+                     if row["report_id"] == report_id
+                     and row["series_id"] == "p14_europe_bess_new_installation"
+                     and row["fy"] == 2025)
+        applications = [row for row in rows
+                        if row["report_id"] == report_id and row["fy"] == 2025
+                        and row["series_id"] in {
+                            "p14_europe_residential_bess_installation",
+                            "p14_europe_ci_bess_installation",
+                            "p14_europe_utility_bess_installation",
+                        }]
+        self.assertEqual(32, total["value"])
+        self.assertAlmostEqual(29.7, sum(row["value"] for row in applications))
+        self.assertTrue(all("강제 보정하지 않음" in row["scope_note"]
+                            for row in applications))
+
     def test_legacy_market_migration_connects_safe_annual_series(self):
         report = {
             "report_id": "pilot", "date": "2026-07-31", "house": "테스트",
