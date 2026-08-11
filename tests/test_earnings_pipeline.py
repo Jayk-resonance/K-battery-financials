@@ -135,6 +135,36 @@ class EarningsPipelineTest(unittest.TestCase):
             self.assertIn((company, quarter["fy"], quarter["period"]), groups)
             self.assertIn((company, annual["fy"], annual["period"]), groups)
 
+    def test_outlier_interpretation_explains_strategic_disagreement(self):
+        with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
+                  encoding="utf-8") as f:
+            groups = json.load(f)["f5_outliers"]["estimate_outliers"]
+        by_key = {(g["company"], g["fy"], g["period"]): g for g in groups}
+
+        expected = {
+            ("LGES", 2026, "3Q"): "흑자 유지",
+            ("삼성SDI", 2026, "3Q"): "흑자·적자 방향 자체",
+            ("SK온", 2026, "3Q"): "적자 지속",
+        }
+        for key, phrase in expected.items():
+            readout = by_key[key]["interpretation"]
+            self.assertIn(phrase, readout["conclusion"])
+            self.assertGreater(readout["spread"], 0)
+            self.assertTrue(readout["low_driver"]["summary"])
+            self.assertTrue(readout["high_driver"]["summary"])
+
+    def test_dashboard_uses_plain_language_navigation_and_help(self):
+        path = os.path.join(ROOT, "projects", "dashboard", "dashboard_template.html")
+        with open(path, encoding="utf-8") as f:
+            template = f.read()
+        for label in ("② 전망 분포·이견", "③ 과거 추정 오차", "④ 이슈별 3사 평가",
+                      "⑤ 증권사 전망 변화", "⑥ 산업 수요 전망"):
+            self.assertIn(label, template)
+        self.assertIn("const TERM_HELP", template)
+        self.assertIn("그래서 중요한 점", template)
+        self.assertIn("g.interpretation", template)
+        self.assertNotIn("const F6GAP", template)
+
     def test_segment_charts_use_latest_actual_quarter_and_summary(self):
         with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
                   encoding="utf-8") as f:
