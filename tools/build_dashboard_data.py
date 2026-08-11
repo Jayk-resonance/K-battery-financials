@@ -359,9 +359,38 @@ for comp, seg in [("LGES","전사"),("삼성SDI","전사"),("SK온","배터리�
                      and s["company"] == comp],
                     key=lambda x: -abs(x["score"]))[:4]
                 v["pick"] = True
+
+            # 전략적 결론은 컨센서스의 시계열 변화보다 극단값의 부호가
+            # 같은지/갈리는지로 설명한다. 근거는 최저·최고 추정 리포트의
+            # 이슈별 평가 중 확신도가 가장 높은 항목을 그대로 연결한다.
+            if lo_h["op"] < 0 < hi_h["op"]:
+                conclusion = "흑자·적자 방향 자체가 갈립니다. 손익분기점 통과 여부에 아직 시장 합의가 없습니다."
+            elif hi_h["op"] <= 0:
+                conclusion = "적자 지속에는 의견이 같지만 손실 규모에 이견이 있습니다."
+            else:
+                conclusion = "흑자 유지에는 의견이 같지만 이익 규모에 이견이 있습니다."
+
+            def strongest_driver(house, direction):
+                rows = [r for r in house.get("stances", []) if r["issue"] != "밸류에이션"]
+                if not rows:
+                    rows = house.get("stances", [])
+                summary = "".join(house.get("summary", "").split())
+                matched = [r for r in rows if "".join(r["issue"].split()) in summary]
+                directional = [r for r in rows if r["score"] * direction > 0]
+                directional_matched = [r for r in matched if r["score"] * direction > 0]
+                pool = directional_matched or matched or directional or rows
+                return max(pool, key=lambda x: abs(x["score"])) if pool else None
+
+            interpretation = {
+                "conclusion": conclusion,
+                "spread": round(hi_h["op"] - lo_h["op"], 1),
+                "low_driver": strongest_driver(lo_h, -1),
+                "high_driver": strongest_driver(hi_h, 1),
+            }
             f5["estimate_outliers"].append(
                 {"company": comp, "fy": fy, "period": period, "median": med,
-                 "n_houses": len(vals), "houses": ranked})
+                 "n_houses": len(vals), "houses": ranked,
+                 "interpretation": interpretation})
 for row in f2:
     if row["n"] >= 3:
         scores = [i["score"] for i in row["items"] if i["date"] >= "2026-01-01"]
@@ -686,7 +715,7 @@ data = {"meta": {"built_from": "K-battery-financials index v2", "n_reports": len
                  "n_pages": total_pages(),
                  "n_estimates": len(est), "houses": sorted({r['house'] for r in reports}),
                  "period": f"{min(r['date'] for r in reports)} ~ {max(r['date'] for r in reports)}",
-                 "note_basis": "영업이익 비교는 AMPC 포함(incl) 기준 통일. excl만 있는 경우 AMPC 가산 파생(derived). LGES 매출은 1Q26부터 AMPC 병합 표시(IR 재작성 기준)."},
+                 "note_basis": "영업이익은 AMPC 포함 기준으로 비교합니다. AMPC 제외값만 있는 경우 같은 리포트의 AMPC를 더한 환산값을 사용합니다. LGES 매출은 1Q26부터 AMPC 병합 표시(IR 재작성 기준)입니다."},
         "f1_quarterly": f1, "f2_stance": f2, "f3_views": f3,
         "f3_narratives": f3_narr, "f4_accuracy": f4, "f5_outliers": f5, "f6_dotplots": f6, "f7_industry": f7,
         "search": build_search()}

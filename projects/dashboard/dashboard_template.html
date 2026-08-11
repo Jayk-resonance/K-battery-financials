@@ -47,6 +47,7 @@ body{margin:0;background:var(--page);color:var(--ink);
   border-radius:10px;padding:9px 12px;cursor:pointer;font-weight:600;font-size:13px;text-align:left;white-space:nowrap}
 #nav button:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)}
 #nav button.on{background:var(--brand-bg);color:var(--accent);font-weight:800}
+.nav-hint{display:none}
 .theme-btn{margin-top:auto;align-self:flex-start;border:1px solid var(--border);background:var(--surface);
   color:var(--ink2);border-radius:9px;padding:6px 11px;font-size:12px;cursor:pointer}
 main{flex:1;min-width:0}
@@ -60,6 +61,11 @@ main{flex:1;min-width:0}
 .card h2{font-size:15px;margin:0 0 2px}
 .card .note{color:var(--muted);font-size:12px;margin:0 0 10px}
 .card .head-msg{margin:6px 0 12px;padding:9px 13px;background:var(--chip);border-left:3px solid var(--accent);border-radius:0 7px 7px 0;font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.5}
+.term-help{display:inline-flex;align-items:center;gap:3px;border-bottom:1px dotted currentColor;cursor:help;outline:none}
+.term-help .help-icon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border:1px solid currentColor;border-radius:50%;font:700 9px system-ui;opacity:.72}
+.gap-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 12px}
+.gap-driver{background:var(--chip);border-radius:8px;padding:9px 10px;font-size:12px;color:var(--ink2);line-height:1.5}
+.gap-driver b{color:var(--ink)}
 .datechip{display:inline-block;background:var(--chip);color:var(--ink2);font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;margin-right:2px;white-space:nowrap;vertical-align:middle}
 .nline{margin:5px 0;font-size:12px;color:var(--ink2);line-height:1.55}
 ul.outsents{margin:7px 0 0;padding-left:16px}
@@ -106,6 +112,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .qsources{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
 .qsource{font-size:10.5px;color:var(--ink2);border:1px solid var(--border);border-radius:9px;padding:2px 6px}
 @media(max-width:560px){.qsections{grid-template-columns:1fr}.qsection.normalized{grid-column:auto}}
+@media(max-width:560px){.gap-grid{grid-template-columns:1fr}}
 details{margin-top:10px}
 summary{cursor:pointer;color:var(--muted);font-size:12.5px}
 .cell{cursor:pointer}
@@ -117,9 +124,9 @@ summary{cursor:pointer;color:var(--muted);font-size:12.5px}
   main,.wrap,#view{width:100%;max-width:100%}
   .sidebar{width:100%;flex-basis:auto;height:auto;position:static;border-right:none;border-bottom:1px solid var(--border);padding:12px 14px}
   .brand{padding-bottom:10px}
-  #nav{flex-direction:row;overflow-x:auto;gap:6px;scrollbar-width:none}
-  #nav::-webkit-scrollbar{display:none}
-  #nav button{width:auto;flex:0 0 auto}
+  #nav{flex-direction:row;overflow-x:auto;gap:6px;scrollbar-width:thin;scroll-snap-type:x proximity;padding-bottom:4px}
+  #nav button{width:auto;flex:0 0 auto;scroll-snap-align:start}
+  .nav-hint{display:block;color:var(--muted);font-size:10.5px;padding:3px 4px 0}
   .theme-btn{position:absolute;top:14px;right:14px;margin:0}
   .topbar{padding:12px 16px}.wrap{padding:16px 14px 60px}
   .card{padding:15px 15px;max-width:100%}
@@ -131,13 +138,14 @@ summary{cursor:pointer;color:var(--muted);font-size:12.5px}
 <aside class="sidebar">
   <div class="brand"><div class="brand-mark">🔋</div><div><b>K-배터리</b><small>리포트 인텔리전스</small></div></div>
   <nav id="nav"></nav>
+  <span class="nav-hint">탭을 좌우로 밀어 더 보기 →</span>
   <button class="theme-btn" onclick="tgTheme()" title="라이트/다크 전환">☀ / ☾</button>
 </aside>
 <main>
   <div class="topbar"><h1>K-배터리 리포트 인텔리전스</h1><p class="sub" id="subline"></p></div>
   <div class="wrap">
     <div id="view"></div>
-    <p class="foot">표시 단위는 <b>억원</b>(축 레이블만 1조 이상 시 조 병기), 주가는 만원. 모든 영업이익 비교는 <b>AMPC 포함(incl) 기준으로 통일</b> — 제외(excl)만 공시한 리포트는 동일 리포트의 AMPC를 가산해 파생(derived). LGES 매출은 1Q26부터 AMPC 병합 표시(회사 IR 재작성 기준)이며 3사 매출 비교는 AMPC 제외 기준을 기본으로 사용. 데이터 출처: 증권사 리포트(상단 표시 건수, 기업+산업) + 3사 회사 IR. 기업 분석 탭(②③⑤⑥)은 기업 리포트만 사용하며 산업리포트는 ⑦탭(및 ④빈티지, 출처 표기) 전용. 모든 수치는 원문 페이지로 역추적 가능(battery-reports DB). 이 도구는 내부 분석용이며 투자 권유가 아닙니다.</p>
+    <p class="foot">표시 단위는 <b>억원</b>(축 레이블만 1조 이상 시 조 병기), 주가는 만원. 모든 영업이익 비교는 <b>AMPC 포함 기준</b>으로 통일합니다. AMPC 제외값만 공시한 리포트는 동일 리포트의 AMPC를 더해 비교 가능한 값으로 환산합니다. LGES 매출은 1Q26부터 AMPC 병합 표시(회사 IR 재작성 기준)이며 3사 매출 비교는 AMPC 제외 기준을 기본으로 사용합니다. 데이터 출처: 증권사 리포트(상단 표시 건수, 기업+산업) + 3사 회사 IR. 기업 분석 탭(②③⑤)은 기업 리포트만 사용하며 산업리포트는 ⑥탭(및 과거 추정 오차의 빈티지 분석, 출처 표기) 전용입니다. 모든 수치는 원문 페이지로 역추적 가능(battery-reports DB). 이 도구는 내부 분석용이며 투자 권유가 아닙니다.</p>
   </div>
 </main>
 </div>
@@ -153,11 +161,28 @@ const COMP=["LGES","삼성SDI","SK온"], CCOL={LGES:"var(--lges)","삼성SDI":"v
 const fmt=v=>v==null?"–":Math.round(v*10).toLocaleString()+"억";
 const fmtA=v=>v==null?"–":Math.abs(v)>=1000?(v/1000).toFixed(2).replace(/\.?0+$/,"")+"조":Math.round(v*10).toLocaleString()+"억";
 const fmtW=v=>v==null?"–":(v/10000).toFixed(1)+"만원";
+const TERM_HELP={
+  "AMPC":"미국에서 배터리를 생산할 때 받는 생산세액공제입니다. 손익 비교에서는 이 혜택을 포함했는지 확인해야 합니다.",
+  "평가 방향":"리포트가 특정 이슈를 긍정·중립·부정 중 어느 방향으로 보는지를 -10~+10 점수로 표준화한 값입니다.",
+  "프리뷰 컨센서스":"실적 발표 전에 나온 리포트 중 증권사별 최신 추정치 1건만 모아 계산한 중앙값입니다.",
+  "AMPC 포함":"영업이익에 AMPC 생산세액공제 효과가 들어간 값입니다.",
+  "AMPC 제외":"영업이익에서 AMPC 생산세액공제 효과를 뺀 값입니다.",
+  "환산값":"AMPC 제외 영업이익에 같은 리포트의 AMPC 추정치를 더해 만든 비교용 값입니다. 회사 확정 공시값과 구분합니다."
+};
+const helpTerm=(label,key=label)=>`<span class="term-help" tabindex="0" role="button" aria-label="${label}: ${TERM_HELP[key]}" data-help="${TERM_HELP[key]}">${label}<span class="help-icon">?</span></span>`;
+const basisLabel=b=>({incl:"AMPC 포함",incl_unknown:"AMPC·일회성 포함 여부 미분리",excl:"AMPC 제외",derived:"AMPC 포함 환산값",na:"기준 미분리"})[b]||b;
 const tt=$("#tt");
 function hover(e,html){tt.innerHTML=html;tt.style.opacity=1;
   const w=tt.offsetWidth,x=Math.min(e.clientX+14,innerWidth-w-8);
-  tt.style.left=x+"px";tt.style.top=(e.clientY+14)+"px"}
-function unhover(){tt.style.opacity=0}
+  const h=tt.offsetHeight,y=e.clientY+14;
+  tt.style.left=Math.max(8,x)+"px";tt.style.top=(y+h>innerHeight-8?Math.max(8,e.clientY-h-14):y)+"px"}
+function unhover(){tt.style.opacity=0;tt.dataset.help=""}
+function termPoint(h){const r=h.getBoundingClientRect();return{clientX:r.left,clientY:r.bottom}}
+document.addEventListener("mouseover",e=>{const h=e.target.closest?.(".term-help");if(h)hover(termPoint(h),h.dataset.help)});
+document.addEventListener("mouseout",e=>{if(e.target.closest?.(".term-help"))unhover()});
+document.addEventListener("focusin",e=>{const h=e.target.closest?.(".term-help");if(h)hover(termPoint(h),h.dataset.help)});
+document.addEventListener("focusout",e=>{if(e.target.closest?.(".term-help"))unhover()});
+document.addEventListener("click",e=>{const h=e.target.closest?.(".term-help");if(!h){unhover();return}e.preventDefault();hover(termPoint(h),h.dataset.help);tt.dataset.help=h.dataset.help});
 function tgTheme(){const r=document.documentElement,c=r.getAttribute("data-theme");
   r.setAttribute("data-theme",c==="dark"?"light":"dark");render()}
 function lin(v,d0,d1,r0,r1){return r0+(v-d0)/(d1-d0||1)*(r1-r0)}
@@ -170,8 +195,8 @@ function axisY(g,x0,x1,y,v){g.append(sv("line",{x1:x0,x2:x1,y1:y,y2:y,stroke:"va
   const t=sv("text",{x:x0-6,y:y+3,"text-anchor":"end"});t.textContent=v;g.append(t)}
 
 /* ---------- 탭 ---------- */
-const TABS=[["overview","개요"],["f1","① 분기 실적"],["f6","② 점도표"],["f4","③ 적중률"],
- ["f2","④ 이슈별 3사 Position"],["f3","⑤ View 변화"],["f7","⑥ 시장 전망 View"],["srch","🔍 검색"]];
+const TABS=[["overview","개요"],["f1","① 분기 실적"],["f6","② 전망 분포·이견"],["f4","③ 과거 추정 오차"],
+ ["f2","④ 이슈별 3사 평가"],["f3","⑤ 증권사 전망 변화"],["f7","⑥ 산업 수요 전망"],["srch","🔍 검색"]];
 let tab="overview", sel={f1:"LGES",f1c:"LGES",f1p:null,f1sr:"LGES",f1so:"LGES",f1srO:false,f1soO:false,f3:"LGES",f4:0,f6:"LGES",f6mode:"latest",f7s:null};
 function render(){
   $("#subline").textContent=`리포트 ${DATA.meta.n_reports}건 (산업 ${DATA.meta.n_industry||0}건 포함) · ${DATA.meta.houses.length}개 증권사 · ${DATA.meta.period}`;
@@ -195,15 +220,23 @@ function rOver(v){
   // 처음 보는 사람을 위한 탭 가이드
   const g=el("div",{class:"card",style:"margin-top:20px"},`<h2>Overview</h2>${headMsg("K-배터리 3사에 대한 증권사의 실적 추정·전망·시각을 통합하여, 시장의 눈높이와 이견을 신속하게 파악하기 위한 분석 도구이다.")}
    <p class="note">권장 열람 순서: <b>현재 실적(①)</b> → <b>미래 전망 분포(②)</b> → <b>과거 적중 검증(③)</b> → <b>이슈·시각·수요(④⑤⑥)</b>.</p>`);
-  [["① 분기 실적","컨센서스 기준 3사의 분기별 매출·영업이익 실적 및 미발표 분기 전망(점선), <b>사업부문별 손익</b>을 제시한다."],
-   ["② 점도표","증권사별 영업이익 <b>전망</b>의 분포(FOMC식)를 통해 동일 기업에 대한 시장의 <b>눈높이 편차</b>와 <b>최저·최고 추정</b>을 확인한다."],
-   ["③ 적중률","발표된 분기에서 컨센서스의 실제 대비 정확도(어닝 쇼크·서프라이즈)와 <b>증권사별 추정 정확도</b>를 검증한다. ②가 미래 전망이라면 ③은 과거 실적 대비 검증에 해당한다."],
-   ["④ 이슈별 3사 Position","LFP·ESS·AMPC·파우치 등 <b>이슈별</b>로 3사에 대한 증권사 시각(스탠스)을 히트맵으로 비교한다."],
-   ["⑤ View 변화","증권사별 시각의 <b>시계열 변화</b>(목표주가·투자의견·논조)를 추적한다."],
-   ["⑥ 시장 전망 View","산업 리포트 기반 EV·ESS <b>시장 수요</b> 전망과 그 변화를 정리한다."],
-   ["🔍 검색","<b>키워드</b>로 전체 DB(이슈 스탠스·테마·수요 전망·MD 본문)를 검색하고 원문 페이지까지 추적한다."]]
+  [["① 분기 실적","3사의 분기별 매출·영업이익 실적, 미발표 분기 전망(점선), <b>사업부문별 손익</b>을 제시한다."],
+   ["② 전망 분포·이견","증권사별 영업이익 전망을 점으로 펼쳐, <b>흑자·적자 방향까지 갈리는지</b>와 최저·최고 추정의 근거를 확인한다."],
+   ["③ 과거 추정 오차","발표 전 추정치가 실제 실적과 얼마나 달랐는지, 어느 증권사가 가장 근접했는지 검증한다."],
+   ["④ 이슈별 3사 평가",`LFP·ESS·${helpTerm("AMPC")}·파우치 등 <b>이슈별</b>로 3사에 대한 증권사의 ${helpTerm("평가 방향")}을 비교한다.`],
+   ["⑤ 증권사 전망 변화","증권사별 시각의 <b>시계열 변화</b>(목표주가·투자의견·평가 방향)를 추적한다."],
+   ["⑥ 산업 수요 전망","산업 리포트 기반 EV·ESS <b>시장 수요</b> 전망과 그 변화를 정리한다."],
+   ["🔍 검색","<b>키워드</b>로 전체 DB(이슈 평가·테마·수요 전망·MD 본문)를 검색하고 원문 페이지까지 추적한다."]]
   .forEach(([a,b])=>g.append(el("div",{class:"qcard"},`<b>${a}</b><p>${b}</p>`)));
   v.append(g);
+  const glossary=el("div",{class:"card"},`<h2>용어 안내</h2><p class="note">밑줄 친 용어의 ?를 누르면 화면에서도 같은 설명을 볼 수 있습니다.</p>`);
+  [["AMPC","미국 내 배터리 생산량에 따라 받는 생산세액공제"],
+   ["AMPC 포함·제외","영업이익에 생산세액공제 효과가 들어갔는지 여부"],
+   ["환산값","AMPC 제외값에 같은 리포트의 AMPC를 더해 만든 비교용 값(기존 derived)"],
+   ["평가 방향","특정 이슈를 긍정·중립·부정으로 보는 정도(기존 스탠스)"],
+   ["프리뷰 컨센서스","실적 발표 전 증권사별 최신 추정치 1건의 중앙값"]]
+  .forEach(([a,b])=>glossary.append(el("div",{class:"qcard"},`<b>${a}</b><p>${b}</p>`)));
+  v.append(glossary);
   v.append(el("div",{class:"card"},`<h2>비교 기준</h2>
    <p style="font-size:13px;color:var(--ink2)">${DATA.meta.note_basis}</p>`));
 }
@@ -222,7 +255,7 @@ function qActual(comp,metric,fy,p){
 function qseries(comp,metric){ // [{i,label,v,est,n}]
   const Q=[[2025,"1Q"],[2025,"2Q"],[2025,"3Q"],[2025,"4Q"],[2026,"1Q"]];
   const pts=Q.map(([fy,p],i)=>({i,label:`${String(fy).slice(2)}.${p}`,v:qActual(comp,metric,fy,p),est:false}));
-  // 분석년도 잔여 분기: 컨센서스 중앙값(점도표와 동일 계산)으로 점선 연장
+  // 분석년도 잔여 분기: 전망 분포와 동일한 컨센서스 중앙값으로 점선 연장
   ["2Q","3Q","4Q"].forEach((p,j)=>{
     const confirmed=Object.keys(DATA.f1_quarterly.actuals_grid[`${comp}|2026|${p}`]||{}).length>0;
     const actual=confirmed?qActual(comp,metric,2026,p):null;
@@ -259,7 +292,7 @@ function lineChart(box,title,head,note,metric){
         ?sv("circle",{cx:X(p.i),cy:Y(p.v),r:4,fill:"var(--surface)",stroke:CCOL[s.c],"stroke-width":2})
         :sv("circle",{cx:X(p.i),cy:Y(p.v),r:4,fill:CCOL[s.c],stroke:"var(--surface)","stroke-width":2});
       const hit=sv("circle",{cx:X(p.i),cy:Y(p.v),r:12,fill:"transparent"});
-      hit.addEventListener("mousemove",e=>hover(e,`<b>${s.c}</b> ${p.label}<br>${metric} ${fmt(p.v)}원`+(p.est?`<br><i>컨센서스 중앙값 (${p.n}개사, 점도표와 동일)</i>`:s.c==="SK온"?"<br><i>SK이노 실적발표 기준(미보유 분기는 애널리스트 인용 중앙값)</i>":"")));
+      hit.addEventListener("mousemove",e=>hover(e,`<b>${s.c}</b> ${p.label}<br>${metric} ${fmt(p.v)}원`+(p.est?`<br><i>컨센서스 중앙값 (${p.n}개사, 전망 분포와 동일)</i>`:s.c==="SK온"?"<br><i>SK이노 실적발표 기준(미보유 분기는 애널리스트 인용 중앙값)</i>":"")));
       hit.addEventListener("mouseleave",unhover);
       svg.append(dot,hit)});
     const last=pts[pts.length-1];
@@ -294,7 +327,7 @@ const headMsg=t=>`<div class="head-msg">${t}</div>`;
 function rF1(v){
   lineChart(v,"1-1 분기별 매출액 (전사)",F1HEAD.매출전사,"LGES는 재작성 전(AMPC 제외) 매출 사용 — 3사 비교 왜곡 방지 · 3사 모두 26.2Q까지 회사 IR 확정치, 26.3Q(E) 이후는 컨센서스 중앙값","매출");
   segDetailCard(v,"매출","f1sr","f1srO","1-2 분기별 매출액 (사업부문별)",F1HEAD.매출부문);
-  lineChart(v,"2-1 분기별 영업이익 (전사, AMPC 포함)",F1HEAD.영업이익전사,"3사 모두 26.2Q까지 회사 IR 확정치 · SK온 2Q는 보상금·AMPC 포함(개별 금액 미공시) · 26.3Q(E) 이후는 컨센서스 중앙값(② 점도표와 동일값)","영업이익");
+  lineChart(v,"2-1 분기별 영업이익 (전사, AMPC 포함)",F1HEAD.영업이익전사,"3사 모두 26.2Q까지 회사 IR 확정치 · SK온 2Q는 보상금·AMPC 포함(개별 금액 미공시) · 26.3Q(E) 이후는 컨센서스 중앙값(② 전망 분포와 동일값)","영업이익");
   segDetailCard(v,"영업이익","f1so","f1soO","2-2 분기별 영업이익 (사업부문별)",F1HEAD.영업이익부문);
 
   // [참고] 증권사 추정 상세 (회사 탭) — 탭을 눌러 활성화
@@ -308,7 +341,7 @@ function rF1(v){
     sc.append(tg);
     if(!sel.f1segO){v.append(sc);}
     else{
-    sc.append(el("p",{class:"note",style:"margin-top:12px"},"중앙값(평균) 기준, 억원. 부문 영업이익은 <b>AMPC 제외(excl)</b>로 통일 — 분리 불가 리포트는 제외(n에서 빠짐). 하우스당 최신 리포트 1건. <b>셀 클릭 → 증권사별 추정치</b>"));
+    sc.append(el("p",{class:"note",style:"margin-top:12px"},`중앙값(평균) 기준, 억원. 부문 영업이익은 <b>${helpTerm("AMPC 제외")}</b>로 통일 — 분리 불가 리포트는 제외(n에서 빠짐). 증권사당 최신 리포트 1건. <b>셀 클릭 → 증권사별 추정치</b>`));
     const cch=el("div",{class:"chips"});COMP.forEach(c=>{const b=el("button",{class:sel.f1c===c?"on":""},c);
       b.onclick=()=>{sel.f1c=c;sel.f1p=null;render()};cch.append(b)});sc.append(cch);
     if(!segPeriods.length){sc.append(el("p",{class:"note"},"이 회사는 부문별 컨센서스 데이터가 없습니다."));v.append(sc);}
@@ -333,7 +366,7 @@ function rF1(v){
         if(c){td.onclick=()=>{const old=$("#f1side");old&&old.remove();
           const sd=el("div",{id:"f1side"},`<h2 style="font-size:14px;margin:14px 0 4px">${sel.f1c} · ${sel.f1p.replace("|"," ")} · ${g} · ${mk==="영업이익(incl)"?"영업이익(AMPC포함)":mk} — 증권사별</h2>`);
           c.houses.slice().sort((a,b)=>b.value-a.value).forEach(h=>sd.append(el("div",{class:"side"},
-            `<b>${h.house}</b> <span class="m">${h.date} · ${h.basis} · p.${h.page||"?"}</span>
+            `<b>${h.house}</b> <span class="m">${h.date} · ${basisLabel(h.basis)} · p.${h.page||"?"}</span>
              <span style="float:right;font-weight:700">${fmt(h.value)}원</span>`)));
           sd.append(el("p",{class:"note"},`중앙값 ${fmt(c.median)}원 · 평균 ${fmt(c.mean)}원 · 최고-최저 격차 ${fmt(c.houses[c.houses.length-1].value-c.houses[0].value)}원`));
           sc.append(sd)}}
@@ -434,7 +467,7 @@ function segDetailCard(v,metric,ckey,okey,title,headMap){
   COMP.forEach(c=>{const b=el("button",{class:comp===c?"on":""},c);
     b.onclick=()=>{sel[ckey]=c;render()};cch.append(b)});
   card.append(cch);
-  const noteHtml=`${comp} — ● 회사 IR 확정치 · ○ 회사 미공시 세부 부문의 증권사 중앙값 · 점선 = 아직 발표되지 않은 분기 전망 · `+(metric==="영업이익"?"세부 부문선은 AMPC 제외(excl), 차트 상단 합계는 AMPC 포함(incl) 기준":"증권사 추정선은 중앙값")+` · <b>${comp==="LGES"?"전사":"배터리합계"}는 차트 상단 숫자 행</b>`+(metric==="영업이익"?` · AMPC는 가는 보라 별도 시리즈`+(comp==="LGES"?" — EV/ESS 분해는 아래 'AMPC 상세'":""):"");
+  const noteHtml=`${comp} — ● 회사 IR 확정치 · ○ 회사 미공시 세부 부문의 증권사 중앙값 · 점선 = 아직 발표되지 않은 분기 전망 · `+(metric==="영업이익"?`세부 부문선은 ${helpTerm("AMPC 제외")}, 차트 상단 합계는 ${helpTerm("AMPC 포함")} 기준`:"증권사 추정선은 중앙값")+` · <b>${comp==="LGES"?"전사":"배터리합계"}는 차트 상단 숫자 행</b>`+(metric==="영업이익"?` · ${helpTerm("AMPC")}는 가는 보라 별도 시리즈`+(comp==="LGES"?" — EV/ESS 분해는 아래 'AMPC 상세'":""):"");
   const {out,labels,ampcDetail,lastReported}=segSeries(comp,metric);
   if(!out.length){card.append(el("p",{class:"note"},"이 회사는 부문별 분기 컨센서스 데이터가 없습니다 (리포트가 부문 분해를 제공하지 않음)."));v.append(card);return}
   const prim=out.filter(s2=>!s2.total),tot=out.find(s2=>s2.total);
@@ -544,7 +577,7 @@ function segDetailCard(v,metric,ckey,okey,title,headMap){
   v.append(card);
 }
 
-/* ---------- F2 스탠스 매트릭스 ---------- */
+/* ---------- F2 이슈별 평가 매트릭스 ---------- */
 // 이슈 카테고리 (정책/보조금·EV·ESS·제품·기술). 밸류에이션은 제외, 북미ESS는 ESS로 통합(빌드 alias)
 const ISSUE_CAT={
   "AMPC":"정책/보조금","OEM보상금":"정책/보조금","관세":"정책/보조금","관세환급":"정책/보조금",
@@ -556,8 +589,8 @@ const CAT_ORDER=["정책/보조금","EV","ESS","제품·기술"];
 const ISSUE_LBL={"북미수요":"북미 EV","유럽수요":"유럽 EV","중국경쟁":"중국 경쟁",
   "북미증설(ESS)":"북미 증설","북미증설(EV)":"북미 증설","OEM보상금":"OEM 보상금"};
 function rF2(v){
-  const card=el("div",{class:"card"},`<h2>이슈별 3사 Position 히트맵</h2>
-    <p class="note">셀 = 하우스당 최신 리포트 1건 기준 스탠스 <b>중앙값</b>(평균 병기), <b>-10 매우부정 ~ +10 매우긍정</b>. 이슈를 <b>정책/보조금·EV·ESS·제품·기술</b> 4개로 묶었으며, <b>셀 클릭 → 점수 분포와 긍정·부정 요약</b>(근거 N개사 펼치기).</p>`);
+  const card=el("div",{class:"card"},`<h2>이슈별 3사 평가 비교</h2>
+    <p class="note">셀 = 증권사별 최신 리포트 1건의 ${helpTerm("평가 방향")} <b>중앙값</b>(평균 병기), <b>-10 매우부정 ~ +10 매우긍정</b>. 이슈를 <b>정책/보조금·EV·ESS·제품·기술</b>로 묶었으며, <b>셀 클릭 → 점수 분포와 긍정·부정 요약</b>(근거 N개사 펼치기).</p>`);
   const rows={};DATA.f2_stance.forEach(r=>{(rows[r.issue]??={}).c=(rows[r.issue].c||0)+r.n;rows[r.issue][r.company]=r});
   const tb=el("table");tb.append(el("tr",{},`<th>이슈</th>${COMP.map(c=>`<th>${c}</th>`).join("")}`));
   CAT_ORDER.forEach(cat=>{
@@ -612,14 +645,14 @@ function showF2(card,iss,c,r){
   card.append(s);
 }
 
-/* ---------- F3 View 변화 ---------- */
+/* ---------- F3 증권사 전망 변화 ---------- */
 function rF3(v){
-  const card=el("div",{class:"card"},`<h2>증권사별 View 변화 추적</h2>${headMsg("같은 회사라도 증권사별로 목표주가·투자의견·이슈 논조가 시점마다 어떻게 달라지는지 시간순으로 추적합니다.")}`);
+  const card=el("div",{class:"card"},`<h2>증권사별 전망 변화 추적</h2>${headMsg("같은 회사라도 증권사별로 목표주가·투자의견·이슈 평가가 시점마다 어떻게 달라지는지 시간순으로 추적합니다.")}`);
   const ch=el("div",{class:"chips"});COMP.forEach(c=>{const b=el("button",{class:sel.f3===c?"on":""},c);
     b.onclick=()=>{sel.f3=c;render()};ch.append(b)});card.append(ch);
   const series=Object.entries(DATA.f3_views).filter(([k])=>k.endsWith("|"+sel.f3))
     .map(([k,v])=>({house:k.split("|")[0],hist:v})).sort((a,b)=>(b.hist.at(-1).target_price||0)-(a.hist.at(-1).target_price||0));
-  const tb=el("table",{class:"f3tb"});tb.append(el("tr",{},"<th style='width:64%'>증권사 · 이슈 View 변화</th><th style='width:12%;text-align:right'>목표가</th><th style='width:12%;text-align:right'>의견</th><th style='width:12%;text-align:right'>논조</th>"));
+  const tb=el("table",{class:"f3tb"});tb.append(el("tr",{},"<th style='width:64%'>증권사 · 이슈 평가 변화</th><th style='width:12%;text-align:right'>목표가</th><th style='width:12%;text-align:right'>의견</th><th style='width:12%;text-align:right'>평가 점수</th>"));
   series.forEach(s=>{
     const last=s.hist.at(-1);
     const opCls=o=>o==="매수"?"buy":o==="매도"?"sell":"hold";
@@ -648,11 +681,11 @@ function rF3(v){
       card.append(sd)};
     tb.append(tr)});
   card.append(tb);
-  card.append(el("p",{class:"note"},"증권사 열 = 펀더멘털 이슈(AMPC·출하·가동·수요·수주) View의 날짜별 변화 · 날짜 뒤 <b style='color:var(--pos)'>▲</b>/<b style='color:var(--neg)'>▼</b>/– = 직전 리포트 대비 논조 개선/악화/유지 · 논조 = 이슈 스탠스(-10~+10) 평균(투자의견 아님) · 행 클릭 → 리포트별 상세."));
+  card.append(el("p",{class:"note"},`증권사 열 = 펀더멘털 이슈(${helpTerm("AMPC")}·출하·가동·수요·수주) 평가의 날짜별 변화 · 날짜 뒤 <b style='color:var(--pos)'>▲</b>/<b style='color:var(--neg)'>▼</b>/– = 직전 리포트 대비 평가 개선/악화/유지 · 평가 점수 = ${helpTerm("평가 방향")}(-10~+10) 평균(투자의견 아님) · 행 클릭 → 리포트별 상세.`));
   v.append(card);
 }
 
-/* ---------- F4 적중률 ---------- */
+/* ---------- F4 과거 추정 오차 ---------- */
 const F4WHY={
  "LGES|2026|1Q":"GM 합작공장 생산 일시중단으로 EV 출하가 급감했고, 북미 ESS 램프업 초기비용과 AMPC 감소가 겹쳤습니다.",
  "LGES|2026|2Q":"유럽 EV·원통형·북미 ESS 물량과 AMPC는 회복됐지만, ESS 초기비용과 팩 병목이 남았습니다. 증권사 추정 관세환급은 회사 공시액이 아니므로 컨센서스 오차와 별도로 봐야 합니다.",
@@ -662,16 +695,16 @@ const F4WHY={
  "SK온|2026|2Q":"아시아 판매 증가에 고객 보상금과 AMPC가 더해졌습니다. 개별 금액이 미공시라 경상 손익은 분리하지 않았습니다."};
 function rF4(v){
   const evs=DATA.f4_accuracy.events;
-  const card=el("div",{class:"card"},`<h2>컨센서스 적중률 — 발표된 분기 실적 대비 검증</h2>
-   <p class="note">② 점도표가 <b>미래</b> 전망의 분포라면, 여기는 이미 발표된 분기에서 발표 직전 컨센서스가 <b>실제와 얼마나 맞았는지</b>, 또 <b>어느 증권사가 가장 근접했는지</b>를 검증합니다.</p>`);
+  const card=el("div",{class:"card"},`<h2>과거 추정 오차 — 발표된 분기 실적 대비 검증</h2>
+   <p class="note">② 전망 분포·이견이 <b>미래</b> 전망을 보여준다면, 여기는 이미 발표된 분기에서 발표 직전 추정치가 <b>실제와 얼마나 달랐는지</b>, 또 <b>어느 증권사가 가장 근접했는지</b>를 검증합니다.</p>`);
   const ch=el("div",{class:"chips"});evs.forEach((e,i)=>{const b=el("button",{class:sel.f4===i?"on":""},`${e.company} ${e.fy}.${e.period}`);
     b.onclick=()=>{sel.f4=i;render()};ch.append(b)});card.append(ch);
   const ev=evs[sel.f4],preds=ev.preds.filter(p=>p.op_err!=null).sort((a,b)=>Math.abs(a.op_err)-Math.abs(b.op_err));
   const vcol=ev.verdict==="어닝 서프라이즈"?"var(--pos)":ev.verdict==="어닝 쇼크"?"var(--neg)":"var(--ink2)";
   const best=preds[0];
   const why=F4WHY[`${ev.company}|${ev.fy}|${ev.period}`]||"";
-  card.append(el("div",{},headMsg(`<b style="color:${vcol}">${ev.verdict}</b> · 실제 ${fmtA(ev.actual["영업이익"])} vs 프리뷰 컨센서스 중앙값 ${fmtA(ev.consensus_median)} (실제가 ${ev.diff>0?"+":""}${fmtA(ev.diff)} ${ev.diff>0?"상회":"하회"}) — ${why}${best?` <b>가장 근접: ${best.house}</b>(추정−실제 ${best.op_err>0?"+":""}${fmtA(best.op_err)}).`:""}`)).firstChild);
-  card.append(el("p",{class:"note",style:"margin-bottom:2px"},`<b>막대 = 추정 − 실제 (억원)</b> · <span style="color:var(--pos)">오른쪽(+) = 과대추정</span> · <span style="color:var(--neg)">왼쪽(−) = 과소추정</span> · 0에 가까울수록 정확 · ${ev.preview_start}~${ev.announce_date} 발표 전, 하우스별 최신 ${ev.n_houses}개사`));
+  card.append(el("div",{},headMsg(`<b style="color:${vcol}">${ev.verdict}</b> · 실제 ${fmtA(ev.actual["영업이익"])} vs ${helpTerm("프리뷰 컨센서스")} 중앙값 ${fmtA(ev.consensus_median)} (실제가 ${ev.diff>0?"+":""}${fmtA(ev.diff)} ${ev.diff>0?"상회":"하회"}) — ${why}${best?` <b>가장 근접: ${best.house}</b>(추정−실제 ${best.op_err>0?"+":""}${fmtA(best.op_err)}).`:""}`)).firstChild);
+  card.append(el("p",{class:"note",style:"margin-bottom:2px"},`<b>막대 = 추정 − 실제 (억원)</b> · <span style="color:var(--pos)">오른쪽(+) = 과대추정</span> · <span style="color:var(--neg)">왼쪽(−) = 과소추정</span> · 0에 가까울수록 정확 · ${ev.preview_start}~${ev.announce_date} 발표 전, 증권사별 최신 ${ev.n_houses}개사`));
   const W=680,rowH=26,L=110,R=60,H=preds.length*rowH+30;
   const svg=sv("svg",{viewBox:`0 0 ${W} ${H}`,width:"100%",style:"min-width:560px"});
   const mx=Math.max(...preds.map(p=>Math.abs(p.op_err)))*1.15;
@@ -687,25 +720,25 @@ function rF4(v){
     const vt=sv("text",{x:X(p.op_err)+(p.op_err>=0?5:-5),y:y+4,"text-anchor":p.op_err>=0?"start":"end"});
     vt.textContent=(p.op_err>0?"+":"")+Math.round(p.op_err*10).toLocaleString();svg.append(vt)});
   const z=sv("text",{x:X(0),y:H-8,"text-anchor":"middle"});z.textContent="0 = 정확";svg.append(z);
-  card.append(svg,el("p",{class:"note"},"프리뷰 = 직전 실적 발표일부터 해당 분기 발표 전날까지, 영업이익 추정치가 있는 하우스별 최신 리포트 1건. 판정 임계 = 컨센서스 중앙값의 15% 또는 300억원 중 큰 값(초과 시 쇼크/서프라이즈)."));
+  card.append(svg,el("p",{class:"note"},`${helpTerm("프리뷰 컨센서스")} = 직전 실적 발표일부터 해당 분기 발표 전날까지, 영업이익 추정치가 있는 증권사별 최신 리포트 1건. 판정 임계 = 컨센서스 중앙값의 15% 또는 300억원 중 큰 값(초과 시 쇼크/서프라이즈).`));
   v.append(card);
 }
 
 /* ---------- 🔍 키워드 검색 (A층 인덱스 요약 + B층 MD 본문) ---------- */
 function rSearch(v){
-  const card=el("div",{class:"card"},`<h2>키워드 검색</h2>${headMsg("전체 리포트 DB — 이슈 스탠스·테마·수요 전망·산업 전망·드라이버·리포트 요약(A층)과 표준 MD 본문(B층) — 에서 키워드를 검색한다.")}
+  const card=el("div",{class:"card"},`<h2>키워드 검색</h2>${headMsg("전체 리포트 DB — 이슈 평가·테마·수요 전망·산업 전망·실적 요인·리포트 요약과 표준 MD 본문에서 키워드를 검색합니다.")}
    <p class="note">여러 단어는 공백으로 구분 — 모두 포함(AND) 기준, 영문 대소문자 무시. 결과는 최신순 · 최대 300건. 모든 결과는 리포트·페이지로 역추적 가능.</p>`);
   const inp=el("input",{type:"search",placeholder:"예: 보상금 · 46파이 수주 · 가동률 · 전고체…",value:sel.q||"",
     style:"width:100%;max-width:540px;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--ink);font:500 14px system-ui;outline:none"});
-  const KINDS=["전체","스탠스","본문","테마","수요전망","산업전망","드라이버","리포트 요약"];
+  const KINDS=[["전체","전체"],["스탠스","이슈 평가"],["본문","본문"],["테마","테마"],["수요전망","수요 전망"],["산업전망","산업 전망"],["드라이버","실적 요인"],["리포트 요약","리포트 요약"]];
   const KCOL={"스탠스":"var(--lges)","본문":"var(--ink2)","테마":"#8d84c9","수요전망":"#1baf7a","산업전망":"#eda100","드라이버":"#e87ba4","리포트 요약":"var(--muted)"};
   sel.qk??="전체";
   const kch=el("div",{class:"chips",style:"margin-top:10px"});
-  KINDS.forEach(k=>{const b=el("button",{class:sel.qk===k?"on":""},k);b.onclick=()=>{sel.qk=k;doSearch()};kch.append(b)});
+  KINDS.forEach(([k,label])=>{const b=el("button",{class:sel.qk===k?"on":""},label);b.onclick=()=>{sel.qk=k;doSearch()};kch.append(b)});
   const res=el("div",{style:"margin-top:12px"});
   const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   function doSearch(){
-    [...kch.children].forEach((b,i2)=>b.classList.toggle("on",KINDS[i2]===sel.qk));
+    [...kch.children].forEach((b,i2)=>b.classList.toggle("on",KINDS[i2][0]===sel.qk));
     res.innerHTML="";
     const q=(sel.q||"").trim();
     if(q.length<2){res.append(el("p",{class:"note"},"두 글자 이상 입력하면 검색됩니다."));return}
@@ -736,13 +769,8 @@ function rSearch(v){
   if(sel.q)doSearch();
 }
 
-/* ---------- 점도표 (FOMC 스타일) ---------- */
+/* ---------- 전망 분포 (FOMC 스타일) ---------- */
 const OUTCOL={"최저 추정":"var(--neg)","최고 추정":"var(--pos)"};
-// 최저·최고 추정 간 격차의 핵심 가정 차이 (하우스별 요약이 아닌 구조적 원인)
-const F6GAP={
- "LGES":"격차의 핵심은 ESS 램프업 속도·AMPC 규모·북미 EV 회복 강도에 대한 가정 차이다.",
- "삼성SDI":"격차의 핵심은 헝가리 EV 가동률 회복 시점·데이터센터 ESS 믹스·AMPC 규모에 대한 가정 차이다.",
- "SK온":"격차의 핵심은 파우치 가동률·글로벌 M/S 회복 속도와 추가 자산손상 리스크 반영 여부에 대한 가정 차이다."};
 // 값을 일정 간격으로 나누는 "예쁜" 스텝
 function niceStep(range,target){
   const raw=Math.max(range/target,1e-9),mag=Math.pow(10,Math.floor(Math.log10(raw))),n=raw/mag;
@@ -786,17 +814,21 @@ function f6Head(company,kind){
 function outlierPanel(card,company,kind){
   const g=f6Group(company,kind);if(!g)return;
   const lab=`${f6Label(kind)} (${kind==="annual"?"분석년도":"다음 미발표 분기"})`;
+  const read=g.interpretation||{};
+  const lo=g.houses.find(h=>h.tag==="최저 추정"),hi=g.houses.find(h=>h.tag==="최고 추정");
   const box=el("div",{style:"margin-top:16px;border-top:1px solid var(--border);padding-top:14px"},
-    `<h2 style="font-size:14px;margin:0 0 4px">아웃라이어 분석 — ${company} ${lab}</h2>`);
-  box.append(el("div",{},headMsg(F6GAP[company]||"")).firstChild);
-  box.append(el("p",{class:"note"},`컨센서스 중앙값 ${fmtA(g.median)}원 · ${g.n_houses}개사. <b>최저·최고 추정</b> = 영업이익 <b>추정치</b>가 가장 낮은/높은 하우스. 아래는 그 하우스의 <b>이슈별 논조(스탠스)</b> — 확신도 강한 순.`));
+    `<h2 style="font-size:14px;margin:0 0 4px">이견 해석 — ${company} ${lab}</h2>`);
+  box.append(el("div",{},headMsg(`<b>그래서 중요한 점:</b> ${read.conclusion||"최저·최고 추정의 손익 방향과 근거를 함께 확인해야 합니다."} 최저~최고 격차는 <b>${fmtA(read.spread??((hi?.op||0)-(lo?.op||0)))}</b>입니다.`)).firstChild);
+  const driverHtml=(title,h,driver,col)=>`<div class="gap-driver" style="border-left:3px solid ${col}"><b>${title}</b> · ${h?.house||"–"} ${h?`(${fmtA(h.op)})`:""}<br>${driver?`<span class="stbadge" style="color:${driver.score>=0?"var(--pos)":"var(--neg)"};border-color:${driver.score>=0?"var(--pos)":"var(--neg)"}">${driver.issue} ${driver.score>0?"+":""}${driver.score}</span> ${driver.summary}`:"연결된 이슈 평가 근거가 없습니다."}</div>`;
+  box.append(el("div",{class:"gap-grid"},driverHtml("최저 추정 리포트의 핵심 전제",lo,read.low_driver,"var(--neg)")+driverHtml("최고 추정 리포트의 핵심 전제",hi,read.high_driver,"var(--pos)")));
+  box.append(el("p",{class:"note"},`컨센서스 중앙값 ${fmtA(g.median)}원 · ${g.n_houses}개사. 아래는 최저·최고 추정 리포트의 ${helpTerm("평가 방향")} 근거 전체이며, 점수의 절댓값이 큰 순서입니다. 이슈 평가는 추정치 차이의 직접적인 수치 분해가 아니라 각 리포트가 강조한 전제를 보여줍니다.`));
   const order={"최저 추정":0,"최고 추정":1};
   g.houses.filter(h=>h.tag==="최저 추정"||h.tag==="최고 추정").sort((a,b)=>order[a.tag]-order[b.tag]).forEach(h=>{
     const col=OUTCOL[h.tag];
     const st=h.stances||[];
     const rows=st.length?st.map(s=>{const sc=s.score>0?"var(--pos)":s.score<0?"var(--neg)":"var(--muted)";
       return `<li><span class="stbadge" style="color:${sc};border-color:${sc}">${s.issue} ${s.score>0?"+":""}${s.score}</span> ${s.summary}</li>`}).join("")
-      :`<li>(이슈 스탠스 없음)</li>`;
+      :`<li>(연결된 이슈 평가 없음)</li>`;
     box.append(el("div",{class:"side",style:`border-left:3px solid ${col};padding-left:11px;margin-bottom:10px`},
       `<b style="color:${col}">${h.tag}</b> · <b>${h.house}</b>
        <span class="m">${h.date} · OP ${fmt(h.op)}원 · 중앙값 대비 ${h.dev_from_median>0?"+":""}${fmt(h.dev_from_median)}</span>
@@ -805,15 +837,15 @@ function outlierPanel(card,company,kind){
 }
 
 /* ---------- F6 점도표 ---------- */
-function rF6(v){ // 산업 점도표는 ⑦ 탭으로 이동
+function rF6(v){
   sel.f6p??="FY";
   const isQ=sel.f6p==="Q";
-  const card=el("div",{class:"card"},`<h2>영업이익 전망 점도표</h2>${headMsg(f6Head(sel.f6,isQ?"quarter":"annual"))}`);
+  const card=el("div",{class:"card"},`<h2>영업이익 전망 분포</h2>${headMsg(f6Head(sel.f6,isQ?"quarter":"annual"))}`);
   const ch=el("div",{class:"chips"});COMP.forEach(c=>{const b=el("button",{class:sel.f6===c?"on":""},c);
     b.onclick=()=>{sel.f6=c;render()};ch.append(b)});
   const pm=el("div",{class:"chips"});[["FY","연간"],["Q",`${DATA.f6_dotplots.q_fy} 분기별`]].forEach(([k,n])=>{
     const b=el("button",{class:sel.f6p===k?"on":""},n);b.onclick=()=>{sel.f6p=k;render()};pm.append(b)});
-  const m=el("div",{class:"chips"});[["latest","하우스별 최신"],["all","전체 리포트"]].forEach(([k,n])=>{
+  const m=el("div",{class:"chips"});[["latest","증권사별 최신"],["all","전체 리포트"]].forEach(([k,n])=>{
     const b=el("button",{class:sel.f6mode===k?"on":""},n);b.onclick=()=>{sel.f6mode=k;render()};m.append(b)});
   card.append(ch,pm,m);
   if(isQ){renderF6Q(card);outlierPanel(card,sel.f6,"quarter");v.append(card);return}
@@ -850,8 +882,8 @@ function rF6(v){ // 산업 점도표는 ⑦ 탭으로 이동
     const last=fy===FYs[FYs.length-1];
     const mt=sv("text",{x:last?X(fy)-half-3:X(fy)+half+3,y:Y(med)+4,class:"lbl","text-anchor":last?"end":"start"});mt.setAttribute("fill","var(--ink2)");mt.textContent=`중앙값 ${fmtA(med)}`;svg.append(mt);
     fomcCol(svg,col,X(fy),Y,step,half,CCOL[sel.f6],null,
-      d=>`<b>${d.house}</b> ${d.report_date}<br>FY${d.fy} OP <b>${fmt(d.op)}원</b><br><i>${d.basis}</i>`)});
-  card.append(svg,el("p",{class:"note"},`점 1개 = 리포트 1건의 영업이익 추정(AMPC 포함), 같은 구간은 같은 높이에 배치. <b>검은 점 = 발표된 실적</b>, 회색선 = 미발표 연도의 컨센서스 중앙값. <b>음영 = 아웃라이어 분석 대상(${f6Label("annual")})</b>. 모수: '하우스별 최신' = 증권사별 최근 리포트 1건 / '전체 리포트' = 모든 점.`));
+      d=>`<b>${d.house}</b> ${d.report_date}<br>FY${d.fy} OP <b>${fmt(d.op)}원</b><br><i>${basisLabel(d.basis)}</i>`)});
+  card.append(svg,el("p",{class:"note"},`점 1개 = 리포트 1건의 영업이익 추정(${helpTerm("AMPC 포함")}), 같은 구간은 같은 높이에 배치. <b>검은 점 = 발표된 실적</b>, 회색선 = 미발표 연도의 컨센서스 중앙값. <b>음영 = 이견 해석 대상(${f6Label("annual")})</b>. 모수: '증권사별 최신' = 증권사별 최근 리포트 1건 / '전체 리포트' = 모든 점.`));
   outlierPanel(card,sel.f6,"annual");
   v.append(card);
 }
@@ -894,12 +926,12 @@ function renderF6Q(card){ // 2026 분기별 점도표
     const last=q==="4Q";
     const mt=sv("text",{x:last?X(q)-half-3:X(q)+half+3,y:Y(med)+4,class:"lbl","text-anchor":last?"end":"start"});mt.setAttribute("fill","var(--ink2)");mt.textContent=`중앙값 ${fmtA(med)}`;svg.append(mt);
     fomcCol(svg,col,X(q),Y,step,half,CCOL[sel.f6],null,
-      d=>`<b>${d.house}</b> ${d.report_date}<br>${qfy}.${d.q} OP <b>${fmt(d.op)}원</b><br><i>${d.basis}</i>`)});
+      d=>`<b>${d.house}</b> ${d.report_date}<br>${qfy}.${d.q} OP <b>${fmt(d.op)}원</b><br><i>${basisLabel(d.basis)}</i>`)});
   const released=QS.filter(q=>qact[q]!=null).join("·")||"없음", pending=QS.filter(q=>qact[q]==null).join("·")||"없음";
-  card.append(svg,el("p",{class:"note"},`${qfy}년 분기별 영업이익(AMPC 포함) 추정 분포, 같은 구간은 같은 높이에 배치. <b>검은 점 = 발표된 실적</b>(${released}), 회색선 = 미발표 분기(${pending})의 컨센서스 중앙값. <b>음영 = 아웃라이어 분석 대상(${qfy}.${ANAQ})</b>.`));
+  card.append(svg,el("p",{class:"note"},`${qfy}년 분기별 영업이익(${helpTerm("AMPC 포함")}) 추정 분포, 같은 구간은 같은 높이에 배치. <b>검은 점 = 발표된 실적</b>(${released}), 회색선 = 미발표 분기(${pending})의 컨센서스 중앙값. <b>음영 = 이견 해석 대상(${qfy}.${ANAQ})</b>.`));
 }
 
-/* ---------- F7 산업 View (v3) ---------- */
+/* ---------- F7 산업 수요 전망 (v3) ---------- */
 const PHASE={"낙관":{y:3,c:"var(--pos)"},"선별낙관":{y:2,c:"color-mix(in srgb,var(--pos) 55%,var(--mid))"},
  "중립":{y:1,c:"var(--muted)"},"비관":{y:0,c:"var(--neg)"}};
 function half(d){return d.slice(0,4)+(d.slice(5,7)<="06"?"H1":"H2")}
@@ -931,7 +963,7 @@ function rF7(v){
   // ── A. 지역별 수요 전망 + 리비전 트래커
   const D=F.demand||[];
   if(D.length){
-    const c1=el("div",{class:"card"},`<h2>지역별 시장 수요 전망 — 증권사 View 비교</h2>
+    const c1=el("div",{class:"card"},`<h2>지역별 시장 수요 전망 — 증권사 전망 비교</h2>
       <p class="note">각 선 = 리포트 1건의 전망 시리즈 (진할수록 최근 발간). 기본 화면은 <b>시장 전체의 연간 전망만</b> 표시 —
       기준이 달라 비교가 안 되는 서브세그먼트(4680·소듐이온·주택용 등)·시나리오·월간치·CAPA·참고치는 토글로 분리.</p>`);
     const regions=[...new Set(D.map(d=>d.region))].filter(r=>["글로벌","북미","유럽","중국","한국"].includes(r));
