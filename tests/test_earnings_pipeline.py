@@ -3,6 +3,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 import unittest
 
 
@@ -177,6 +178,101 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertIn("centerNavOnRender", template)
         self.assertIn('aria-label="이전 탭 보기"', template)
         self.assertIn('aria-label="다음 탭 보기"', template)
+
+    def test_market_and_company_series_pass_strict_validation(self):
+        market = {
+            "series_id": "p55_us_ess_datacenter", "market": "ESS",
+            "application": "데이터센터", "system_type": "UPS",
+            "geography_raw": "US", "geography": "미국",
+            "parent_geography": "북미", "geography_level": "국가",
+            "metric": "수요량", "fy": 2030, "period": "FY",
+            "value": 35.0, "value_prev": None, "unit": "GWh",
+            "value_type": "추정", "series_class": "서브세그먼트",
+            "subsegment_raw": "데이터센터 UPS용",
+            "basis": "미국 데이터센터 UPS 배터리 수요", "scope_note": None,
+            "source_owner": "BNEF", "source_kind": "조사기관",
+            "extraction_method": "표", "value_precision": "정확", "page": 55
+        }
+        company = {
+            "series_id": "p18_catl_ev_sales", "company_raw": "CATL",
+            "company": "CATL", "company_type": "배터리셀", "market": "EV",
+            "application": "전체", "system_type": None,
+            "geography_raw": "Global", "geography": "글로벌",
+            "parent_geography": None, "geography_level": "글로벌",
+            "metric": "판매량", "metric_raw": "출하량",
+            "fy": 2026, "period": "2Q", "value": 96.5, "unit": "GWh",
+            "raw_value": 96.5, "raw_unit": "GWh", "time_basis": "기간판매량",
+            "as_of_date": None, "value_type": "실적",
+            "basis": "글로벌 EV 배터리 출하량", "scope_note": None,
+            "source_owner": "SNE Research", "source_kind": "조사기관",
+            "extraction_method": "표", "value_precision": "정확", "page": 18
+        }
+        BUILD.warnings.clear()
+        BUILD.validate_market_series("pilot", [market])
+        BUILD.validate_company_volume_series("pilot", [company])
+        self.assertEqual([], BUILD.warnings)
+
+    def test_market_and_company_series_reject_unsafe_normalization(self):
+        market = {
+            "series_id": "bad_market", "market": "ESS", "application": "통신",
+            "system_type": "기타", "geography_raw": "미국", "geography": "북미",
+            "parent_geography": "글로벌", "geography_level": "권역",
+            "metric": "수요량", "fy": 2030, "period": "FY", "value": 1,
+            "unit": "GWh", "value_type": "추정", "series_class": "시장전체",
+            "basis": "", "source_kind": "원천불명", "extraction_method": "차트",
+            "value_precision": "정확", "page": None
+        }
+        company = {
+            "series_id": "bad_company", "company_raw": "CATL", "company": "CATL",
+            "company_type": "배터리셀", "market": "EV", "application": "전체",
+            "system_type": None, "geography_raw": "Global", "geography": "글로벌",
+            "parent_geography": None, "geography_level": "글로벌",
+            "metric": "판매량", "metric_raw": None, "fy": 2026, "period": "2Q",
+            "value": 100, "unit": "억원", "raw_value": 100, "raw_unit": "억원",
+            "time_basis": "기간판매량", "value_type": "실적", "basis": "금액",
+            "source_kind": "원천불명", "extraction_method": "표",
+            "value_precision": "정확", "page": 1
+        }
+        BUILD.warnings.clear()
+        BUILD.validate_market_series("bad", [market])
+        BUILD.validate_company_volume_series("bad", [company])
+        joined = "\n".join(BUILD.warnings)
+        for phrase in ("application 비표준", "system_type 비표준", "미국을 북미로 치환",
+                       "원문 페이지 누락", "차트 판독값", "metric_raw 누락",
+                       "회사 단위 비표준", "회사 금액 단위 금지"):
+            self.assertIn(phrase, joined)
+
+    def test_series_id_connects_periods_but_rejects_duplicate_observation(self):
+        base = {
+            "series_id": "connected", "market": "EV", "application": "전체",
+            "system_type": None, "geography_raw": "Global", "geography": "글로벌",
+            "parent_geography": None, "geography_level": "글로벌",
+            "metric": "수요량", "period": "FY", "value": 10, "unit": "GWh",
+            "value_type": "추정", "series_class": "시장전체", "basis": "전망",
+            "source_kind": "증권사추정", "extraction_method": "표",
+            "value_precision": "정확", "page": 1
+        }
+        rows = [dict(base, fy=2026), dict(base, fy=2027, value=12),
+                dict(base, fy=2027, value=13)]
+        BUILD.warnings.clear()
+        BUILD.validate_market_series("series", rows)
+        joined = "\n".join(BUILD.warnings)
+        self.assertEqual(1, joined.count("동일 기간 중복"))
+        self.assertNotIn("series_id 중복", joined)
+
+    def test_market_company_index_writer_creates_separate_headers(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            BUILD.write_market_company_indexes(tmp, [])
+            market_path = os.path.join(tmp, "market_series.csv")
+            company_path = os.path.join(tmp, "company_volume_series.csv")
+            self.assertTrue(os.path.exists(market_path))
+            self.assertTrue(os.path.exists(company_path))
+            with open(market_path, encoding="utf-8") as f:
+                self.assertIn("market,application,system_type", f.readline())
+            with open(company_path, encoding="utf-8") as f:
+                header = f.readline()
+            self.assertIn("metric,metric_raw", header)
+            self.assertIn("raw_value,raw_unit", header)
 
     def test_normalized_op_waterfall_uses_broker_ranges_without_double_counting(self):
         with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),

@@ -16,7 +16,8 @@
 출력:  reports/<YYYY>/<report_id>.md
        earnings/<YYYY>/<document_id>.md
        index/reports.jsonl, estimates.csv, stances.csv,
-       industry_views.csv, actuals.csv, drivers.csv, guidance.csv, call_qa.jsonl
+       industry_views.csv, market_series.csv, company_volume_series.csv,
+       actuals.csv, drivers.csv, guidance.csv, call_qa.jsonl
 """
 import argparse, json, csv, os, sys, glob, re
 
@@ -25,6 +26,7 @@ STAGING = os.path.join(ROOT, ".staging")
 SEG_STD = {"전사", "배터리합계", "소형", "중대형", "EV", "ESS", "전자재료", "기타"}
 AMPC_BASIS = {"excl", "incl", "incl_unknown", "na"}
 PERIODS = {"FY", "1Q", "2Q", "3Q", "4Q"}
+SERIES_PERIODS = PERIODS | {"YTD"} | {f"{month:02d}M" for month in range(1, 13)}
 OPINIONS = {"매수", "중립", "매도", None}
 SOURCE_KINDS = {"ir_deck", "press_release", "call_script", "prepared_remarks", "transcript"}
 GUIDANCE_DIRECTIONS = {"유지", "상향", "하향", "개선", "악화", "확대", "축소",
@@ -54,6 +56,29 @@ REGION_STD = {"미국": "북미", "캐나다": "북미", "독일": "유럽", "�
               "영국": "유럽", "이탈리아": "유럽", "스페인": "유럽", "EU": "유럽",
               "일본": "기타", "인도": "기타", "아세안": "기타"}
 
+MARKETS = {"EV", "ESS"}
+ESS_APPLICATIONS = {"전체", "Grid/Utility", "데이터센터", "상업·산업용(C&I)",
+                    "주거용", "통신 등 기타"}
+SYSTEM_TYPES = {"UPS", "BESS", None}
+GEOGRAPHY_LEVELS = {"글로벌", "권역", "국가"}
+VALUE_TYPES = {"실적", "추정", "가이던스", "시나리오"}
+QUANT_SOURCE_KINDS = {"회사공시", "조사기관", "증권사추정", "증권사재가공", "원천불명"}
+EXTRACTION_METHODS = {"표", "차트", "본문", "계산"}
+VALUE_PRECISIONS = {"정확", "근사", "파생"}
+MARKET_SERIES_CLASSES = {"시장전체", "서브세그먼트", "시나리오", "월간·누적", "참고치"}
+MARKET_METRIC_UNITS = {
+    "수요량": {"GWh"}, "설치에너지": {"GWh"}, "설치출력": {"GW"},
+    "판매대수": {"대", "천대", "만대", "백만대"},
+    "성장률": {"%"}, "침투율": {"%"}, "점유율": {"%"}
+}
+COMPANY_TYPES = {"배터리셀", "통합OEM·배터리", "JV", "기타"}
+COMPANY_MARKETS = {"EV", "ESS", "합계"}
+COMPANY_METRICS = {"판매량", "생산능력"}
+COMPANY_METRIC_RAW = {"출하량", "생산량", "설치량", "판매량", "생산능력"}
+COMPANY_TIME_BASIS = {"기간판매량", "연환산생산능력", "기준일생산능력"}
+COMPANY_RAW_UNITS = {"MWh", "GWh", "TWh"}
+MONEY_UNITS = {"원", "천원", "백만원", "억원", "조원", "달러", "천달러", "백만달러"}
+
 
 def canon_company(c):
     return COMPANY_STD.get(c, c)
@@ -76,6 +101,159 @@ def has_content(value):
     if isinstance(value, list):
         return any(str(item).strip() for item in value)
     return value is not None and bool(str(value).strip())
+
+
+def _validate_geography(rid, row, label):
+    for field in ("geography_raw", "geography", "geography_level"):
+        if not has_content(row.get(field)):
+            warn(rid, f"{label} 필수 필드 누락: {field}")
+    if row.get("geography_level") not in GEOGRAPHY_LEVELS:
+        warn(rid, f"{label} geography_level 비표준: {row.get('geography_level')}")
+    raw = str(row.get("geography_raw") or "").strip().lower()
+    if raw in {"미국", "us", "usa", "united states"} and row.get("geography") == "북미":
+        warn(rid, f"{label} 미국을 북미로 치환 금지")
+    if row.get("geography") == "미국":
+        if row.get("parent_geography") != "북미" or row.get("geography_level") != "국가":
+            warn(rid, f"{label} 미국 지역 계층 오류: parent=북미, level=국가 필수")
+    if row.get("geography") == "북미":
+        if row.get("parent_geography") != "글로벌" or row.get("geography_level") != "권역":
+            warn(rid, f"{label} 북미 지역 계층 오류: parent=글로벌, level=권역 필수")
+
+
+def _validate_common_series(rid, rows, label, dimension_fields):
+    observations = set()
+    dimensions = {}
+    for row in rows:
+        for field in ("series_id", "fy", "period", "value", "value_type", "basis",
+                      "source_kind", "extraction_method", "value_precision", "page"):
+            if not has_content(row.get(field)):
+                warn(rid, f"{label} 필수 필드 누락: {field}")
+        if not isinstance(row.get("fy"), int):
+            warn(rid, f"{label} fy 비정수: {row.get('fy')}")
+        if row.get("period") not in SERIES_PERIODS:
+            warn(rid, f"{label} period 비표준: {row.get('period')}")
+        if not isinstance(row.get("value"), (int, float)):
+            warn(rid, f"{label} value 비숫자: {row.get('value')}")
+        if row.get("value_prev") is not None and not isinstance(row.get("value_prev"), (int, float)):
+            warn(rid, f"{label} value_prev 비숫자: {row.get('value_prev')}")
+        if row.get("value_type") not in VALUE_TYPES:
+            warn(rid, f"{label} value_type 비표준: {row.get('value_type')}")
+        if row.get("source_kind") not in QUANT_SOURCE_KINDS:
+            warn(rid, f"{label} source_kind 비표준: {row.get('source_kind')}")
+        if row.get("source_owner") and row.get("source_kind") == "원천불명":
+            warn(rid, f"{label} source_owner가 있으나 source_kind=원천불명")
+        if row.get("extraction_method") not in EXTRACTION_METHODS:
+            warn(rid, f"{label} extraction_method 비표준: {row.get('extraction_method')}")
+        if row.get("value_precision") not in VALUE_PRECISIONS:
+            warn(rid, f"{label} value_precision 비표준: {row.get('value_precision')}")
+        if row.get("extraction_method") == "차트" and row.get("value_precision") == "정확":
+            warn(rid, f"{label} 차트 판독값은 value_precision=정확 불가")
+        if not isinstance(row.get("page"), int) or row.get("page", 0) < 1:
+            warn(rid, f"{label} 원문 페이지 누락 또는 오류: {row.get('page')}")
+
+        series_id = row.get("series_id")
+        observation = (series_id, row.get("fy"), row.get("period"))
+        if series_id and observation in observations:
+            warn(rid, f"{label} 동일 기간 중복: {series_id} {row.get('fy')} {row.get('period')}")
+        observations.add(observation)
+        dims = tuple(row.get(field) for field in dimension_fields)
+        if series_id in dimensions and dimensions[series_id] != dims:
+            warn(rid, f"{label} series_id 차원 불일치: {series_id}")
+        elif series_id:
+            dimensions[series_id] = dims
+
+
+def validate_market_series(rid, rows):
+    rows = rows or []
+    _validate_common_series(
+        rid, rows, "market_series",
+        ("market", "application", "system_type", "geography", "metric", "unit")
+    )
+    for row in rows:
+        _validate_geography(rid, row, "market_series")
+        market = row.get("market")
+        if market not in MARKETS:
+            warn(rid, f"market_series market 비표준: {market}")
+        application = row.get("application")
+        if market == "ESS" and application not in ESS_APPLICATIONS:
+            warn(rid, f"market_series application 비표준: {application}")
+        if market == "EV" and application != "전체":
+            warn(rid, f"market_series EV application 비표준: {application}")
+        if row.get("system_type") not in SYSTEM_TYPES:
+            warn(rid, f"market_series system_type 비표준: {row.get('system_type')}")
+        if market != "ESS" and row.get("system_type") is not None:
+            warn(rid, "market_series system_type은 ESS에만 허용")
+        metric = row.get("metric")
+        if metric not in MARKET_METRIC_UNITS:
+            warn(rid, f"market_series metric 비표준: {metric}")
+        elif row.get("unit") not in MARKET_METRIC_UNITS[metric]:
+            warn(rid, f"market_series unit 비표준: {metric} {row.get('unit')}")
+        if row.get("series_class") not in MARKET_SERIES_CLASSES:
+            warn(rid, f"market_series series_class 비표준: {row.get('series_class')}")
+
+
+def validate_company_volume_series(rid, rows):
+    rows = rows or []
+    _validate_common_series(
+        rid, rows, "company_volume_series",
+        ("company", "market", "application", "system_type", "geography", "metric",
+         "metric_raw", "unit", "time_basis")
+    )
+    for row in rows:
+        _validate_geography(rid, row, "company_volume_series")
+        for field in ("company_raw", "company", "company_type", "market", "application",
+                      "metric", "metric_raw", "unit", "raw_value", "raw_unit", "time_basis"):
+            if not has_content(row.get(field)):
+                warn(rid, f"company_volume_series 필수 필드 누락: {field}")
+        if row.get("company_type") not in COMPANY_TYPES:
+            warn(rid, f"company_volume_series company_type 비표준: {row.get('company_type')}")
+        market = row.get("market")
+        if market not in COMPANY_MARKETS:
+            warn(rid, f"company_volume_series market 비표준: {market}")
+        application = row.get("application")
+        if market == "ESS" and application not in ESS_APPLICATIONS:
+            warn(rid, f"company_volume_series application 비표준: {application}")
+        if market != "ESS" and application != "전체":
+            warn(rid, f"company_volume_series application 비표준: {application}")
+        if row.get("system_type") not in SYSTEM_TYPES:
+            warn(rid, f"company_volume_series system_type 비표준: {row.get('system_type')}")
+        if market != "ESS" and row.get("system_type") is not None:
+            warn(rid, "company_volume_series system_type은 ESS에만 허용")
+
+        metric, metric_raw = row.get("metric"), row.get("metric_raw")
+        if metric not in COMPANY_METRICS:
+            warn(rid, f"company_volume_series metric 비표준: {metric}")
+        if metric_raw not in COMPANY_METRIC_RAW:
+            warn(rid, f"company_volume_series metric_raw 누락 또는 비표준: {metric_raw}")
+        if metric == "판매량" and metric_raw not in {"출하량", "생산량", "설치량", "판매량"}:
+            warn(rid, f"company_volume_series 판매량 metric_raw 비표준: {metric_raw}")
+        if metric == "생산능력" and metric_raw != "생산능력":
+            warn(rid, f"company_volume_series 생산능력 metric_raw 비표준: {metric_raw}")
+
+        unit, raw_unit = row.get("unit"), row.get("raw_unit")
+        if unit in MONEY_UNITS or raw_unit in MONEY_UNITS:
+            warn(rid, f"company_volume_series 회사 금액 단위 금지: {unit}/{raw_unit}")
+        if unit != "GWh":
+            warn(rid, f"company_volume_series 회사 단위 비표준: {unit} (GWh 필수)")
+        if raw_unit not in COMPANY_RAW_UNITS:
+            warn(rid, f"company_volume_series raw_unit 비표준: {raw_unit}")
+        raw_value = row.get("raw_value")
+        if not isinstance(raw_value, (int, float)):
+            warn(rid, f"company_volume_series raw_value 비숫자: {raw_value}")
+        elif raw_unit in COMPANY_RAW_UNITS and isinstance(row.get("value"), (int, float)):
+            expected = raw_value / 1000 if raw_unit == "MWh" else raw_value * 1000 if raw_unit == "TWh" else raw_value
+            if abs(row["value"] - expected) > max(1e-9, abs(expected) * 1e-9):
+                warn(rid, f"company_volume_series GWh 환산 불일치: {raw_value}{raw_unit} -> {row.get('value')}GWh")
+
+        time_basis = row.get("time_basis")
+        if time_basis not in COMPANY_TIME_BASIS:
+            warn(rid, f"company_volume_series time_basis 비표준: {time_basis}")
+        if metric == "판매량" and time_basis != "기간판매량":
+            warn(rid, f"company_volume_series 판매량 time_basis 오류: {time_basis}")
+        if metric == "생산능력" and time_basis not in {"연환산생산능력", "기준일생산능력"}:
+            warn(rid, f"company_volume_series 생산능력 time_basis 오류: {time_basis}")
+        if time_basis == "기준일생산능력" and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(row.get("as_of_date") or "")):
+            warn(rid, "company_volume_series 기준일생산능력 as_of_date 누락 또는 오류")
 
 
 def validate(r):
@@ -150,6 +328,49 @@ def validate(r):
             warn(rid, f"demand region 비표준: {df.get('region')}")
         if df.get("application") not in ("EV", "ESS", "합계"):
             warn(rid, f"demand application 비표준: {df.get('application')}")
+    validate_market_series(rid, r.get("market_series", []))
+    validate_company_volume_series(rid, r.get("company_volume_series", []))
+
+
+MARKET_SERIES_FIELDS = [
+    "report_id", "date", "house", "series_id", "market", "application",
+    "system_type", "geography_raw", "geography", "parent_geography",
+    "geography_level", "metric", "fy", "period", "value", "value_prev",
+    "unit", "value_type", "series_class", "subsegment_raw", "basis",
+    "scope_note", "source_owner", "source_kind", "extraction_method",
+    "value_precision", "source_page"
+]
+COMPANY_VOLUME_SERIES_FIELDS = [
+    "report_id", "date", "house", "series_id", "company_raw", "company",
+    "company_type", "market", "application", "system_type", "geography_raw",
+    "geography", "parent_geography", "geography_level", "metric", "metric_raw",
+    "fy", "period", "value", "unit", "raw_value", "raw_unit", "time_basis",
+    "as_of_date", "value_type", "basis", "scope_note", "source_owner",
+    "source_kind", "extraction_method", "value_precision", "source_page"
+]
+
+
+def write_market_company_indexes(idx, reports):
+    """시장과 회사 물량을 서로 다른 CSV로 쓴다. 데이터가 없어도 헤더는 만든다."""
+    specs = (
+        ("market_series.csv", "market_series", MARKET_SERIES_FIELDS),
+        ("company_volume_series.csv", "company_volume_series",
+         COMPANY_VOLUME_SERIES_FIELDS),
+    )
+    for filename, source_key, fields in specs:
+        with open(os.path.join(idx, filename), "w", encoding="utf-8", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
+            writer.writeheader()
+            for report in sorted(reports, key=lambda item: item["date"]):
+                for item in report.get(source_key, []) or []:
+                    row = dict(item)
+                    row.update({
+                        "report_id": report["report_id"],
+                        "date": report["date"],
+                        "house": report["house"],
+                        "source_page": item.get("page"),
+                    })
+                    writer.writerow(row)
 
 
 def yflow(items, keys):
@@ -207,6 +428,25 @@ def render_md(r):
         fm.append(yflow(r["industry_views"],
                         ["scope", "fy", "metric", "value", "unit",
                          "direction", "summary", "page"]))
+    if r.get("market_series"):
+        fm.append("market_series:")
+        fm.append(yflow(r["market_series"],
+                        ["series_id", "market", "application", "system_type",
+                         "geography_raw", "geography", "parent_geography",
+                         "geography_level", "metric", "fy", "period", "value",
+                         "value_prev", "unit", "value_type", "series_class",
+                         "subsegment_raw", "basis", "scope_note", "source_owner",
+                         "source_kind", "extraction_method", "value_precision", "page"]))
+    if r.get("company_volume_series"):
+        fm.append("company_volume_series:")
+        fm.append(yflow(r["company_volume_series"],
+                        ["series_id", "company_raw", "company", "company_type",
+                         "market", "application", "system_type", "geography_raw",
+                         "geography", "parent_geography", "geography_level",
+                         "metric", "metric_raw", "fy", "period", "value", "unit",
+                         "raw_value", "raw_unit", "time_basis", "as_of_date",
+                         "value_type", "basis", "scope_note", "source_owner",
+                         "source_kind", "extraction_method", "value_precision", "page"]))
     fm.append("key_issues: [" + ", ".join(r.get("key_issues", [])) + "]")
     if r.get("top_picks"):
         fm.append("top_picks: [" + ", ".join(r["top_picks"]) + "]")
@@ -562,6 +802,7 @@ def main(check_only=False, force=False, strict_ids=None):
                             d.get("value"), d.get("value_prev"), d.get("unit"),
                             d.get("basis"), d.get("page"),
                             c["cls"], c["label"], c["scope"]])
+    write_market_company_indexes(idx, reports)
     with open(os.path.join(idx, "themes.csv"), "w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
         w.writerow(["report_id", "date", "house", "theme", "direction",
