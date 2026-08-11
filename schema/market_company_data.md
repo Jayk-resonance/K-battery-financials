@@ -154,7 +154,8 @@ EV·ESS 시장 데이터와 배터리 회사의 판매량·생산능력 데이�
 - CATL, BYD, Panasonic, CALB, EVE Energy, Gotion, Sunwoda, Farasis,
   Envision AESC 등 신규 회사가 발견되면 회사 사전에 추가한다.
 - 원문명과 표준명을 함께 보존한다.
-- OEM·배터리 통합기업과 JV는 `company_type`으로 구분하고 다른 회사에 합치지 않는다.
+- OEM·배터리 통합기업과 JV 법인은 `company_type`으로 구분하고 다른 회사에 합치지 않는다.
+- 모회사의 생산능력이 JV 공장에 있는지는 `company_type`이 아니라 `ownership_type`으로 구분한다.
 
 ### 5-2. 필드
 
@@ -163,6 +164,11 @@ EV·ESS 시장 데이터와 배터리 회사의 판매량·생산능력 데이�
 | `company_raw` | 예 | 원문 회사명 | 원문 보존 |
 | `company` | 예 | 표준 회사명 | 별칭 통합용 |
 | `company_type` | 예 | `배터리셀`, `통합OEM·배터리`, `JV`, `기타` | 회사 유형 |
+| `facility_raw` | 아니오 | 원문 공장·사이트명 또는 `null` | 울산, Ultium Cells Tennessee 등 원문 설비명 |
+| `ownership_type` | 생산능력만 예 | `단독`, `JV`, `혼합`, `불명` | 해당 생산능력의 소유·운영 형태 |
+| `jv_name_raw` | 아니오 | 원문 JV명 또는 `null` | 원문에 명시된 합작법인·프로젝트명 |
+| `jv_partner_raw` | 아니오 | 원문 파트너명 또는 `null` | 원문에 명시된 JV 파트너. 추정 금지 |
+| `capacity_basis` | 생산능력만 예 | `총설비`, `지분귀속`, `불명` | 공장 전체 GWh인지 회사 지분 귀속 GWh인지 구분 |
 | `market` | 예 | `EV`, `ESS`, `합계` | 제품 용도. 미분리 값은 `합계` |
 | `application` | 예 | §4-2 또는 `전체` | ESS 용도. EV·합계는 기본 `전체` |
 | `system_type` | 아니오 | `UPS`, `BESS`, `null` | ESS만 사용 |
@@ -197,6 +203,14 @@ EV·ESS 시장 데이터와 배터리 회사의 판매량·생산능력 데이�
   제외하고 검토 대상으로 남긴다.
 - 억원·달러·시장금액·매출액 등 금액 데이터는 `company_volume_series`에 넣지 않는다.
 - 생산능력은 표준값을 GWh로 저장하되 `time_basis`로 연환산 또는 기준일 능력을 구분한다.
+- 생산능력은 `market`으로 EV·ESS·미분리 합계를 구분하고, 지역 필드와 `facility_raw`로
+  권역·국가·공장 범위를 보존한다.
+- JV 여부가 원문에 없으면 추정하지 않고 `ownership_type=불명`으로 둔다.
+- JV 생산능력은 원문에 제시된 공장 전체 값을 `capacity_basis=총설비`로 저장한다.
+  지분율을 적용한 값은 원문에 명시되었을 때만 별도 시리즈로 `capacity_basis=지분귀속` 처리한다.
+- 글로벌·권역 합계에 단독 설비와 JV 설비가 함께 포함됐다고 명시되면 `ownership_type=혼합`으로 둔다.
+- `company_type=JV`는 회사 자체가 JV 법인일 때만 사용한다. 배터리 셀 회사가 JV 공장에 가진
+  생산능력은 회사 유형을 바꾸지 않고 `ownership_type=JV`로 표시한다.
 
 ### 5-5. 회사 데이터 예시
 
@@ -206,6 +220,11 @@ EV·ESS 시장 데이터와 배터리 회사의 판매량·생산능력 데이�
   "company_raw": "CATL",
   "company": "CATL",
   "company_type": "배터리셀",
+  "facility_raw": null,
+  "ownership_type": null,
+  "jv_name_raw": null,
+  "jv_partner_raw": null,
+  "capacity_basis": null,
   "market": "EV",
   "application": "전체",
   "system_type": null,

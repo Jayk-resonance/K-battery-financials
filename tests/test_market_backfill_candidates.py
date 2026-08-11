@@ -1,6 +1,8 @@
 import importlib.util
 import os
+import tempfile
 import unittest
+from pathlib import Path
 
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,6 +28,13 @@ class MarketBackfillCandidatesTest(unittest.TestCase):
         )
         self.assertEqual("시장·회사", row["candidate_type"])
         self.assertIn("LG에너지솔루션", row["companies"])
+
+    def test_jv_capacity_page_is_selected_without_known_parent_name(self):
+        row = CANDIDATES.classify_page(
+            "Ultium Cells 합작법인은 2027년 미국 EV 생산능력 50GWh를 확보할 전망"
+        )
+        self.assertIn("회사", row["candidate_type"])
+        self.assertEqual("JV", row["ownership_signals"])
 
     def test_ev_vehicle_sales_and_penetration_are_market_candidates(self):
         sales = CANDIDATES.classify_page(
@@ -54,6 +63,20 @@ class MarketBackfillCandidatesTest(unittest.TestCase):
         self.assertIsNone(CANDIDATES.classify_page(
             "LG에너지솔루션 2027년 매출액 40조원, 영업이익 3조원 전망"
         ))
+
+    def test_review_status_is_preserved_across_rescan(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "candidates.csv"
+            path.write_text(
+                "source_group,source_file,page,visual_review_status\n"
+                "actuals,source.pdf,18,채택\n"
+                "inbox,pending.pdf,1,대기\n",
+                encoding="utf-8-sig",
+            )
+            self.assertEqual(
+                {("actuals", "source.pdf", "18"): "채택"},
+                CANDIDATES._load_review_status(path),
+            )
 
 
 if __name__ == "__main__":

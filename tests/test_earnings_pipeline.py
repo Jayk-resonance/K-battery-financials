@@ -217,6 +217,35 @@ class EarningsPipelineTest(unittest.TestCase):
         BUILD.validate_company_volume_series("pilot", [company])
         self.assertEqual([], BUILD.warnings)
 
+    def test_company_capacity_requires_ownership_and_capacity_basis(self):
+        capacity = {
+            "series_id": "p12_lges_us_ev_capacity", "company_raw": "LG에너지솔루션",
+            "company": "LGES", "company_type": "배터리셀", "facility_raw": "Ultium Cells",
+            "ownership_type": "JV", "jv_name_raw": "Ultium Cells",
+            "jv_partner_raw": "GM", "capacity_basis": "총설비", "market": "EV",
+            "application": "전체", "system_type": None, "geography_raw": "US",
+            "geography": "미국", "parent_geography": "북미", "geography_level": "국가",
+            "metric": "생산능력", "metric_raw": "생산능력", "fy": 2026,
+            "period": "FY", "value": 50, "unit": "GWh", "raw_value": 50,
+            "raw_unit": "GWh", "time_basis": "기준일생산능력",
+            "as_of_date": "2026-12-31", "value_type": "추정",
+            "basis": "미국 JV 공장 연말 생산능력", "scope_note": "공장 전체 기준",
+            "source_owner": "테스트", "source_kind": "증권사추정",
+            "extraction_method": "표", "value_precision": "정확", "page": 12,
+        }
+        BUILD.warnings.clear()
+        BUILD.validate_company_volume_series("capacity", [capacity])
+        self.assertEqual([], BUILD.warnings)
+
+        unsafe = dict(capacity)
+        unsafe["ownership_type"] = None
+        unsafe["capacity_basis"] = None
+        BUILD.warnings.clear()
+        BUILD.validate_company_volume_series("unsafe", [unsafe])
+        joined = "\n".join(BUILD.warnings)
+        self.assertIn("ownership_type 누락 또는 비표준", joined)
+        self.assertIn("capacity_basis 누락 또는 비표준", joined)
+
     def test_market_and_company_series_reject_unsafe_normalization(self):
         market = {
             "series_id": "bad_market", "market": "ESS", "application": "통신",
@@ -295,6 +324,7 @@ class EarningsPipelineTest(unittest.TestCase):
                 header = f.readline()
             self.assertIn("metric,metric_raw", header)
             self.assertIn("raw_value,raw_unit", header)
+            self.assertIn("facility_raw,ownership_type,jv_name_raw,jv_partner_raw,capacity_basis", header)
 
     def test_quant_backfill_merges_by_report_id_without_leaking_id_into_row(self):
         reports = [{"report_id": "pilot"}]

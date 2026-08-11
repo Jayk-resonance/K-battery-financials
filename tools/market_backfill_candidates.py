@@ -25,6 +25,9 @@ COMPANY_TERMS = {
     "Northvolt": ("Northvolt", "노스볼트"),
     "Tesla": ("Tesla", "테슬라"),
 }
+OWNERSHIP_TERMS = {
+    "JV": ("JV", "joint venture", "합작법인", "합작 법인", "합작", "조인트벤처"),
+}
 APPLICATION_TERMS = {
     "데이터센터": ("데이터센터", "data center", "datacenter"),
     "Grid/Utility": ("Grid", "Utility", "전력망", "계통"),
@@ -71,6 +74,7 @@ def classify_page(text):
     text = re.sub(r"\s+", " ", text or "").strip()
     markets = _matches(text, MARKET_TERMS)
     companies = _matches(text, COMPANY_TERMS)
+    ownership_signals = _matches(text, OWNERSHIP_TERMS)
     applications = _matches(text, APPLICATION_TERMS)
     geographies = _matches(text, GEOGRAPHY_TERMS)
     metrics = [term for term in METRIC_TERMS if _contains(text, term)]
@@ -84,7 +88,9 @@ def classify_page(text):
     market_candidate = bool(
         markets and metrics and (energy_units or vehicle_units or percent_units) and has_time_or_values
     )
-    company_candidate = bool(companies and company_metrics and energy_units and has_time_or_values)
+    company_candidate = bool(
+        (companies or ownership_signals) and company_metrics and energy_units and has_time_or_values
+    )
     if not market_candidate and not company_candidate:
         return None
 
@@ -94,8 +100,9 @@ def classify_page(text):
     )
     score = (
         3 + min(len(units), 2) + min(len(metrics), 2)
-        + (2 if markets else 0) + (2 if companies else 0)
+        + (2 if markets else 0) + (2 if companies or ownership_signals else 0)
         + (1 if applications else 0) + (1 if geographies else 0)
+        + (1 if ownership_signals else 0)
         + (1 if YEAR_RE.search(text) else 0)
     )
     risk_flags = []
@@ -106,6 +113,7 @@ def classify_page(text):
         "candidate_type": candidate_type,
         "markets": "|".join(markets),
         "companies": "|".join(companies),
+        "ownership_signals": "|".join(ownership_signals),
         "applications": "|".join(applications),
         "geographies": "|".join(geographies),
         "metrics": "|".join(metrics),
@@ -153,12 +161,28 @@ def _load_source_context():
     return inbox_ids, actual_ids, legacy_pages
 
 
+def _load_review_status(path):
+    if not path.exists():
+        return {}
+    with path.open(encoding="utf-8-sig", newline="") as stream:
+        rows = csv.DictReader(stream)
+        return {
+            (row["source_group"], row["source_file"], row["page"]): row["visual_review_status"]
+            for row in rows
+            if row.get("visual_review_status") and row["visual_review_status"] != "대기"
+        }
+
+
 def build_candidate_files():
     try:
         import pypdfium2 as pdfium
     except ImportError as exc:
         raise SystemExit("pypdfium2가 필요합니다. Codex bundled Python으로 실행하세요.") from exc
 
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    inventory_path = OUTPUT_DIR / "pdf_inventory.csv"
+    candidate_path = OUTPUT_DIR / "backfill_candidates.csv"
+    review_status = _load_review_status(candidate_path)
     inbox_ids, actual_ids, legacy_pages = _load_source_context()
     candidates = []
     inventory = []
@@ -193,6 +217,7 @@ def build_candidate_files():
                         "candidate_type": "기존시장",
                         "markets": "",
                         "companies": "",
+                        "ownership_signals": "",
                         "applications": "",
                         "geographies": "",
                         "metrics": "",
@@ -214,7 +239,9 @@ def build_candidate_files():
                     "legacy_covered": "Y" if covered else "N",
                     "priority": priority,
                     **classified,
-                    "visual_review_status": "대기",
+                    "visual_review_status": review_status.get(
+                        (source_group, pdf_path.name, str(page_number)), "대기"
+                    ),
                 })
             document.close()
         except Exception as exc:
@@ -235,9 +262,6 @@ def build_candidate_files():
         row["legacy_covered"] == "Y", -row["score"], row["source_group"],
         row["source_file"], row["page"]
     ))
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    inventory_path = OUTPUT_DIR / "pdf_inventory.csv"
-    candidate_path = OUTPUT_DIR / "backfill_candidates.csv"
     _write_csv(inventory_path, inventory)
     _write_csv(candidate_path, candidates)
     return inventory_path, candidate_path, inventory, candidates

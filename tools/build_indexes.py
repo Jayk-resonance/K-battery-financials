@@ -80,6 +80,8 @@ COMPANY_METRICS = {"판매량", "생산능력"}
 COMPANY_METRIC_RAW = {"출하량", "생산량", "설치량", "판매량", "생산능력"}
 COMPANY_TIME_BASIS = {"기간판매량", "연환산생산능력", "기준일생산능력"}
 COMPANY_RAW_UNITS = {"MWh", "GWh", "TWh"}
+COMPANY_OWNERSHIP_TYPES = {"단독", "JV", "혼합", "불명"}
+COMPANY_CAPACITY_BASES = {"총설비", "지분귀속", "불명"}
 MONEY_UNITS = {"원", "천원", "백만원", "억원", "조원", "달러", "천달러", "백만달러"}
 
 
@@ -218,7 +220,8 @@ def validate_company_volume_series(rid, rows):
     _validate_common_series(
         rid, rows, "company_volume_series",
         ("company", "market", "application", "system_type", "geography", "metric",
-         "metric_raw", "unit", "time_basis")
+         "metric_raw", "unit", "time_basis", "facility_raw", "ownership_type",
+         "jv_name_raw", "jv_partner_raw", "capacity_basis")
     )
     for row in rows:
         _validate_geography(rid, row, "company_volume_series")
@@ -250,6 +253,21 @@ def validate_company_volume_series(rid, rows):
             warn(rid, f"company_volume_series 판매량 metric_raw 비표준: {metric_raw}")
         if metric == "생산능력" and metric_raw != "생산능력":
             warn(rid, f"company_volume_series 생산능력 metric_raw 비표준: {metric_raw}")
+
+        ownership_type = row.get("ownership_type")
+        capacity_basis = row.get("capacity_basis")
+        if metric == "생산능력":
+            if ownership_type not in COMPANY_OWNERSHIP_TYPES:
+                warn(rid, f"company_volume_series ownership_type 누락 또는 비표준: {ownership_type}")
+            if capacity_basis not in COMPANY_CAPACITY_BASES:
+                warn(rid, f"company_volume_series capacity_basis 누락 또는 비표준: {capacity_basis}")
+            if ownership_type == "단독" and (has_content(row.get("jv_name_raw")) or
+                                             has_content(row.get("jv_partner_raw"))):
+                warn(rid, "company_volume_series 단독 생산능력에 JV 정보 사용 금지")
+        elif any(has_content(row.get(field)) for field in
+                 ("facility_raw", "ownership_type", "jv_name_raw", "jv_partner_raw",
+                  "capacity_basis")):
+            warn(rid, "company_volume_series JV·설비 필드는 생산능력에만 허용")
 
         unit, raw_unit = row.get("unit"), row.get("raw_unit")
         if unit in MONEY_UNITS or raw_unit in MONEY_UNITS:
@@ -364,8 +382,9 @@ MARKET_SERIES_FIELDS = [
 ]
 COMPANY_VOLUME_SERIES_FIELDS = [
     "report_id", "date", "house", "series_id", "company_raw", "company",
-    "company_type", "market", "application", "system_type", "geography_raw",
-    "geography", "parent_geography", "geography_level", "metric", "metric_raw",
+    "company_type", "facility_raw", "ownership_type", "jv_name_raw",
+    "jv_partner_raw", "capacity_basis", "market", "application", "system_type",
+    "geography_raw", "geography", "parent_geography", "geography_level", "metric", "metric_raw",
     "fy", "period", "value", "unit", "raw_value", "raw_unit", "time_basis",
     "as_of_date", "value_type", "basis", "scope_note", "source_owner",
     "source_kind", "extraction_method", "value_precision", "source_page"
@@ -492,7 +511,9 @@ def render_md(r):
         fm.append("company_volume_series:")
         fm.append(yflow(r["company_volume_series"],
                         ["series_id", "company_raw", "company", "company_type",
-                         "market", "application", "system_type", "geography_raw",
+                         "facility_raw", "ownership_type", "jv_name_raw",
+                         "jv_partner_raw", "capacity_basis", "market", "application",
+                         "system_type", "geography_raw",
                          "geography", "parent_geography", "geography_level",
                          "metric", "metric_raw", "fy", "period", "value", "unit",
                          "raw_value", "raw_unit", "time_basis", "as_of_date",
