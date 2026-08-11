@@ -16,7 +16,8 @@
 출력:  reports/<YYYY>/<report_id>.md
        earnings/<YYYY>/<document_id>.md
        index/reports.jsonl, estimates.csv, stances.csv,
-       industry_views.csv, market_series.csv, company_volume_series.csv,
+       industry_views.csv, market_series.csv, market_series_review.csv,
+       company_volume_series.csv,
        actuals.csv, drivers.csv, guidance.csv, call_qa.jsonl
 """
 import argparse, json, csv, os, sys, glob, re
@@ -333,7 +334,8 @@ def validate(r):
 
 
 MARKET_SERIES_FIELDS = [
-    "report_id", "date", "house", "series_id", "market", "application",
+    "report_id", "date", "house", "origin_schema", "legacy_row", "series_id",
+    "market", "application",
     "system_type", "geography_raw", "geography", "parent_geography",
     "geography_level", "metric", "fy", "period", "value", "value_prev",
     "unit", "value_type", "series_class", "subsegment_raw", "basis",
@@ -348,29 +350,58 @@ COMPANY_VOLUME_SERIES_FIELDS = [
     "as_of_date", "value_type", "basis", "scope_note", "source_owner",
     "source_kind", "extraction_method", "value_precision", "source_page"
 ]
+MARKET_SERIES_REVIEW_FIELDS = [
+    "report_id", "date", "house", "source_pdf", "origin_schema", "legacy_row",
+    "region", "application", "metric", "fy", "value", "value_prev", "unit",
+    "basis", "source_page", "review_reasons"
+]
 
 
 def write_market_company_indexes(idx, reports):
-    """시장과 회사 물량을 서로 다른 CSV로 쓴다. 데이터가 없어도 헤더는 만든다."""
-    specs = (
-        ("market_series.csv", "market_series", MARKET_SERIES_FIELDS),
-        ("company_volume_series.csv", "company_volume_series",
-         COMPANY_VOLUME_SERIES_FIELDS),
-    )
-    for filename, source_key, fields in specs:
-        with open(os.path.join(idx, filename), "w", encoding="utf-8", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
-            writer.writeheader()
-            for report in sorted(reports, key=lambda item: item["date"]):
-                for item in report.get(source_key, []) or []:
-                    row = dict(item)
-                    row.update({
-                        "report_id": report["report_id"],
-                        "date": report["date"],
-                        "house": report["house"],
-                        "source_page": item.get("page"),
-                    })
-                    writer.writerow(row)
+    """명시적 데이터와 legacy 자동 이관분을 분리된 CSV로 쓴다."""
+    ordered = sorted(reports, key=lambda item: item["date"])
+    with open(os.path.join(idx, "market_series.csv"), "w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=MARKET_SERIES_FIELDS, extrasaction="ignore")
+        writer.writeheader()
+        for report in ordered:
+            explicit = report.get("market_series", []) or []
+            replaced = {item.get("legacy_row") for item in explicit if item.get("legacy_row")}
+            migrated = [item for item in report.get("_legacy_market_series", [])
+                        if item.get("legacy_row") not in replaced]
+            for item in list(explicit) + migrated:
+                row = dict(item)
+                row.update({
+                    "report_id": report["report_id"], "date": report["date"],
+                    "house": report["house"], "source_page": item.get("page"),
+                    "origin_schema": item.get("origin_schema", "market_series"),
+                })
+                writer.writerow(row)
+
+    with open(os.path.join(idx, "market_series_review.csv"), "w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=MARKET_SERIES_REVIEW_FIELDS, extrasaction="ignore")
+        writer.writeheader()
+        for report in ordered:
+            replaced = {item.get("legacy_row") for item in report.get("market_series", []) or []
+                        if item.get("legacy_row")}
+            for item in report.get("_legacy_market_review", []):
+                if item.get("legacy_row") in replaced:
+                    continue
+                row = dict(item)
+                row["source_pdf"] = "inbox/" + report.get("source_file", "")
+                writer.writerow(row)
+
+    with open(os.path.join(idx, "company_volume_series.csv"), "w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=COMPANY_VOLUME_SERIES_FIELDS,
+                                extrasaction="ignore")
+        writer.writeheader()
+        for report in ordered:
+            for item in report.get("company_volume_series", []) or []:
+                row = dict(item)
+                row.update({
+                    "report_id": report["report_id"], "date": report["date"],
+                    "house": report["house"], "source_page": item.get("page"),
+                })
+                writer.writerow(row)
 
 
 def yflow(items, keys):
@@ -662,11 +693,25 @@ def main(check_only=False, force=False, strict_ids=None):
     for rid in sorted(have - mf_ids):
         warn(rid, "manifest 원본 파일 매핑 없음")
     fmap = {m["report_id"]: m["file"] for m in mf}
+    from market_migration import migrate_legacy_demands
+    legacy_migrated = legacy_review = legacy_total = 0
     for r in reports:
         r["source_file"] = fmap.get(r["report_id"], r.get("source_pdf", ""))
         if r["source_file"] and not os.path.exists(os.path.join(ROOT, "inbox", r["source_file"])):
             warn(r["report_id"], f"원본 PDF 없음: inbox/{r['source_file']}")
+        migrated, review = migrate_legacy_demands(r)
+        r["_legacy_market_series"] = migrated
+        r["_legacy_market_review"] = review
+        legacy_migrated += len(migrated)
+        legacy_review += len(review)
+        legacy_total += len(r.get("demand_forecasts", []) or [])
         validate(r)
+        validate_market_series(r["report_id"], migrated)
+
+    if legacy_migrated + legacy_review != legacy_total:
+        raise RuntimeError("전체 legacy 수요 이관 합계 불일치")
+    print(f"기존 수요 이관 분류: 자동 {legacy_migrated}행, 검토 {legacy_review}행, "
+          f"합계 {legacy_total}행")
 
     earnings_ids = {e.get("document_id") for e in earnings_packages}
     for rid in sorted(strict_ids - have - earnings_ids):

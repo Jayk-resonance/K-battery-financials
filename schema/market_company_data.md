@@ -239,8 +239,13 @@ EV·ESS 시장 데이터와 배터리 회사의 판매량·생산능력 데이�
 | 생성물 | 역할 |
 |---|---|
 | `index/market_series.csv` | 시장 관측값 전체. 연간 데이터가 기본 조회 대상 |
+| `index/market_series_review.csv` | 자동 추측하지 않은 기존 수요 행과 검토 사유 |
 | `index/company_volume_series.csv` | 회사별 판매량·생산능력. 분기와 연간 데이터 보존 |
 | `index/demand_forecasts.csv` | 기존 대시보드 하위호환용 파생 인덱스 |
+
+`market_series.csv`의 `origin_schema`와 `legacy_row`는 자동 이관 여부와 기존 배열의 행 번호를
+추적하는 인덱스 메타데이터다. 명시적으로 작성한 새 행은 `origin_schema=market_series`, 기존
+수요에서 파생한 행은 `origin_schema=demand_forecasts`로 구분한다.
 
 Excel은 인덱스 구현과 백필 이후 별도 단계에서 생성한다.
 
@@ -281,6 +286,15 @@ Excel은 인덱스 구현과 백필 이후 별도 단계에서 생성한다.
 7. 기존 구조에 숫자가 없는 회사 판매량·생산능력은 PDF의 관련 페이지만 선별 백필한다.
 8. 표준 MD와 인덱스는 `.staging`을 수정한 뒤 `build_indexes.py`로 재생성한다. 생성물을
    직접 고치지 않는다.
+
+자동 이관 코드는 기존 행을 다음처럼 처리한다.
+
+- EV·ESS이고 지표·단위·지역·페이지·basis가 명확한 행만 `market_series.csv`에 넣는다.
+- `실적치`, EV·ESS 외 application, 지원하지 않는 지표·단위, basis 누락은
+  `market_series_review.csv`에 원문 값과 검토 사유를 남긴다.
+- 표·차트 여부가 기존 구조에 명시되지 않은 값은 `value_precision=근사`로 둔다.
+- 자동 이관 행과 검토 행의 합계는 기존 행 수와 반드시 일치해야 한다.
+- 2026-08-11 기준 1,294행 중 813행은 자동 이관, 481행은 검토 대상으로 분류된다.
 
 ## 9. 이번 설계에서 제외하는 것
 

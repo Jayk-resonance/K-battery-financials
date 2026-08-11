@@ -13,6 +13,11 @@ SPEC = importlib.util.spec_from_file_location(
 )
 BUILD = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(BUILD)
+MIGRATION_SPEC = importlib.util.spec_from_file_location(
+    "market_migration", os.path.join(ROOT, "tools", "market_migration.py")
+)
+MARKET_MIGRATION = importlib.util.module_from_spec(MIGRATION_SPEC)
+MIGRATION_SPEC.loader.exec_module(MARKET_MIGRATION)
 
 
 def load_staging(name):
@@ -264,8 +269,10 @@ class EarningsPipelineTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             BUILD.write_market_company_indexes(tmp, [])
             market_path = os.path.join(tmp, "market_series.csv")
+            review_path = os.path.join(tmp, "market_series_review.csv")
             company_path = os.path.join(tmp, "company_volume_series.csv")
             self.assertTrue(os.path.exists(market_path))
+            self.assertTrue(os.path.exists(review_path))
             self.assertTrue(os.path.exists(company_path))
             with open(market_path, encoding="utf-8") as f:
                 self.assertIn("market,application,system_type", f.readline())
@@ -273,6 +280,80 @@ class EarningsPipelineTest(unittest.TestCase):
                 header = f.readline()
             self.assertIn("metric,metric_raw", header)
             self.assertIn("raw_value,raw_unit", header)
+
+    def test_legacy_market_migration_connects_safe_annual_series(self):
+        report = {
+            "report_id": "pilot", "date": "2026-07-31", "house": "테스트",
+            "demand_forecasts": [
+                {"region": "미국", "application": "ESS", "metric": "수요량",
+                 "fy": 2027, "value": 12, "value_prev": None, "unit": "GWh",
+                 "basis": "미국 데이터센터 UPS 수요 전망", "page": 5},
+                {"region": "미국", "application": "ESS", "metric": "수요량",
+                 "fy": 2030, "value": 30, "value_prev": None, "unit": "GWh",
+                 "basis": "미국 데이터센터 UPS 수요 전망", "page": 5},
+            ]
+        }
+        migrated, review = MARKET_MIGRATION.migrate_legacy_demands(report)
+        self.assertEqual([], review)
+        self.assertEqual(2, len(migrated))
+        self.assertEqual(1, len({row["series_id"] for row in migrated}))
+        self.assertTrue(all(row["geography"] == "미국" for row in migrated))
+        self.assertTrue(all(row["parent_geography"] == "북미" for row in migrated))
+        self.assertTrue(all(row["application"] == "데이터센터" for row in migrated))
+        self.assertTrue(all(row["system_type"] == "UPS" for row in migrated))
+
+    def test_legacy_market_migration_routes_ambiguous_rows_to_review(self):
+        report = {
+            "report_id": "review", "date": "2026-07-31", "house": "테스트",
+            "demand_forecasts": [
+                {"region": "글로벌", "application": "EV", "metric": "실적치",
+                 "fy": 2025, "value": 100, "value_prev": None, "unit": "GWh",
+                 "basis": "글로벌 EV 배터리", "page": 2},
+                {"region": "글로벌", "application": "로봇", "metric": "수요량",
+                 "fy": 2030, "value": 10, "value_prev": None, "unit": "GWh",
+                 "basis": "휴머노이드 로봇 수요", "page": 3},
+            ]
+        }
+        migrated, review = MARKET_MIGRATION.migrate_legacy_demands(report)
+        self.assertEqual([], migrated)
+        self.assertEqual(2, len(review))
+        reasons = "\n".join(row["review_reasons"] for row in review)
+        self.assertIn("실적치는 원문 지표 재확인 필요", reasons)
+        self.assertIn("EV·ESS 외 application: 로봇", reasons)
+
+    def test_legacy_market_migration_does_not_average_duplicate_values(self):
+        base = {"region": "글로벌", "application": "EV", "metric": "수요량",
+                "fy": 2030, "value_prev": None, "unit": "GWh",
+                "basis": "글로벌 EV 배터리 수요", "page": 7}
+        report = {
+            "report_id": "duplicate", "date": "2026-07-31", "house": "테스트",
+            "demand_forecasts": [dict(base, value=100), dict(base, value=120)]
+        }
+        migrated, review = MARKET_MIGRATION.migrate_legacy_demands(report)
+        self.assertEqual([], migrated)
+        self.assertEqual(2, len(review))
+        self.assertTrue(all(row["review_reasons"] == "같은 시리즈·기간에 복수 값 존재"
+                            for row in review))
+
+    def test_all_legacy_demand_rows_are_reconciled_without_guessing(self):
+        migrated_total = review_total = source_total = 0
+        for name in os.listdir(os.path.join(ROOT, ".staging")):
+            if not name.endswith(".json") or name == "manifest.json":
+                continue
+            data = load_staging(name)
+            if not isinstance(data, dict) or not data.get("report_id"):
+                continue
+            migrated, review = MARKET_MIGRATION.migrate_legacy_demands(data)
+            source_total += len(data.get("demand_forecasts", []) or [])
+            migrated_total += len(migrated)
+            review_total += len(review)
+            BUILD.warnings.clear()
+            BUILD.validate_market_series(data["report_id"], migrated)
+            self.assertEqual([], BUILD.warnings, data["report_id"])
+        self.assertEqual(1294, source_total)
+        self.assertEqual(813, migrated_total)
+        self.assertEqual(481, review_total)
+        self.assertEqual(source_total, migrated_total + review_total)
 
     def test_normalized_op_waterfall_uses_broker_ranges_without_double_counting(self):
         with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),

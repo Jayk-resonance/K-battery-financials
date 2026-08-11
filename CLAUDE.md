@@ -41,7 +41,7 @@ inbox/*.pdf                                    # 원본 PDF (사용자가 넣음
   ▼
 reports/YYYY/<report_id>.md                    # 증권사 리포트 표준 MD
 earnings/YYYY/<FY>_<분기>_<회사>.md             # 실적·컨콜 표준 MD
-index/{reports.jsonl,estimates.csv,stances.csv,industry_views.csv,market_series.csv,company_volume_series.csv,actuals.csv,drivers.csv,guidance.csv,call_qa.jsonl,demand_forecasts.csv,themes.csv}
+index/{reports.jsonl,estimates.csv,stances.csv,industry_views.csv,market_series.csv,market_series_review.csv,company_volume_series.csv,actuals.csv,drivers.csv,guidance.csv,call_qa.jsonl,demand_forecasts.csv,themes.csv}
   │  ── tools/build_dashboard_data.py ──
   ▼
 projects/dashboard/data.json                   # 대시보드 데이터셋

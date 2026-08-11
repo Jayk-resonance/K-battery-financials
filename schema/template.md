@@ -97,6 +97,8 @@ source_pdf: inbox/미래에셋_20260115.pdf   # 원본 경로 (모든 숫자의 
 - `estimates`·`stances`의 값 규칙(단위 십억원, segment_std, ampc_basis, metric 통제어휘,
   stance_score −10~+10)은 `NORMALIZATION.md` 를 따른다.
 - 시장·회사 물량 숫자는 `market_company_data.md`에 따라 두 배열로 분리하며, 회사 금액 데이터는 넣지 않는다.
+- 기존 `demand_forecasts`의 안전한 행은 빌드 시 새 시장 인덱스로 파생되지만 표준 MD에는 복제하지 않는다.
+  자동 판단할 수 없는 행은 `index/market_series_review.csv`에서 확인한다.
 - 작성 후 먼저 `python3 tools/build_indexes.py --check-id <report_id>` 로 신규 리포트를 엄격
   검증한다. 대상 경고가 1건이라도 있으면 실패하며, 수정 후 경고 0건을 확인해야 한다.
   실제 재빌드도 기존 인덱스에 없던 신규 ID의 경고를 다시 검사해 쓰기 전에 자동 중단한다.
