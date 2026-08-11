@@ -66,6 +66,12 @@ main{flex:1;min-width:0}
 .gap-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 12px}
 .gap-driver{background:var(--chip);border-radius:8px;padding:9px 10px;font-size:12px;color:var(--ink2);line-height:1.5}
 .gap-driver b{color:var(--ink)}
+.wf-callout{margin:8px 0 12px;padding:10px 12px;border-radius:9px;background:var(--chip);font-size:13px;line-height:1.55}
+.wf-badge{display:inline-block;border:1px solid var(--border);border-radius:9px;padding:1px 6px;margin-left:4px;font-size:10px;font-weight:700;color:var(--ink2);white-space:nowrap}
+.wf-badge.confirmed{color:var(--pos);border-color:color-mix(in srgb,var(--pos) 45%,var(--border))}
+.wf-badge.limited{color:var(--neg);border-color:color-mix(in srgb,var(--neg) 45%,var(--border))}
+.wf-row{border-left:3px solid var(--axis);padding:7px 10px;margin:7px 0;background:var(--chip);border-radius:0 8px 8px 0;font-size:12px;color:var(--ink2)}
+.wf-row b{color:var(--ink)}
 .datechip{display:inline-block;background:var(--chip);color:var(--ink2);font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;margin-right:2px;white-space:nowrap;vertical-align:middle}
 .nline{margin:5px 0;font-size:12px;color:var(--ink2);line-height:1.55}
 ul.outsents{margin:7px 0 0;padding-left:16px}
@@ -197,7 +203,7 @@ function axisY(g,x0,x1,y,v){g.append(sv("line",{x1:x0,x2:x1,y1:y,y2:y,stroke:"va
 /* ---------- 탭 ---------- */
 const TABS=[["overview","개요"],["f1","① 분기 실적"],["f6","② 전망 분포·이견"],["f4","③ 과거 추정 오차"],
  ["f2","④ 이슈별 3사 평가"],["f3","⑤ 증권사 전망 변화"],["f7","⑥ 산업 수요 전망"],["srch","🔍 검색"]];
-let tab="overview", sel={f1:"LGES",f1c:"LGES",f1p:null,f1sr:"LGES",f1so:"LGES",f1srO:false,f1soO:false,f3:"LGES",f4:0,f6:"LGES",f6mode:"latest",f7s:null};
+let tab="overview", sel={f1:"LGES",f1c:"LGES",f1p:null,f1sr:"LGES",f1so:"LGES",f1w:"삼성SDI",f1srO:false,f1soO:false,f3:"LGES",f4:0,f6:"LGES",f6mode:"latest",f7s:null};
 function render(){
   $("#subline").textContent=`리포트 ${DATA.meta.n_reports}건 (산업 ${DATA.meta.n_industry||0}건 포함) · ${DATA.meta.houses.length}개 증권사 · ${DATA.meta.period}`;
   const nav=$("#nav");nav.innerHTML="";
@@ -329,6 +335,7 @@ function rF1(v){
   segDetailCard(v,"매출","f1sr","f1srO","1-2 분기별 매출액 (사업부문별)",F1HEAD.매출부문);
   lineChart(v,"2-1 분기별 영업이익 (전사, AMPC 포함)",F1HEAD.영업이익전사,"3사 모두 26.2Q까지 회사 IR 확정치 · SK온 2Q는 보상금·AMPC 포함(개별 금액 미공시) · 26.3Q(E) 이후는 컨센서스 중앙값(② 전망 분포와 동일값)","영업이익");
   segDetailCard(v,"영업이익","f1so","f1soO","2-2 분기별 영업이익 (사업부문별)",F1HEAD.영업이익부문);
+  normalizedWaterfallCard(v);
 
   // [참고] 증권사 추정 상세 (회사 탭) — 탭을 눌러 활성화
   const segAll=DATA.f1_quarterly.seg_consensus?.[sel.f1c]||{};
@@ -401,6 +408,56 @@ function rF1(v){
     if(sel.f1nar25)y25.forEach(([q,txt])=>card.append(qcard(q,txt)));
   }
   v.append(card);
+}
+
+function normalizedWaterfallCard(v){
+  const root=DATA.f1_quarterly.normalized_waterfall;if(!root?.companies)return;
+  const card=el("div",{class:"card"},`<h2>2-3 ${root.fy}.${root.period} 정상화 영업이익 워터폴</h2>
+    <p class="note">공시 영업이익에서 ${helpTerm("AMPC")}와 반복성이 낮은 보상금·관세환급을 차감한 <b>증권사 추정 기반 분석</b>입니다. 회계상 조정 영업이익이 아닙니다.</p>`);
+  const chips=el("div",{class:"chips"});COMP.forEach(c=>{const b=el("button",{class:sel.f1w===c?"on":""},c);
+    b.onclick=()=>{sel.f1w=c;render()};chips.append(b)});card.append(chips);
+  const d=root.companies[sel.f1w]||root.companies[COMP[0]];
+  const range=(lo,hi)=>Math.abs(lo-hi)<.05?fmtA(lo):`${fmtA(lo)} ~ ${fmtA(hi)}`;
+  const adjText=d.components.map(c=>`${c.label} ${fmtA(c.median)}`).join("과 ");
+  const sign=d.normalized.median<0?"영업손실":"영업이익";
+  card.append(el("div",{class:"wf-callout"},`<b>${sel.f1w}:</b> 공시 영업이익 <b>${fmtA(d.reported.value)}</b>에서 ${adjText}을 차감하면 추정 정상화 ${sign}은 <b>${fmtA(d.normalized.median)}</b>입니다. 근거 범위로 계산하면 <b>${range(d.normalized.min,d.normalized.max)}</b>입니다.`));
+
+  let cumulative=d.reported.value;
+  const bars=[{label:"공시 영업이익",kind:"total",value:cumulative,start:0,end:cumulative,provenance:"company_disclosed"}];
+  d.components.forEach(c=>{const end=cumulative-c.median;bars.push({label:c.label,kind:"adjust",value:-c.median,start:cumulative,end,component:c});cumulative=end});
+  bars.push({label:"추정 정상화",kind:"final",value:d.normalized.median,start:0,end:d.normalized.median});
+  const W=720,H=310,L=64,R=20,T=24,B=66,n=bars.length;
+  const vals=bars.flatMap(b=>[b.start,b.end]).concat([d.normalized.min,d.normalized.max,0]);
+  let lo=Math.min(...vals),hi=Math.max(...vals),pad=Math.max((hi-lo)*.12,20);lo-=pad;hi+=pad;
+  const X=i=>L+(i+.5)*(W-L-R)/n,Y=x=>lin(x,lo,hi,H-B,T),bw=Math.min(78,(W-L-R)/n*.56);
+  const svg=sv("svg",{viewBox:`0 0 ${W} ${H}`,width:"100%",style:"min-width:620px"});
+  const zy=Y(0);svg.append(sv("line",{x1:L,x2:W-R,y1:zy,y2:zy,stroke:"var(--axis)","stroke-width":1.2}));
+  const zt=sv("text",{x:L-7,y:zy+4,"text-anchor":"end",class:"lbl"});zt.textContent="0";svg.append(zt);
+  bars.forEach((b,i)=>{
+    if(i>0&&b.kind!=="final")svg.append(sv("line",{x1:X(i-1)+bw/2,x2:X(i)-bw/2,y1:Y(b.start),y2:Y(b.start),stroke:"var(--axis)","stroke-dasharray":"3 3"}));
+    const y1=Y(Math.max(b.start,b.end)),y2=Y(Math.min(b.start,b.end));
+    const color=b.kind==="adjust"?"var(--neg)":b.kind==="final"?(b.value<0?"var(--neg)":"var(--pos)"):"var(--accent)";
+    const rect=sv("rect",{x:X(i)-bw/2,y:y1,width:bw,height:Math.max(2,y2-y1),rx:5,fill:color,"fill-opacity":b.kind==="adjust"?.72:.9});
+    const detail=b.kind==="adjust"?`${b.label} 차감 ${fmt(b.component.median)}원<br>${b.component.provenance==="company_disclosed"?"회사 확정":"증권사 추정"} · n=${b.component.n} · ${range(b.component.min,b.component.max)}`:`${b.label} ${fmt(b.value)}원`;
+    rect.addEventListener("mousemove",e=>hover(e,detail));rect.addEventListener("mouseleave",unhover);svg.append(rect);
+    const val=sv("text",{x:X(i),y:b.end>=0?y1-8:y2+16,"text-anchor":"middle",class:"lbl"});val.setAttribute("fill",color);val.textContent=(b.kind==="adjust"?"− ":"")+fmtA(Math.abs(b.value));svg.append(val);
+    const lab=sv("text",{x:X(i),y:H-36,"text-anchor":"middle",class:"lbl"});
+    const words=b.label.split(" ");const first=sv("tspan",{x:X(i),dy:0});first.textContent=words.slice(0,2).join(" ");lab.append(first);
+    if(words.length>2){const second=sv("tspan",{x:X(i),dy:14});second.textContent=words.slice(2).join(" ");lab.append(second)}svg.append(lab);
+  });
+  const fx=X(n-1),wy1=Y(d.normalized.max),wy2=Y(d.normalized.min);
+  svg.append(sv("line",{x1:fx+bw/2+9,x2:fx+bw/2+9,y1:wy1,y2:wy2,stroke:"var(--ink2)","stroke-width":1.5}));
+  svg.append(sv("line",{x1:fx+bw/2+4,x2:fx+bw/2+14,y1:wy1,y2:wy1,stroke:"var(--ink2)"}),sv("line",{x1:fx+bw/2+4,x2:fx+bw/2+14,y1:wy2,y2:wy2,stroke:"var(--ink2)"}));
+  card.append(svg,el("p",{class:"note"},"빨간 막대는 차감 조정항목입니다. 마지막 세로선은 증권사 추정치의 최저~최고 범위이며, 중앙 막대는 중앙값 기준 정상화 손익입니다."));
+
+  const conf={confirmed:["회사 확정","confirmed"],medium:["복수 추정",""],limited:["근거 제한","limited"]};
+  const details=el("details",{},"<summary>근거 리포트와 계산 기준 보기</summary>");
+  details.append(el("div",{class:"wf-row"},`<b>공시 영업이익 ${fmt(d.reported.value)}원</b><span class="wf-badge confirmed">회사 확정</span><br>${d.reported.source_file} · p.${d.reported.source_page}`));
+  d.components.forEach(c=>{const [cl,cc]=conf[c.confidence];const src=c.sources.map(s=>`${s.house} ${s.date||""} · ${fmt(s.value)}원 · p.${s.source_page}`).join("<br>");
+    details.append(el("div",{class:"wf-row"},`<b>${c.label} ${fmt(c.median)}원</b><span class="wf-badge ${cc}">${cl} n=${c.n}</span><br>범위 ${range(c.min,c.max)}<br>${src}`))});
+  d.unquantified.forEach(x=>{const src=x.sources.map(s=>`${s.house} ${s.date} · p.${s.source_page}`).join(", ");
+    details.append(el("div",{class:"wf-row",style:"border-left-color:var(--neg)"},`<b>${x.label}: 별도 차감하지 않음</b><span class="wf-badge limited">중복 차감 방지</span><br>${x.reason}<br>${src}`))});
+  details.append(el("p",{class:"note"},`${root.selection_rule}<br><b>정의:</b> ${root.definition}`));card.append(details);v.append(card);
 }
 
 

@@ -165,6 +165,45 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertIn("g.interpretation", template)
         self.assertNotIn("const F6GAP", template)
 
+    def test_normalized_op_waterfall_uses_broker_ranges_without_double_counting(self):
+        with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
+                  encoding="utf-8") as f:
+            waterfall = json.load(f)["f1_quarterly"]["normalized_waterfall"]
+        companies = waterfall["companies"]
+        self.assertEqual({"LGES", "삼성SDI", "SK온"}, set(companies))
+        expected = {
+            "LGES": (113.0, -228.0),
+            "삼성SDI": (203.8, -103.9),
+            "SK온": (821.8, -308.0),
+        }
+        for company, (reported, normalized) in expected.items():
+            self.assertEqual(reported, companies[company]["reported"]["value"])
+            self.assertEqual(normalized, companies[company]["normalized"]["median"])
+            self.assertLessEqual(companies[company]["normalized"]["min"], normalized)
+            self.assertGreaterEqual(companies[company]["normalized"]["max"], normalized)
+            for component in companies[company]["components"]:
+                houses = [source["house"] for source in component["sources"]
+                          if source["house"] != "회사 IR"]
+                self.assertEqual(len(houses), len(set(houses)))
+
+        sdi = {row["key"]: row for row in companies["삼성SDI"]["components"]}
+        self.assertEqual((190.0, 200.0, 5),
+                         (sdi["tariff_refund"]["min"], sdi["tariff_refund"]["max"],
+                          sdi["tariff_refund"]["n"]))
+        skon_unquantified = companies["SK온"]["unquantified"]
+        self.assertEqual(["tariff_refund"], [row["key"] for row in skon_unquantified])
+        self.assertNotIn("tariff_refund",
+                         [row["key"] for row in companies["SK온"]["components"]])
+
+    def test_normalized_waterfall_is_rendered_with_estimate_warning(self):
+        path = os.path.join(ROOT, "projects", "dashboard", "dashboard_template.html")
+        with open(path, encoding="utf-8") as f:
+            template = f.read()
+        self.assertIn("normalizedWaterfallCard(v)", template)
+        self.assertIn("증권사 추정 기반 분석", template)
+        self.assertIn("회계상 조정 영업이익이 아닙니다", template)
+        self.assertIn("중복 차감 방지", template)
+
     def test_segment_charts_use_latest_actual_quarter_and_summary(self):
         with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
                   encoding="utf-8") as f:

@@ -39,6 +39,8 @@ CUR = os.path.join(OUT, "narratives.json")  # 큐레이션 내러티브 (수기)
 narratives = json.load(open(CUR, encoding="utf-8")) if os.path.exists(CUR) else {}
 QOQ = os.path.join(OUT, "qoq_supplements.json")  # 2026 QoQ 구조화 보충 설명 (수기)
 qoq_supplements = json.load(open(QOQ, encoding="utf-8")) if os.path.exists(QOQ) else {}
+NWATER = os.path.join(OUT, "normalized_op_waterfall.json")  # 증권사 추정 기반 정상화 손익 조정
+normalized_waterfall = json.load(open(NWATER, encoding="utf-8")) if os.path.exists(NWATER) else {}
 # 이슈별 긍정/부정 요약 (생성물, issue|company 키). 하우스 구성이 바뀌면 재생성 필요.
 ISUM = os.path.join(OUT, "issue_summaries.json")
 issue_summaries = json.load(open(ISUM, encoding="utf-8")) if os.path.exists(ISUM) else {}
@@ -150,6 +152,103 @@ f1 = {"actuals_grid": {f"{k[0]}|{k[1]}|{k[2]}": v for k, v in actual_grid().item
       "company_drivers": [dict(d) for d in drivers],
       "narratives": narratives.get("f1", {}),
       "qoq_supplements": qoq_supplements.get("companies", {})}
+
+
+def build_normalized_waterfall():
+    """공시 OP에서 정책·일회성 추정치를 차감하되 근거와 범위를 보존한다."""
+    if not normalized_waterfall:
+        return {}
+    fy = int(normalized_waterfall["fy"])
+    period = normalized_waterfall["period"]
+    target_seg = {"LGES": "전사", "삼성SDI": "전사", "SK온": "배터리합계"}
+    out = {}
+    if set(normalized_waterfall.get("companies", {})) != set(COMPANIES):
+        raise ValueError("정상화 워터폴은 LGES·삼성SDI·SK온 3사를 모두 포함해야 합니다")
+
+    def attach_broker_source(comp, source):
+        rid = source.get("report_id")
+        rm = rmeta.get(rid)
+        if not rm:
+            raise ValueError(f"정상화 워터폴 근거 report_id 없음: {rid}")
+        if rm.get("coverage") != comp or rm.get("house") != source.get("house"):
+            raise ValueError(f"정상화 워터폴 근거 귀속 불일치: {rid}")
+        if rm["date"] < ANNOUNCE[(comp, fy, period)]:
+            raise ValueError(f"실적 발표 전 리포트는 정상화 추정에서 제외: {rid}")
+        return {**source, "date": rm["date"]}
+
+    for comp in COMPANIES:
+        seg = target_seg[comp]
+        op_rows = [a for a in actuals if a["company"] == comp and int(a["fy"]) == fy
+                   and a["period"] == period and a["segment_std"] == seg
+                   and a["metric"] == "영업이익"
+                   and a.get("ampc_basis") in ("incl", "incl_unknown", "na")]
+        if len(op_rows) != 1:
+            raise ValueError(f"{comp} {fy}.{period} 공시 영업이익을 하나로 확정할 수 없습니다")
+        op_row = op_rows[0]
+        reported = float(op_row["value"])
+        components, seen_keys = [], set()
+        for component in normalized_waterfall["companies"][comp].get("components", []):
+            key = component["key"]
+            if key in seen_keys:
+                raise ValueError(f"{comp} 정상화 워터폴 조정항목 중복: {key}")
+            seen_keys.add(key)
+            values = component.get("values", [])
+            if not values or any(not isinstance(v.get("value"), (int, float)) or v["value"] <= 0
+                                 for v in values):
+                raise ValueError(f"{comp} {key} 조정값은 양수 숫자여야 합니다")
+            provenance = component["provenance"]
+            if provenance == "company_disclosed":
+                if len(values) != 1:
+                    raise ValueError(f"{comp} {key} 회사 확정값은 하나여야 합니다")
+                fact = values[0]
+                fact_rows = [a for a in actuals if a["company"] == comp and int(a["fy"]) == fy
+                             and a["period"] == period and a["segment_std"] == seg
+                             and a["metric"] == component["label"]]
+                if len(fact_rows) != 1 or abs(float(fact_rows[0]["value"]) - fact["value"]) > 0.1:
+                    raise ValueError(f"{comp} {key} 회사 확정값이 actuals.csv와 일치하지 않습니다")
+                sources = [{**fact, "house": "회사 IR", "date": ANNOUNCE[(comp, fy, period)]}]
+                confidence = "confirmed"
+            elif provenance == "broker_estimate":
+                sources = [attach_broker_source(comp, v) for v in values]
+                houses = [v["house"] for v in sources]
+                if len(houses) != len(set(houses)):
+                    raise ValueError(f"{comp} {key} 증권사별 최신값이 중복됐습니다")
+                confidence = "medium" if len(sources) >= 3 else "limited"
+            else:
+                raise ValueError(f"{comp} {key} provenance 비표준: {provenance}")
+            nums = [float(v["value"]) for v in sources]
+            components.append({
+                "key": key, "label": component["label"], "provenance": provenance,
+                "median": round(st.median(nums), 1), "min": round(min(nums), 1),
+                "max": round(max(nums), 1), "n": len(nums), "confidence": confidence,
+                "sources": sources,
+            })
+
+        unquantified = []
+        for item in normalized_waterfall["companies"][comp].get("unquantified", []):
+            if item["key"] in seen_keys:
+                raise ValueError(f"{comp} {item['key']} 정량·미정량 항목 중복")
+            sources = [attach_broker_source(comp, s) for s in item.get("sources", [])]
+            unquantified.append({**item, "sources": sources})
+
+        median = round(reported - sum(c["median"] for c in components), 1)
+        low = round(reported - sum(c["max"] for c in components), 1)
+        high = round(reported - sum(c["min"] for c in components), 1)
+        out[comp] = {
+            "fy": fy, "period": period,
+            "reported": {"value": reported, "source_file": op_row["source_file"],
+                         "source_page": op_row["source_page"], "provenance": "company_disclosed"},
+            "components": components, "unquantified": unquantified,
+            "normalized": {"median": median, "min": low, "max": high},
+        }
+    return {
+        "fy": fy, "period": period, "unit": normalized_waterfall.get("unit", "십억원"),
+        "definition": normalized_waterfall["definition"],
+        "selection_rule": normalized_waterfall["selection_rule"], "companies": out,
+    }
+
+
+f1["normalized_waterfall"] = build_normalized_waterfall()
 
 SEGMENT_SUMMARY_FIELDS = ("segment_revenue_summary", "segment_operating_profit_summary")
 

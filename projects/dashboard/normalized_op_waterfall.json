@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "fy": 2026,
+  "period": "2Q",
+  "unit": "십억원",
+  "definition": "공시 영업이익에서 AMPC와 반복성이 낮은 보상금·관세환급을 차감한 증권사 추정 기반 손익입니다. 회계상 조정 영업이익이 아닙니다.",
+  "selection_rule": "실적 발표일 이후 발간된 증권사 리포트의 명시적 금액만 사용하고, 증권사별 최신 1건의 중앙값을 적용합니다. 범위·근거 수를 함께 표시하며 묶음 추정은 중복 차감하지 않습니다.",
+  "companies": {
+    "LGES": {
+      "components": [
+        {
+          "key": "ampc",
+          "label": "AMPC",
+          "provenance": "company_disclosed",
+          "values": [
+            {"value": 241.0, "source_file": "26_2Q_LGES_business_performance_F_KR.pdf", "source_page": 13}
+          ]
+        },
+        {
+          "key": "tariff_refund",
+          "label": "관세환급",
+          "provenance": "broker_estimate",
+          "values": [
+            {"house": "삼성증권", "report_id": "2026-07-30_삼성증권_LGES", "value": 80.0, "source_page": 1},
+            {"house": "DS투자증권", "report_id": "2026-07-31_DS투자증권_LGES", "value": 100.0, "source_page": 1},
+            {"house": "신한투자증권", "report_id": "2026-07-31_신한투자증권_LGES", "value": 100.0, "source_page": 1}
+          ]
+        }
+      ],
+      "unquantified": []
+    },
+    "삼성SDI": {
+      "components": [
+        {
+          "key": "ampc",
+          "label": "AMPC",
+          "provenance": "broker_estimate",
+          "values": [
+            {"house": "삼성증권", "report_id": "2026-07-31_삼성증권_삼성SDI", "value": 107.7, "source_page": 1},
+            {"house": "키움증권", "report_id": "2026-07-31_키움증권_삼성SDI", "value": 107.7, "source_page": 2},
+            {"house": "하나증권", "report_id": "2026-07-31_하나증권_삼성SDI", "value": 108.0, "source_page": 2}
+          ]
+        },
+        {
+          "key": "tariff_refund",
+          "label": "관세환급",
+          "provenance": "broker_estimate",
+          "values": [
+            {"house": "iM증권", "report_id": "2026-07-31_iM증권_삼성SDI", "value": 190.0, "source_page": 1},
+            {"house": "IBK투자증권", "report_id": "2026-07-31_IBK투자증권_삼성SDI", "value": 200.0, "source_page": 1},
+            {"house": "LS증권", "report_id": "2026-07-31_LS증권_삼성SDI", "value": 200.0, "source_page": 1},
+            {"house": "대신증권", "report_id": "2026-07-31_대신증권_삼성SDI", "value": 200.0, "source_page": 1},
+            {"house": "키움증권", "report_id": "2026-07-31_키움증권_삼성SDI", "value": 200.0, "source_page": 1}
+          ]
+        }
+      ],
+      "unquantified": []
+    },
+    "SK온": {
+      "components": [
+        {
+          "key": "ampc",
+          "label": "AMPC",
+          "provenance": "broker_estimate",
+          "values": [
+            {"house": "하나증권", "report_id": "2026-07-31_하나증권_SK온", "value": 129.8, "source_page": 1}
+          ]
+        },
+        {
+          "key": "customer_compensation",
+          "label": "고객 보상 등 미확인 일회성",
+          "provenance": "broker_estimate",
+          "values": [
+            {"house": "BNK투자증권", "report_id": "2026-07-31_BNK투자증권_SK온", "value": 1000.0, "source_page": 1},
+            {"house": "신한투자증권", "report_id": "2026-07-31_신한투자증권_SK온", "value": 1000.0, "source_page": 1},
+            {"house": "하나증권", "report_id": "2026-07-31_하나증권_SK온", "value": 1040.0, "source_page": 1}
+          ]
+        }
+      ],
+      "unquantified": [
+        {
+          "key": "tariff_refund",
+          "label": "관세환급",
+          "reason": "기여 사실만 확인되고 별도 금액은 제시되지 않았습니다. 1조원대 보상성 일회성 추정에 포함됐을 가능성이 있어 추가 차감하지 않습니다.",
+          "sources": [
+            {"house": "IBK투자증권", "report_id": "2026-07-31_IBK투자증권_SK온", "source_page": 1}
+          ]
+        }
+      ]
+    }
+  }
+}
