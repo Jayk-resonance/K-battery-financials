@@ -353,7 +353,7 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertEqual(manifest[0]["file"], row["source_file"])
         self.assertEqual("inbox/" + manifest[0]["file"], row["source_path"])
 
-    def test_p1_latest_selector_keeps_latest_and_routes_exceptions(self):
+    def test_p1_latest_selector_limits_to_2026_and_routes_exceptions(self):
         def candidate(report_id, page, application="전체", source_group="inbox",
                       risk_flags=""):
             return {
@@ -370,6 +370,8 @@ class EarningsPipelineTest(unittest.TestCase):
             candidate("2026-05-01_A증권_LGES", 1, "데이터센터"),
             candidate("2026-04-01_A증권_LGES", 1),
             candidate("2026-06-01_A증권_산업", 3),
+            candidate("2026-02-01_A증권_산업", 5),
+            candidate("2026-03-01_B증권_산업", 6),
             candidate("2025-11-01_A증권_산업", 8, "상업·산업용(C&I)"),
             candidate("2024-01-01_B증권_산업", 2),
             candidate("LGES", 4, source_group="actuals"),
@@ -391,6 +393,14 @@ class EarningsPipelineTest(unittest.TestCase):
                 "house": "A증권", "coverage": "산업", "date": "2026-06-01",
                 "report_title": "최신 산업",
             },
+            "2026-02-01_A증권_산업": {
+                "house": "A증권", "coverage": "산업", "date": "2026-02-01",
+                "report_title": "같은 하우스 이전 산업",
+            },
+            "2026-03-01_B증권_산업": {
+                "house": "B증권", "coverage": "산업", "date": "2026-03-01",
+                "report_title": "다른 하우스 최신 산업",
+            },
             "2025-11-01_A증권_산업": {
                 "house": "A증권", "coverage": "산업", "date": "2025-11-01",
                 "report_title": "이전 산업",
@@ -408,8 +418,10 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertEqual("추가 검토", classes[("2026-05-01_A증권_LGES", "1")])
         self.assertEqual("중복·구형 제외", classes[("2026-04-01_A증권_LGES", "1")])
         self.assertEqual("최신 유효", classes[("2026-06-01_A증권_산업", "3")])
-        self.assertEqual("과거 고유 검토", classes[("2025-11-01_A증권_산업", "8")])
-        self.assertEqual("추가 검토", classes[("2024-01-01_B증권_산업", "2")])
+        self.assertEqual("중복·구형 제외", classes[("2026-02-01_A증권_산업", "5")])
+        self.assertEqual("최신 유효", classes[("2026-03-01_B증권_산업", "6")])
+        self.assertEqual("연도 범위 제외", classes[("2025-11-01_A증권_산업", "8")])
+        self.assertEqual("연도 범위 제외", classes[("2024-01-01_B증권_산업", "2")])
         self.assertEqual("회사공시 별도", classes[("LGES", "4")])
 
     def test_quant_backfill_merges_by_report_id_without_leaking_id_into_row(self):

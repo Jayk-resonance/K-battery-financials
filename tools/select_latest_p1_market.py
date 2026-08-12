@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""P1 시장 후보를 하우스·시장·커버리지별 최신 유효 자료 중심으로 재분류한다."""
+"""P1 시장 후보를 2026년 하우스·시장·커버리지별 최신 자료로 재분류한다."""
 
 import csv
 import datetime as dt
@@ -13,6 +13,7 @@ CANDIDATE_PATH = os.path.join(PROJECT_DIR, "backfill_candidates.csv")
 CATALOG_PATH = os.path.join(ROOT, "index", "report_catalog.csv")
 OUTPUT_PATH = os.path.join(PROJECT_DIR, "p1_market_reclassification.csv")
 SOURCE_OUTPUT_PATH = os.path.join(PROJECT_DIR, "p1_market_latest_sources.csv")
+TARGET_REPORT_YEAR = "2026"
 
 CLASS_ORDER = {
     "최신 유효": 1,
@@ -20,6 +21,7 @@ CLASS_ORDER = {
     "추가 검토": 3,
     "회사공시 별도": 4,
     "중복·구형 제외": 5,
+    "연도 범위 제외": 6,
 }
 
 
@@ -45,6 +47,8 @@ def select_latest_sources(candidates, catalog):
         report_id = row.get("source_ids")
         meta = catalog.get(report_id)
         if not meta:
+            continue
+        if not meta["date"].startswith(f"{TARGET_REPORT_YEAR}-"):
             continue
         for market in split_pipe(row.get("markets")):
             key = (meta["house"], market, meta["coverage"])
@@ -110,45 +114,42 @@ def classify_candidates(candidates, catalog):
             report_title = meta["report_title"]
             age_days = (anchor_date - dt.date.fromisoformat(report_date)).days
             freshness = "최근 1년" if age_days <= 365 else "1년 초과"
-            for market in split_pipe(row.get("markets")):
-                key = (house, market, coverage)
-                if key in selected:
-                    references.add(selected[key])
-                    unique_applications |= (
-                        split_pipe(row.get("applications"))
-                        - covered_applications[key]
-                    )
+            if not report_date.startswith(f"{TARGET_REPORT_YEAR}-"):
+                classification = "연도 범위 제외"
+                reason = f"{TARGET_REPORT_YEAR}년 발간 리포트만 분석"
+            else:
+                for market in split_pipe(row.get("markets")):
+                    key = (house, market, coverage)
+                    if key in selected:
+                        references.add(selected[key])
+                        unique_applications |= (
+                            split_pipe(row.get("applications"))
+                            - covered_applications[key]
+                        )
 
-            if report_id in selected_ids:
-                selected_markets = sorted(
-                    market for (group_house, market, group_coverage), winner
-                    in selected.items()
-                    if winner == report_id
-                    and group_house == house and group_coverage == coverage
-                )
-                if age_days <= 365:
+                if report_id in selected_ids:
+                    selected_markets = sorted(
+                        market for (group_house, market, group_coverage), winner
+                        in selected.items()
+                        if winner == report_id
+                        and group_house == house and group_coverage == coverage
+                    )
                     classification = "최신 유효"
                     reason = (
-                        f"{house}·{coverage}의 최신 유효 "
+                        f"{house}·{coverage}의 {TARGET_REPORT_YEAR}년 최신 "
                         f"{'/'.join(selected_markets)} 자료"
                     )
-                else:
+                elif coverage == "산업" and unique_applications:
+                    classification = "과거 고유 검토"
+                    reason = "최신 산업 자료에 없는 Application 신호: " + ", ".join(sorted(unique_applications))
+                elif unique_applications and not row.get("risk_flags"):
                     classification = "추가 검토"
-                    reason = (
-                        f"하우스 내 최신 {'/'.join(selected_markets)} 자료지만 "
-                        f"선정 기준일 {anchor_date.isoformat()} 대비 {age_days}일 경과"
-                    )
-            elif coverage == "산업" and unique_applications:
-                classification = "과거 고유 검토"
-                reason = "최신 산업 자료에 없는 Application 신호: " + ", ".join(sorted(unique_applications))
-            elif unique_applications and not row.get("risk_flags"):
-                classification = "추가 검토"
-                reason = "최신 자료에 없는 Application 신호: " + ", ".join(sorted(unique_applications))
-            else:
-                classification = "중복·구형 제외"
-                reason = "동일 하우스·시장·커버리지의 최신 유효 자료로 대체"
-                if row.get("risk_flags"):
-                    reason += f"; 위험 신호 {row['risk_flags']}"
+                    reason = "최신 자료에 없는 Application 신호: " + ", ".join(sorted(unique_applications))
+                else:
+                    classification = "중복·구형 제외"
+                    reason = "동일 하우스·시장·커버리지의 2026년 최신 자료로 대체"
+                    if row.get("risk_flags"):
+                        reason += f"; 위험 신호 {row['risk_flags']}"
 
         result.update({
             "house": house,
@@ -233,7 +234,7 @@ def main():
     print(f"P1 시장 후보 {len(results)}페이지 재분류")
     for classification in CLASS_ORDER:
         print(f"- {classification}: {counts[classification]}페이지")
-    print(f"- 하우스별 선정 report ID: {len(set(selected.values()))}개")
+    print(f"- {TARGET_REPORT_YEAR}년 하우스별 선정 report ID: {len(set(selected.values()))}개")
 
 
 if __name__ == "__main__":
