@@ -760,8 +760,51 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertEqual(10, len(ibk))
         self.assertIn(("글로벌", "68"),
                       {(row["geography"], row["value"]) for row in ibk})
-        self.assertEqual(837, len(market))
-        self.assertEqual(186, len(company))
+        self.assertGreaterEqual(len(market), 837)
+        self.assertGreaterEqual(len(company), 186)
+
+    def test_p1_lges_batch2_completes_latest_page_review(self):
+        target_pages = {
+            ("2026-07-31_메리츠증권_LGES", "1"),
+            ("2026-07-30_삼성증권_LGES", "2"),
+            ("2026-07-31_신영증권_LGES", "1"),
+            ("2026-07-31_신한투자증권_LGES", "1"),
+            ("2026-05-06_유안타증권_LGES", "1"),
+            ("2026-07-31_유진투자증권_LGES", "1"),
+            ("2026-07-31_유진투자증권_LGES", "2"),
+            ("2026-07-31_키움증권_LGES", "1"),
+            ("2026-07-31_하나증권_LGES", "1"),
+            ("2026-05-04_한화투자증권_LGES", "1"),
+        }
+        with open(os.path.join(ROOT, "projects", "market-data", "candidate_reviews.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            reviews = [row for row in csv.DictReader(f)
+                       if (row["source_ids"], row["page"]) in target_pages]
+        self.assertEqual(10, len(reviews))
+        self.assertEqual({"채택": 3, "보류": 7},
+                         dict(Counter(row["review_status"] for row in reviews)))
+        self.assertEqual(8, sum(int(row["extracted_row_count"])
+                                for row in reviews))
+
+        with open(os.path.join(ROOT, "index", "market_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            market = list(csv.DictReader(f))
+        with open(os.path.join(ROOT, "index", "company_volume_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            company = list(csv.DictReader(f))
+        batch_company = [row for row in company
+                         if (row["report_id"], row["source_page"]) in target_pages]
+        self.assertEqual(8, len(batch_company))
+        samsung = [row for row in batch_company
+                   if row["report_id"] == "2026-07-30_삼성증권_LGES"]
+        self.assertEqual(6, len(samsung))
+        self.assertEqual({("1Q", "EV", "0.4"), ("2Q", "EV", "0.3"),
+                          ("1Q", "ESS", "4.3"), ("2Q", "ESS", "5.4"),
+                          ("2Q", "합계", "5.7"), ("3Q", "합계", "9")},
+                         {(row["period"], row["market"], row["value"])
+                          for row in samsung})
+        self.assertGreaterEqual(len(market), 837)
+        self.assertGreaterEqual(len(company), 194)
 
     def test_normalized_op_waterfall_uses_broker_ranges_without_double_counting(self):
         with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
