@@ -849,6 +849,54 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertGreaterEqual(len(market), 837)
         self.assertGreaterEqual(len(company), 228)
 
+    def test_p1_sdi_batch2_completes_latest_page_review(self):
+        target_pages = {
+            ("2026-05-06_대신증권_삼성SDI", "1"),
+            ("2026-05-21_버핏연구소_삼성SDI", "5"),
+            ("2026-07-31_삼성증권_삼성SDI", "3"),
+            ("2026-05-08_상상인증권_삼성SDI", "1"),
+            ("2026-06-24_유안타증권_삼성SDI", "1"),
+            ("2026-07-31_키움증권_삼성SDI", "1"),
+            ("2026-03-24_한화투자증권_삼성SDI", "1"),
+            ("2026-04-08_흥국증권_삼성SDI", "1"),
+        }
+        with open(os.path.join(ROOT, "projects", "market-data", "candidate_reviews.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            reviews = [row for row in csv.DictReader(f)
+                       if (row["source_ids"], row["page"]) in target_pages]
+        self.assertEqual(8, len(reviews))
+        self.assertEqual({"채택": 3, "보류": 5},
+                         dict(Counter(row["review_status"] for row in reviews)))
+        self.assertEqual(20, sum(int(row["extracted_row_count"])
+                                 for row in reviews))
+
+        with open(os.path.join(ROOT, "index", "market_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            market = list(csv.DictReader(f))
+        with open(os.path.join(ROOT, "index", "company_volume_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            company = list(csv.DictReader(f))
+        batch_company = [row for row in company
+                         if (row["report_id"], row["source_page"]) in target_pages]
+        self.assertEqual(20, len(batch_company))
+        samsung = [row for row in batch_company
+                   if row["report_id"] == "2026-07-31_삼성증권_삼성SDI"]
+        self.assertEqual(16, len(samsung))
+        self.assertEqual(["33", "33", "37", "37"],
+                         [row["value"] for row in samsung
+                          if row["series_id"] == "p3_sdi_spe1_capacity"])
+        self.assertEqual(["0", "4", "10", "25"],
+                         [row["value"] for row in samsung
+                          if row["series_id"] == "p3_sdi_spe1_sales"])
+        self.assertEqual({("JV", "StarPlus Energy 1", "Stellantis")},
+                         {(row["ownership_type"], row["jv_name_raw"],
+                           row["jv_partner_raw"]) for row in samsung
+                          if row["series_id"] == "p3_sdi_spe1_capacity"})
+        self.assertEqual(3, len([row for row in batch_company
+                                if row["report_id"] == "2026-05-06_대신증권_삼성SDI"]))
+        self.assertGreaterEqual(len(market), 837)
+        self.assertGreaterEqual(len(company), 248)
+
     def test_normalized_op_waterfall_uses_broker_ranges_without_double_counting(self):
         with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
                   encoding="utf-8") as f:
