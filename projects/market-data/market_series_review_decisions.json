@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "decision_groups": [
+    {
+      "report_id": "2026-05-17_유진투자증권_산업",
+      "legacy_rows": [1, 2, 3, 10, 11, 12, 19, 20, 21, 28, 29, 30, 37, 38, 39, 46, 47, 48, 55, 56, 57, 64, 65, 66, 73, 74, 75, 82, 83, 84, 163, 166, 169, 172, 175],
+      "decision_status": "지표 판정·검토 유지",
+      "actual_metric": "판매대수",
+      "period_scope": "FY",
+      "decision_reason": "2022~2025년 국가·권역별 전기차 판매 실적. 지표는 판정했지만 P1 신규 백필과 분리해 후속 명시 이관 검토"
+    },
+    {
+      "report_id": "2026-05-17_유진투자증권_산업",
+      "legacy_rows": [91, 92, 93, 124, 130, 136],
+      "decision_status": "지표 판정·검토 유지",
+      "actual_metric": "침투율",
+      "period_scope": "FY",
+      "decision_reason": "전체 판매 또는 EV·ESS 배터리 용량 중 해당 시장의 연간 비중"
+    },
+    {
+      "report_id": "2026-05-17_유진투자증권_산업",
+      "legacy_rows": [100, 118],
+      "decision_status": "정식 market 대체",
+      "actual_metric": "설치에너지",
+      "period_scope": "FY",
+      "decision_reason": "상세 차트 수동 보강행에 legacy row를 연결해 요약 페이지의 동일 시계열을 대체"
+    },
+    {
+      "report_id": "2026-05-17_유진투자증권_산업",
+      "legacy_rows": [112],
+      "decision_status": "지표 판정·검토 유지",
+      "actual_metric": "설치에너지",
+      "period_scope": "FY",
+      "decision_reason": "미국 BESS 신규 설치의 2025년 연간 실적"
+    },
+    {
+      "report_id": "2026-05-17_유진투자증권_산업",
+      "legacy_rows": [106, 152, 153, 155, 156, 158],
+      "decision_status": "지표 판정·검토 유지",
+      "actual_metric": "수요량",
+      "period_scope": "FY",
+      "decision_reason": "EV 배터리 및 용도별 소듐이온 배터리의 연간 수요"
+    },
+    {
+      "report_id": "2026-06-08_하나증권_산업",
+      "legacy_rows": [1, 2],
+      "decision_status": "연간 인덱스 보류",
+      "actual_metric": "성장률",
+      "period_scope": "월간",
+      "decision_reason": "월별 전기차 배터리 출하 증가율이므로 FY 값으로 이관 금지"
+    },
+    {
+      "report_id": "2026-06-08_하나증권_산업",
+      "legacy_rows": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+      "decision_status": "연간 인덱스 보류",
+      "actual_metric": "판매대수",
+      "period_scope": "월간",
+      "decision_reason": "2026년 4~5월 단월 판매량이므로 FY 값으로 이관 금지"
+    },
+    {
+      "report_id": "2026-06-08_하나증권_산업",
+      "legacy_rows": [23, 25, 27, 29, 31, 33, 35],
+      "decision_status": "연간 인덱스 보류",
+      "actual_metric": "판매대수",
+      "period_scope": "YTD",
+      "decision_reason": "2026년 1~4월 또는 1~5월 누적 판매량이므로 FY 값으로 이관 금지"
+    },
+    {
+      "report_id": "2026-06-08_하나증권_산업",
+      "legacy_rows": [37, 38, 39, 40, 41],
+      "decision_status": "연간 인덱스 보류",
+      "actual_metric": "설치에너지",
+      "period_scope": "YTD",
+      "decision_reason": "2026년 1~4월 ESS 신규 설치 누적값이므로 FY 값으로 이관 금지"
+    },
+    {
+      "report_id": "2026-06-08_하나증권_산업",
+      "legacy_rows": [42],
+      "decision_status": "연간 인덱스 보류",
+      "actual_metric": "수요량",
+      "period_scope": "YTD",
+      "decision_reason": "2026년 1~4월 전기차용 배터리 출하 누적값이므로 FY 값으로 이관 금지"
+    }
+  ]
+}

@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from collections import Counter
 
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -630,6 +631,73 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertEqual(765, migrated_total)
         self.assertEqual(529, review_total)
         self.assertEqual(source_total, migrated_total + review_total)
+
+    def test_2026_market_semantic_duplicate_guard_is_strict(self):
+        base = {
+            "market": "ESS", "application": "전체", "system_type": "BESS",
+            "geography": "글로벌", "metric": "설치에너지", "fy": 2026,
+            "period": "FY", "value": 100, "unit": "GWh",
+        }
+        report = {
+            "report_id": "duplicate", "date": "2026-07-31",
+            "market_series": [dict(base, series_id="explicit")],
+            "_legacy_market_series": [dict(base, series_id="legacy", legacy_row=1)],
+        }
+        with self.assertRaisesRegex(RuntimeError, "market_series 의미상 중복"):
+            BUILD.validate_market_semantic_duplicates(report)
+
+        report["date"] = "2025-07-31"
+        BUILD.validate_market_semantic_duplicates(report)
+
+    def test_p1_industry_migration_gate_is_reconciled(self):
+        report_ids = {
+            "2026-05-17_유진투자증권_산업",
+            "2026-06-08_하나증권_산업",
+        }
+        with open(os.path.join(ROOT, "index", "market_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            market = [row for row in csv.DictReader(f)
+                      if row["report_id"] in report_ids]
+        with open(os.path.join(ROOT, "index", "market_series_review.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            review = [row for row in csv.DictReader(f)
+                      if row["report_id"] in report_ids]
+
+        self.assertEqual(142, len(market))
+        self.assertEqual(83, len(review))
+        semantic_fields = ("report_id", "market", "application", "system_type",
+                           "geography", "metric", "fy", "period", "value", "unit")
+        semantic_keys = [tuple(row[field] for field in semantic_fields) for row in market]
+        self.assertEqual(len(semantic_keys), len(set(semantic_keys)))
+
+        decisions = BUILD.load_market_review_decisions()
+        self.assertEqual(85, len(decisions))
+        by_report = Counter(report_id for report_id, _ in decisions)
+        self.assertEqual(50, by_report["2026-05-17_유진투자증권_산업"])
+        self.assertEqual(35, by_report["2026-06-08_하나증권_산업"])
+        eugene_metrics = Counter(
+            decision["actual_metric"] for (report_id, _), decision in decisions.items()
+            if report_id == "2026-05-17_유진투자증권_산업"
+        )
+        self.assertEqual(
+            {"판매대수": 35, "침투율": 6, "설치에너지": 3, "수요량": 6},
+            dict(eugene_metrics),
+        )
+        hana = [decision for (report_id, _), decision in decisions.items()
+                if report_id == "2026-06-08_하나증권_산업"]
+        self.assertTrue(all(item["decision_status"] == "연간 인덱스 보류"
+                            for item in hana))
+        self.assertTrue(all(row["actual_metric"] and row["decision_status"]
+                            for row in review))
+
+        with open(os.path.join(ROOT, "projects", "market-data", "quant_backfill.json"),
+                  encoding="utf-8-sig") as f:
+            backfill = json.load(f)["market_series"]
+        linked = [row for row in backfill
+                  if row.get("report_id") == "2026-05-17_유진투자증권_산업"
+                  and row.get("legacy_row")]
+        self.assertEqual(list(range(100, 106)) + list(range(118, 124)),
+                         [row["legacy_row"] for row in linked])
 
     def test_normalized_op_waterfall_uses_broker_ranges_without_double_counting(self):
         with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),

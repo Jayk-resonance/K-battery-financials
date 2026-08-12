@@ -26,6 +26,9 @@ import argparse, json, csv, os, sys, glob, re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STAGING = os.path.join(ROOT, ".staging")
 QUANT_BACKFILL = os.path.join(ROOT, "projects", "market-data", "quant_backfill.json")
+MARKET_REVIEW_DECISIONS = os.path.join(
+    ROOT, "projects", "market-data", "market_series_review_decisions.json"
+)
 SEG_STD = {"전사", "배터리합계", "소형", "중대형", "EV", "ESS", "전자재료", "기타"}
 AMPC_BASIS = {"excl", "incl", "incl_unknown", "na"}
 PERIODS = {"FY", "1Q", "2Q", "3Q", "4Q"}
@@ -411,22 +414,99 @@ COMPANY_VOLUME_SERIES_FIELDS = [
 MARKET_SERIES_REVIEW_FIELDS = [
     "report_id", "date", "house", "source_pdf", "origin_schema", "legacy_row",
     "region", "application", "metric", "fy", "value", "value_prev", "unit",
-    "basis", "source_page", "review_reasons"
+    "basis", "source_page", "review_reasons", "decision_status", "actual_metric",
+    "period_scope", "decision_reason"
 ]
 
 
-def write_market_company_indexes(idx, reports, standalone_company=None):
+def load_market_review_decisions(path=MARKET_REVIEW_DECISIONS):
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as stream:
+        source = json.load(stream)
+    if source.get("schema_version") != 1:
+        raise RuntimeError("market review decision schema_version 비표준")
+
+    decisions = {}
+    fields = ("decision_status", "actual_metric", "period_scope", "decision_reason")
+    for group in source.get("decision_groups", []):
+        report_id = group.get("report_id")
+        legacy_rows = group.get("legacy_rows")
+        if not report_id or not isinstance(legacy_rows, list) or not legacy_rows:
+            raise RuntimeError("market review decision report_id·legacy_rows 누락")
+        if any(not has_content(group.get(field)) for field in fields):
+            raise RuntimeError(f"market review decision 필드 누락: {report_id}")
+        decision = {field: group[field] for field in fields}
+        for legacy_row in legacy_rows:
+            if not isinstance(legacy_row, int) or legacy_row < 1:
+                raise RuntimeError(f"market review decision legacy_row 오류: {report_id}")
+            key = (report_id, legacy_row)
+            if key in decisions:
+                raise RuntimeError(f"market review decision 중복: {report_id} row {legacy_row}")
+            decisions[key] = decision
+    return decisions
+
+
+def combined_market_series(report):
+    explicit = report.get("market_series", []) or []
+    replaced = {item.get("legacy_row") for item in explicit if item.get("legacy_row")}
+    migrated = [item for item in report.get("_legacy_market_series", [])
+                if item.get("legacy_row") not in replaced]
+    return list(explicit) + migrated
+
+
+def validate_market_semantic_duplicates(report):
+    """2026년 이후 자료는 같은 리포트 안의 동일 관측값을 엄격 차단한다."""
+    try:
+        report_year = int(str(report.get("date", "0000"))[:4])
+    except ValueError:
+        return
+    if report_year < 2026:
+        return
+
+    fields = ("market", "application", "system_type", "geography", "metric",
+              "fy", "period", "value", "unit")
+    seen = {}
+    for row in combined_market_series(report):
+        key = tuple(row.get(field) for field in fields)
+        if key in seen:
+            first = seen[key]
+            raise RuntimeError(
+                f"[{report['report_id']}] market_series 의미상 중복: "
+                f"{first.get('series_id')} / {row.get('series_id')}"
+            )
+        seen[key] = row
+
+
+def validate_market_review_decisions(reports, decisions):
+    by_id = {report["report_id"]: report for report in reports}
+    for (report_id, legacy_row), decision in decisions.items():
+        report = by_id.get(report_id)
+        if not report:
+            raise RuntimeError(f"market review decision report_id 없음: {report_id}")
+        total = len(report.get("demand_forecasts", []) or [])
+        if legacy_row > total:
+            raise RuntimeError(f"market review decision 범위 밖: {report_id} row {legacy_row}")
+        if decision["decision_status"] == "정식 market 대체":
+            replaced = {item.get("legacy_row") for item in report.get("market_series", []) or []}
+            if legacy_row not in replaced:
+                raise RuntimeError(f"market 대체행 연결 누락: {report_id} row {legacy_row}")
+        else:
+            review_rows = {item.get("legacy_row") for item in report.get("_legacy_market_review", [])}
+            if legacy_row not in review_rows:
+                raise RuntimeError(f"market review decision 대상 불일치: {report_id} row {legacy_row}")
+
+
+def write_market_company_indexes(idx, reports, standalone_company=None,
+                                 review_decisions=None):
     """명시적 데이터와 legacy 자동 이관분을 분리된 CSV로 쓴다."""
+    review_decisions = review_decisions or {}
     ordered = sorted(reports, key=lambda item: item["date"])
     with open(os.path.join(idx, "market_series.csv"), "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=MARKET_SERIES_FIELDS, extrasaction="ignore")
         writer.writeheader()
         for report in ordered:
-            explicit = report.get("market_series", []) or []
-            replaced = {item.get("legacy_row") for item in explicit if item.get("legacy_row")}
-            migrated = [item for item in report.get("_legacy_market_series", [])
-                        if item.get("legacy_row") not in replaced]
-            for item in list(explicit) + migrated:
+            for item in combined_market_series(report):
                 row = dict(item)
                 row.update({
                     "report_id": report["report_id"], "date": report["date"],
@@ -446,6 +526,9 @@ def write_market_company_indexes(idx, reports, standalone_company=None):
                     continue
                 row = dict(item)
                 row["source_pdf"] = "inbox/" + report.get("source_file", "")
+                row.update(review_decisions.get(
+                    (report["report_id"], item.get("legacy_row")), {}
+                ))
                 writer.writerow(row)
 
     with open(os.path.join(idx, "company_volume_series.csv"), "w", encoding="utf-8", newline="") as f:
@@ -818,9 +901,12 @@ def main(check_only=False, force=False, strict_ids=None):
         legacy_total += len(r.get("demand_forecasts", []) or [])
         validate(r)
         validate_market_series(r["report_id"], migrated)
+        validate_market_semantic_duplicates(r)
 
     if legacy_migrated + legacy_review != legacy_total:
         raise RuntimeError("전체 legacy 수요 이관 합계 불일치")
+    market_review_decisions = load_market_review_decisions()
+    validate_market_review_decisions(reports, market_review_decisions)
     print(f"기존 수요 이관 분류: 자동 {legacy_migrated}행, 검토 {legacy_review}행, "
           f"합계 {legacy_total}행")
 
@@ -958,7 +1044,9 @@ def main(check_only=False, force=False, strict_ids=None):
                             d.get("value"), d.get("value_prev"), d.get("unit"),
                             d.get("basis"), d.get("page"),
                             c["cls"], c["label"], c["scope"]])
-    write_market_company_indexes(idx, reports, standalone_company)
+    write_market_company_indexes(
+        idx, reports, standalone_company, market_review_decisions
+    )
     write_report_catalog(idx, reports, mf)
     with open(os.path.join(idx, "themes.csv"), "w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
