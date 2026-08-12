@@ -662,13 +662,26 @@ class EarningsPipelineTest(unittest.TestCase):
                   encoding="utf-8-sig", newline="") as f:
             review = [row for row in csv.DictReader(f)
                       if row["report_id"] in report_ids]
+        with open(os.path.join(ROOT, "index", "company_volume_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            company = [row for row in csv.DictReader(f)
+                       if row["report_id"] in report_ids]
 
-        self.assertEqual(142, len(market))
-        self.assertEqual(83, len(review))
+        self.assertEqual(143, len(market))
+        self.assertEqual(82, len(review))
+        self.assertEqual(11, len(company))
         semantic_fields = ("report_id", "market", "application", "system_type",
                            "geography", "metric", "fy", "period", "value", "unit")
         semantic_keys = [tuple(row[field] for field in semantic_fields) for row in market]
         self.assertEqual(len(semantic_keys), len(set(semantic_keys)))
+
+        us_bess = [row for row in market
+                   if row["series_id"] == "p15_us_bess_new_installation"]
+        self.assertEqual(["51", "67", "85", "98", "115", "130"],
+                         [row["value"] for row in us_bess])
+        self.assertTrue(all(row["geography"] == "미국" for row in us_bess))
+        self.assertEqual({"LGES": 4, "삼성SDI": 4, "SK온": 3},
+                         dict(Counter(row["company"] for row in company)))
 
         decisions = BUILD.load_market_review_decisions()
         self.assertEqual(85, len(decisions))
@@ -696,8 +709,8 @@ class EarningsPipelineTest(unittest.TestCase):
         linked = [row for row in backfill
                   if row.get("report_id") == "2026-05-17_유진투자증권_산업"
                   and row.get("legacy_row")]
-        self.assertEqual(list(range(100, 106)) + list(range(118, 124)),
-                         [row["legacy_row"] for row in linked])
+        self.assertEqual(list(range(100, 106)) + list(range(112, 124)),
+                         sorted(row["legacy_row"] for row in linked))
 
     def test_normalized_op_waterfall_uses_broker_ranges_without_double_counting(self):
         with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
