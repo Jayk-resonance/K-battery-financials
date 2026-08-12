@@ -19,6 +19,11 @@ MIGRATION_SPEC = importlib.util.spec_from_file_location(
 )
 MARKET_MIGRATION = importlib.util.module_from_spec(MIGRATION_SPEC)
 MIGRATION_SPEC.loader.exec_module(MARKET_MIGRATION)
+SELECTOR_SPEC = importlib.util.spec_from_file_location(
+    "select_latest_p1_market", os.path.join(ROOT, "tools", "select_latest_p1_market.py")
+)
+P1_SELECTOR = importlib.util.module_from_spec(SELECTOR_SPEC)
+SELECTOR_SPEC.loader.exec_module(P1_SELECTOR)
 
 
 def load_staging(name):
@@ -347,6 +352,65 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertEqual("테스트 애널리스트", row["analyst"])
         self.assertEqual(manifest[0]["file"], row["source_file"])
         self.assertEqual("inbox/" + manifest[0]["file"], row["source_path"])
+
+    def test_p1_latest_selector_keeps_latest_and_routes_exceptions(self):
+        def candidate(report_id, page, application="전체", source_group="inbox",
+                      risk_flags=""):
+            return {
+                "source_group": source_group, "source_file": report_id + ".pdf",
+                "source_ids": report_id, "page": str(page), "page_count": "10",
+                "priority": "P1", "candidate_type": "시장", "markets": "ESS",
+                "applications": application, "geographies": "미국",
+                "metrics": "수요", "units": "GWh", "risk_flags": risk_flags,
+                "score": "12", "visual_review_status": "대기",
+            }
+
+        candidates = [
+            candidate("2026-07-01_A증권_LGES", 1),
+            candidate("2026-05-01_A증권_LGES", 1, "데이터센터"),
+            candidate("2026-04-01_A증권_LGES", 1),
+            candidate("2026-06-01_A증권_산업", 3),
+            candidate("2025-11-01_A증권_산업", 8, "상업·산업용(C&I)"),
+            candidate("2024-01-01_B증권_산업", 2),
+            candidate("LGES", 4, source_group="actuals"),
+        ]
+        catalog = {
+            "2026-07-01_A증권_LGES": {
+                "house": "A증권", "coverage": "LGES", "date": "2026-07-01",
+                "report_title": "최신 기업",
+            },
+            "2026-05-01_A증권_LGES": {
+                "house": "A증권", "coverage": "LGES", "date": "2026-05-01",
+                "report_title": "이전 기업",
+            },
+            "2026-04-01_A증권_LGES": {
+                "house": "A증권", "coverage": "LGES", "date": "2026-04-01",
+                "report_title": "구형 기업",
+            },
+            "2026-06-01_A증권_산업": {
+                "house": "A증권", "coverage": "산업", "date": "2026-06-01",
+                "report_title": "최신 산업",
+            },
+            "2025-11-01_A증권_산업": {
+                "house": "A증권", "coverage": "산업", "date": "2025-11-01",
+                "report_title": "이전 산업",
+            },
+            "2024-01-01_B증권_산업": {
+                "house": "B증권", "coverage": "산업", "date": "2024-01-01",
+                "report_title": "최신이지만 구형",
+            },
+        }
+        results, _, selected = P1_SELECTOR.classify_candidates(candidates, catalog)
+        classes = {(row["source_ids"], row["page"]): row["reclassification"]
+                   for row in results}
+        self.assertEqual(3, len(set(selected.values())))
+        self.assertEqual("최신 유효", classes[("2026-07-01_A증권_LGES", "1")])
+        self.assertEqual("추가 검토", classes[("2026-05-01_A증권_LGES", "1")])
+        self.assertEqual("중복·구형 제외", classes[("2026-04-01_A증권_LGES", "1")])
+        self.assertEqual("최신 유효", classes[("2026-06-01_A증권_산업", "3")])
+        self.assertEqual("과거 고유 검토", classes[("2025-11-01_A증권_산업", "8")])
+        self.assertEqual("추가 검토", classes[("2024-01-01_B증권_산업", "2")])
+        self.assertEqual("회사공시 별도", classes[("LGES", "4")])
 
     def test_quant_backfill_merges_by_report_id_without_leaking_id_into_row(self):
         reports = [{"report_id": "pilot"}]
