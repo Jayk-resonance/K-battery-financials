@@ -1,6 +1,7 @@
 import importlib.util
 import csv
 import json
+import math
 import os
 import subprocess
 import sys
@@ -1076,6 +1077,47 @@ class EarningsPipelineTest(unittest.TestCase):
             self.assertTrue(all(pred["op_est"] is not None for pred in event["preds"]))
             if event["period"] == "2Q":
                 self.assertEqual(q2_expected[event["company"]], event["n_houses"])
+
+    def test_dashboard_release_artifacts_and_source_volume_are_consistent(self):
+        with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
+                  encoding="utf-8") as f:
+            data = json.load(f)
+        with open(os.path.join(ROOT, "index", "report_catalog.csv"),
+                  encoding="utf-8") as f:
+            catalog = list(csv.DictReader(f))
+
+        self.assertEqual(data["meta"]["n_reports"], len(catalog))
+        self.assertTrue(all(row["source_exists"] == "Y" for row in catalog))
+        self.assertTrue(all(os.path.exists(os.path.join(ROOT, row["source_path"]))
+                            for row in catalog))
+        self.assertTrue(all(row["pages"] for row in catalog))
+        self.assertEqual(
+            data["meta"]["n_pages"],
+            sum(int(row["pages"]) for row in catalog),
+        )
+
+        with open(os.path.join(ROOT, "projects", "dashboard", "dashboard.html"),
+                  encoding="utf-8") as f:
+            dashboard = f.read()
+        with open(os.path.join(ROOT, "docs", "index.html"), encoding="utf-8") as f:
+            deployed = f.read()
+        self.assertEqual(dashboard, deployed)
+        self.assertIn("표준 MD 본문은 리포트 단위로 역추적 가능", dashboard)
+
+        for item in data["search"]:
+            for page in str(item.get("p") or "").replace("-", ",").split(","):
+                if page.strip():
+                    self.assertGreater(int(page.strip()), 0)
+
+        pending = [data]
+        while pending:
+            value = pending.pop()
+            if isinstance(value, dict):
+                pending.extend(value.values())
+            elif isinstance(value, list):
+                pending.extend(value)
+            elif isinstance(value, float):
+                self.assertTrue(math.isfinite(value))
 
 
 if __name__ == "__main__":
