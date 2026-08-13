@@ -24,6 +24,9 @@ frontmatter 필드가 곧 "DB 컬럼"이다. 표준 양식은 [`schema/template.
 │   ├── reports.jsonl          # 리포트 1건 = 1행
 │   ├── estimates.csv          # (리포트×회사×세그먼트×지표×기간) 추정치
 │   ├── stances.csv            # (리포트×이슈×회사) 이슈별 스탠스
+│   ├── market_series.csv       # 지역·Application별 EV·ESS 시장 정량 데이터
+│   ├── market_series_review.csv # 자동 이관하지 않은 기존 수요 행과 검토 사유
+│   ├── company_volume_series.csv # 회사별 판매량·생산능력(GWh)
 │   └── ...                    # industry_views·themes·actuals·drivers·guidance·call_qa
 ├── schema/
 │   ├── template.md            # 표준 MD 양식 + 인제스트 입력 형식(부록)

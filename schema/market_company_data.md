@@ -22,7 +22,7 @@ EV·ESS 시장 데이터와 배터리 회사의 판매량·생산능력 데이�
 
 | 필드 | 필수 | 허용값·형식 | 의미 |
 |---|---:|---|---|
-| `series_id` | 예 | 리포트 내 고유 문자열 | 같은 표·범위·지표의 기간별 값을 연결하는 키 |
+| `series_id` | 예 | 리포트 내 시계열 고유 문자열 | 같은 표·범위·지표의 기간별 값을 연결하는 키 |
 | `fy` | 예 | 정수 | 대상 연도 |
 | `period` | 예 | `FY`, `1Q`~`4Q`, `01M`~`12M`, `YTD` | 대상 기간 |
 | `value_type` | 예 | `실적`, `추정`, `가이던스`, `시나리오` | 숫자의 성격 |
@@ -30,16 +30,20 @@ EV·ESS 시장 데이터와 배터리 회사의 판매량·생산능력 데이�
 | `scope_note` | 아니오 | 문자열 또는 `null` | 중국 제외, 특정 고객 한정 등 비교 범위 |
 | `source_owner` | 아니오 | 기관·회사명 또는 `null` | SNE Research, BNEF, IEA, 회사 IR 등 최초 출처 |
 | `source_kind` | 예 | `회사공시`, `조사기관`, `증권사추정`, `증권사재가공`, `원천불명` | 최초 값의 성격 |
-| `extraction_method` | 예 | `표`, `차트`, `본문`, `계산` | 숫자를 얻은 방법 |
+| `extraction_method` | 예 | `표`, `차트`, `본문`, `계산`, `원천불명` | 숫자를 얻은 방법. 기존 자료에서 확인할 수 없으면 `원천불명` |
 | `value_precision` | 예 | `정확`, `근사`, `파생` | 표 직접 추출·차트 판독·계산값 구분 |
 | `page` | 예 | 1 이상의 정수 | PDF 페이지 |
 
 ### `series_id` 규칙
 
-- 리포트 안에서 중복될 수 없다.
+- 같은 시계열의 여러 기간 행에는 같은 ID를 반복한다.
+- 같은 ID 안의 시장·회사·지역·지표·단위 등 차원 필드는 일관되어야 한다.
+- `(series_id, fy, period)` 조합은 리포트 안에서 한 번만 허용한다.
 - 기간(`fy`, `period`)은 넣지 않는다. 한 시리즈의 여러 연도를 연결하기 위해서다.
 - 예: `p55_us_ess_datacenter_demand`, `p18_catl_ev_sales`.
 - 같은 지역·지표라도 중국 포함/제외, 실제/시나리오, 전체/부분시장은 서로 다른 ID를 쓴다.
+- 월간 수치를 `FY`로 저장하지 않는다. 월이 명확하면 `01M`~`12M`, 누적이면 `YTD`를 쓰고
+  누적 기준월이 불명확하면 자동 이관하지 않는다.
 
 ## 3. 지역 표준
 
@@ -150,7 +154,8 @@ EV·ESS 시장 데이터와 배터리 회사의 판매량·생산능력 데이�
 - CATL, BYD, Panasonic, CALB, EVE Energy, Gotion, Sunwoda, Farasis,
   Envision AESC 등 신규 회사가 발견되면 회사 사전에 추가한다.
 - 원문명과 표준명을 함께 보존한다.
-- OEM·배터리 통합기업과 JV는 `company_type`으로 구분하고 다른 회사에 합치지 않는다.
+- OEM·배터리 통합기업과 JV 법인은 `company_type`으로 구분하고 다른 회사에 합치지 않는다.
+- 모회사의 생산능력이 JV 공장에 있는지는 `company_type`이 아니라 `ownership_type`으로 구분한다.
 
 ### 5-2. 필드
 
@@ -159,6 +164,11 @@ EV·ESS 시장 데이터와 배터리 회사의 판매량·생산능력 데이�
 | `company_raw` | 예 | 원문 회사명 | 원문 보존 |
 | `company` | 예 | 표준 회사명 | 별칭 통합용 |
 | `company_type` | 예 | `배터리셀`, `통합OEM·배터리`, `JV`, `기타` | 회사 유형 |
+| `facility_raw` | 아니오 | 원문 공장·사이트명 또는 `null` | 울산, Ultium Cells Tennessee 등 원문 설비명 |
+| `ownership_type` | 생산능력만 예 | `단독`, `JV`, `혼합`, `불명` | 해당 생산능력의 소유·운영 형태 |
+| `jv_name_raw` | 아니오 | 원문 JV명 또는 `null` | 원문에 명시된 합작법인·프로젝트명 |
+| `jv_partner_raw` | 아니오 | 원문 파트너명 또는 `null` | 원문에 명시된 JV 파트너. 추정 금지 |
+| `capacity_basis` | 생산능력만 예 | `총설비`, `지분귀속`, `불명` | 공장 전체 GWh인지 회사 지분 귀속 GWh인지 구분 |
 | `market` | 예 | `EV`, `ESS`, `합계` | 제품 용도. 미분리 값은 `합계` |
 | `application` | 예 | §4-2 또는 `전체` | ESS 용도. EV·합계는 기본 `전체` |
 | `system_type` | 아니오 | `UPS`, `BESS`, `null` | ESS만 사용 |
@@ -193,6 +203,14 @@ EV·ESS 시장 데이터와 배터리 회사의 판매량·생산능력 데이�
   제외하고 검토 대상으로 남긴다.
 - 억원·달러·시장금액·매출액 등 금액 데이터는 `company_volume_series`에 넣지 않는다.
 - 생산능력은 표준값을 GWh로 저장하되 `time_basis`로 연환산 또는 기준일 능력을 구분한다.
+- 생산능력은 `market`으로 EV·ESS·미분리 합계를 구분하고, 지역 필드와 `facility_raw`로
+  권역·국가·공장 범위를 보존한다.
+- JV 여부가 원문에 없으면 추정하지 않고 `ownership_type=불명`으로 둔다.
+- JV 생산능력은 원문에 제시된 공장 전체 값을 `capacity_basis=총설비`로 저장한다.
+  지분율을 적용한 값은 원문에 명시되었을 때만 별도 시리즈로 `capacity_basis=지분귀속` 처리한다.
+- 글로벌·권역 합계에 단독 설비와 JV 설비가 함께 포함됐다고 명시되면 `ownership_type=혼합`으로 둔다.
+- `company_type=JV`는 회사 자체가 JV 법인일 때만 사용한다. 배터리 셀 회사가 JV 공장에 가진
+  생산능력은 회사 유형을 바꾸지 않고 `ownership_type=JV`로 표시한다.
 
 ### 5-5. 회사 데이터 예시
 
@@ -202,6 +220,11 @@ EV·ESS 시장 데이터와 배터리 회사의 판매량·생산능력 데이�
   "company_raw": "CATL",
   "company": "CATL",
   "company_type": "배터리셀",
+  "facility_raw": null,
+  "ownership_type": null,
+  "jv_name_raw": null,
+  "jv_partner_raw": null,
+  "capacity_basis": null,
   "market": "EV",
   "application": "전체",
   "system_type": null,
@@ -232,13 +255,18 @@ EV·ESS 시장 데이터와 배터리 회사의 판매량·생산능력 데이�
 
 ## 6. 생성할 인덱스와 Excel 뷰
 
-후속 구현에서 아래 생성물을 추가한다.
+인덱스 빌드는 아래 생성물을 만든다. 백필 전에는 헤더만 존재한다.
 
 | 생성물 | 역할 |
 |---|---|
 | `index/market_series.csv` | 시장 관측값 전체. 연간 데이터가 기본 조회 대상 |
+| `index/market_series_review.csv` | 자동 추측하지 않은 기존 수요 행과 검토 사유 |
 | `index/company_volume_series.csv` | 회사별 판매량·생산능력. 분기와 연간 데이터 보존 |
 | `index/demand_forecasts.csv` | 기존 대시보드 하위호환용 파생 인덱스 |
+
+`market_series.csv`의 `origin_schema`와 `legacy_row`는 자동 이관 여부와 기존 배열의 행 번호를
+추적하는 인덱스 메타데이터다. 명시적으로 작성한 새 행은 `origin_schema=market_series`, 기존
+수요에서 파생한 행은 `origin_schema=demand_forecasts`로 구분한다.
 
 Excel은 인덱스 구현과 백필 이후 별도 단계에서 생성한다.
 
@@ -252,10 +280,10 @@ Excel은 인덱스 구현과 백필 이후 별도 단계에서 생성한다.
 
 ## 7. 검증 규칙
 
-후속 코드 구현 시 아래 위반은 신규 인제스트의 실패 조건으로 둔다.
+아래 위반은 신규 인제스트의 실패 조건으로 둔다.
 
 1. 필수 필드 또는 페이지 누락.
-2. 한 리포트 안의 `series_id` 중복.
+2. 한 리포트 안의 `(series_id, fy, period)` 중복 또는 같은 `series_id`의 차원 불일치.
 3. `market_series`와 `company_volume_series`의 필드 혼용.
 4. ESS Application·시스템 형태 비표준.
 5. 미국을 북미로 치환하거나 부모·자식 지역을 같은 시리즈에서 합산.
@@ -266,6 +294,7 @@ Excel은 인덱스 구현과 백필 이후 별도 단계에서 생성한다.
 10. `metric=판매량`인데 `metric_raw`가 없는 경우.
 11. `extraction_method=차트`인데 `value_precision=정확`인 경우.
 12. 최초 출처가 적혀 있는데 `source_kind=원천불명`인 경우.
+13. 월간 수치를 `period=FY`로 저장한 경우.
 
 ## 8. 기존 데이터 이관 원칙
 
@@ -279,6 +308,17 @@ Excel은 인덱스 구현과 백필 이후 별도 단계에서 생성한다.
 7. 기존 구조에 숫자가 없는 회사 판매량·생산능력은 PDF의 관련 페이지만 선별 백필한다.
 8. 표준 MD와 인덱스는 `.staging`을 수정한 뒤 `build_indexes.py`로 재생성한다. 생성물을
    직접 고치지 않는다.
+
+자동 이관 코드는 기존 행을 다음처럼 처리한다.
+
+- EV·ESS이고 지표·단위·지역·페이지·basis가 명확한 행만 `market_series.csv`에 넣는다.
+- `실적치`, EV·ESS 외 application, 지원하지 않는 지표·단위, basis 누락은
+  `market_series_review.csv`에 원문 값과 검토 사유를 남긴다.
+- 표·차트 여부가 기존 구조에 명시되지 않은 값은 `extraction_method=원천불명`,
+  `value_precision=근사`로 둔다.
+- 월간·누적 값인데 정확한 `period`를 복원할 수 없는 행은 연간 값으로 만들지 않고 검토 대상으로 둔다.
+- 자동 이관 행과 검토 행의 합계는 기존 행 수와 반드시 일치해야 한다.
+- 2026-08-11 파일럿 기준 1,294행 중 765행은 자동 이관, 529행은 검토 대상으로 분류된다.
 
 ## 9. 이번 설계에서 제외하는 것
 

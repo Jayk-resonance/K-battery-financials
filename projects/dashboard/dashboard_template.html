@@ -285,7 +285,7 @@ function rOver(v){
    ["④ 이슈별 3사 평가",`LFP·ESS·${helpTerm("AMPC")}·파우치 등 <b>이슈별</b>로 3사에 대한 증권사의 ${helpTerm("평가 방향")}을 비교한다.`],
    ["⑤ 증권사 전망 변화","증권사별 시각의 <b>시계열 변화</b>(목표주가·투자의견·평가 방향)를 추적한다."],
    ["⑥ 산업 수요 전망","산업 리포트 기반 EV·ESS <b>시장 수요</b> 전망과 그 변화를 정리한다."],
-   ["🔍 검색","<b>키워드</b>로 전체 DB(이슈 평가·테마·수요 전망·MD 본문)를 검색하고 원문 페이지까지 추적한다."]]
+   ["🔍 검색","<b>키워드</b>로 전체 DB(이슈 평가·테마·수요 전망·MD 본문)를 검색한다. 정량·이슈 근거는 원문 페이지까지, MD 본문은 리포트까지 추적한다."]]
   .forEach(([a,b])=>g.append(el("div",{class:"qcard"},`<b>${a}</b><p>${b}</p>`)));
   v.append(g);
   const glossary=el("div",{class:"card"},`<h2>용어 안내</h2><p class="note">밑줄 친 용어의 ?를 누르면 화면에서도 같은 설명을 볼 수 있습니다.</p>`);
@@ -837,7 +837,7 @@ function rF4(v){
 /* ---------- 🔍 키워드 검색 (A층 인덱스 요약 + B층 MD 본문) ---------- */
 function rSearch(v){
   const card=el("div",{class:"card"},`<h2>키워드 검색</h2>${headMsg("전체 리포트 DB — 이슈 평가·테마·수요 전망·산업 전망·실적 요인·리포트 요약과 표준 MD 본문에서 키워드를 검색합니다.")}
-   <p class="note">여러 단어는 공백으로 구분 — 모두 포함(AND) 기준, 영문 대소문자 무시. 결과는 최신순 · 최대 300건. 모든 결과는 리포트·페이지로 역추적 가능.</p>`);
+   <p class="note">여러 단어는 공백으로 구분 — 모두 포함(AND) 기준, 영문 대소문자 무시. 결과는 최신순 · 최대 300건. 정량·이슈 근거는 리포트·페이지로, 표준 MD 본문은 리포트 단위로 역추적 가능.</p>`);
   const inp=el("input",{type:"search",placeholder:"예: 보상금 · 46파이 수주 · 가동률 · 전고체…",value:sel.q||"",
     style:"width:100%;max-width:540px;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--ink);font:500 14px system-ui;outline:none"});
   const KINDS=[["전체","전체"],["스탠스","이슈 평가"],["본문","본문"],["테마","테마"],["수요전망","수요 전망"],["산업전망","산업 전망"],["드라이버","실적 요인"],["리포트 요약","리포트 요약"]];

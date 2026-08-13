@@ -738,20 +738,17 @@ for t in _load("themes.csv"):
 f7 = {"regimes": regimes, "demand": demand_rows, "themes": theme_rows,
       "n_reports": len(ind_reports)}
 
-# 원본 PDF 총 페이지 수 (분석 볼륨 지표). pdfinfo·원본 PDF가 있으면 계수, 없으면 None.
+# 원본 PDF 총 페이지 수 (분석 볼륨 지표). 인제스트 시 검증한 카탈로그 값을 재사용한다.
 def total_pages():
-    import subprocess as sp, re as _re
+    catalog = {row["report_id"]: row for row in _load("report_catalog.csv")}
     tot = 0
     for r in reports:
-        path = os.path.join(ROOT, r.get("source_pdf", "")) if r.get("source_pdf") else ""
-        if not path or not os.path.exists(path):
-            return None  # 원본 PDF가 없으면(영속 DB만 존재) 페이지 지표 생략
+        source = catalog.get(r["report_id"])
+        if not source or source.get("source_exists") != "Y" or not source.get("pages"):
+            return None
         try:
-            out = sp.run(["pdfinfo", path], capture_output=True, text=True, timeout=20).stdout
-            m = _re.search(r"Pages:\s+(\d+)", out)
-            if m:
-                tot += int(m.group(1))
-        except Exception:
+            tot += int(source["pages"])
+        except (TypeError, ValueError):
             return None
     return tot or None
 

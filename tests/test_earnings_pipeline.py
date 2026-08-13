@@ -1,9 +1,13 @@
 import importlib.util
+import csv
 import json
+import math
 import os
 import subprocess
 import sys
+import tempfile
 import unittest
+from collections import Counter
 
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -12,6 +16,16 @@ SPEC = importlib.util.spec_from_file_location(
 )
 BUILD = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(BUILD)
+MIGRATION_SPEC = importlib.util.spec_from_file_location(
+    "market_migration", os.path.join(ROOT, "tools", "market_migration.py")
+)
+MARKET_MIGRATION = importlib.util.module_from_spec(MIGRATION_SPEC)
+MIGRATION_SPEC.loader.exec_module(MARKET_MIGRATION)
+SELECTOR_SPEC = importlib.util.spec_from_file_location(
+    "select_latest_p1_market", os.path.join(ROOT, "tools", "select_latest_p1_market.py")
+)
+P1_SELECTOR = importlib.util.module_from_spec(SELECTOR_SPEC)
+SELECTOR_SPEC.loader.exec_module(P1_SELECTOR)
 
 
 def load_staging(name):
@@ -178,6 +192,757 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertIn('aria-label="이전 탭 보기"', template)
         self.assertIn('aria-label="다음 탭 보기"', template)
 
+    def test_market_and_company_series_pass_strict_validation(self):
+        market = {
+            "series_id": "p55_us_ess_datacenter", "market": "ESS",
+            "application": "데이터센터", "system_type": "UPS",
+            "geography_raw": "US", "geography": "미국",
+            "parent_geography": "북미", "geography_level": "국가",
+            "metric": "수요량", "fy": 2030, "period": "FY",
+            "value": 35.0, "value_prev": None, "unit": "GWh",
+            "value_type": "추정", "series_class": "서브세그먼트",
+            "subsegment_raw": "데이터센터 UPS용",
+            "basis": "미국 데이터센터 UPS 배터리 수요", "scope_note": None,
+            "source_owner": "BNEF", "source_kind": "조사기관",
+            "extraction_method": "표", "value_precision": "정확", "page": 55
+        }
+        company = {
+            "series_id": "p18_catl_ev_sales", "company_raw": "CATL",
+            "company": "CATL", "company_type": "배터리셀", "market": "EV",
+            "application": "전체", "system_type": None,
+            "geography_raw": "Global", "geography": "글로벌",
+            "parent_geography": None, "geography_level": "글로벌",
+            "metric": "판매량", "metric_raw": "출하량",
+            "fy": 2026, "period": "2Q", "value": 96.5, "unit": "GWh",
+            "raw_value": 96.5, "raw_unit": "GWh", "time_basis": "기간판매량",
+            "as_of_date": None, "value_type": "실적",
+            "basis": "글로벌 EV 배터리 출하량", "scope_note": None,
+            "source_owner": "SNE Research", "source_kind": "조사기관",
+            "extraction_method": "표", "value_precision": "정확", "page": 18
+        }
+        BUILD.warnings.clear()
+        BUILD.validate_market_series("pilot", [market])
+        BUILD.validate_company_volume_series("pilot", [company])
+        self.assertEqual([], BUILD.warnings)
+
+    def test_company_capacity_requires_ownership_and_capacity_basis(self):
+        capacity = {
+            "series_id": "p12_lges_us_ev_capacity", "company_raw": "LG에너지솔루션",
+            "company": "LGES", "company_type": "배터리셀", "facility_raw": "Ultium Cells",
+            "ownership_type": "JV", "jv_name_raw": "Ultium Cells",
+            "jv_partner_raw": "GM", "capacity_basis": "총설비", "market": "EV",
+            "application": "전체", "system_type": None, "geography_raw": "US",
+            "geography": "미국", "parent_geography": "북미", "geography_level": "국가",
+            "metric": "생산능력", "metric_raw": "생산능력", "fy": 2026,
+            "period": "FY", "value": 50, "unit": "GWh", "raw_value": 50,
+            "raw_unit": "GWh", "time_basis": "기준일생산능력",
+            "as_of_date": "2026-12-31", "value_type": "추정",
+            "basis": "미국 JV 공장 연말 생산능력", "scope_note": "공장 전체 기준",
+            "source_owner": "테스트", "source_kind": "증권사추정",
+            "extraction_method": "표", "value_precision": "정확", "page": 12,
+        }
+        BUILD.warnings.clear()
+        BUILD.validate_company_volume_series("capacity", [capacity])
+        self.assertEqual([], BUILD.warnings)
+
+        unsafe = dict(capacity)
+        unsafe["ownership_type"] = None
+        unsafe["capacity_basis"] = None
+        BUILD.warnings.clear()
+        BUILD.validate_company_volume_series("unsafe", [unsafe])
+        joined = "\n".join(BUILD.warnings)
+        self.assertIn("ownership_type 누락 또는 비표준", joined)
+        self.assertIn("capacity_basis 누락 또는 비표준", joined)
+
+    def test_market_and_company_series_reject_unsafe_normalization(self):
+        market = {
+            "series_id": "bad_market", "market": "ESS", "application": "통신",
+            "system_type": "기타", "geography_raw": "미국", "geography": "북미",
+            "parent_geography": "글로벌", "geography_level": "권역",
+            "metric": "수요량", "fy": 2030, "period": "FY", "value": 1,
+            "unit": "GWh", "value_type": "추정", "series_class": "시장전체",
+            "basis": "", "source_kind": "원천불명", "extraction_method": "차트",
+            "value_precision": "정확", "page": None
+        }
+        company = {
+            "series_id": "bad_company", "company_raw": "CATL", "company": "CATL",
+            "company_type": "배터리셀", "market": "EV", "application": "전체",
+            "system_type": None, "geography_raw": "Global", "geography": "글로벌",
+            "parent_geography": None, "geography_level": "글로벌",
+            "metric": "판매량", "metric_raw": None, "fy": 2026, "period": "2Q",
+            "value": 100, "unit": "억원", "raw_value": 100, "raw_unit": "억원",
+            "time_basis": "기간판매량", "value_type": "실적", "basis": "금액",
+            "source_kind": "원천불명", "extraction_method": "표",
+            "value_precision": "정확", "page": 1
+        }
+        BUILD.warnings.clear()
+        BUILD.validate_market_series("bad", [market])
+        BUILD.validate_company_volume_series("bad", [company])
+        joined = "\n".join(BUILD.warnings)
+        for phrase in ("application 비표준", "system_type 비표준", "미국을 북미로 치환",
+                       "원문 페이지 누락", "차트 판독값", "metric_raw 누락",
+                       "회사 단위 비표준", "회사 금액 단위 금지"):
+            self.assertIn(phrase, joined)
+
+    def test_series_id_connects_periods_but_rejects_duplicate_observation(self):
+        base = {
+            "series_id": "connected", "market": "EV", "application": "전체",
+            "system_type": None, "geography_raw": "Global", "geography": "글로벌",
+            "parent_geography": None, "geography_level": "글로벌",
+            "metric": "수요량", "period": "FY", "value": 10, "unit": "GWh",
+            "value_type": "추정", "series_class": "시장전체", "basis": "전망",
+            "source_kind": "증권사추정", "extraction_method": "표",
+            "value_precision": "정확", "page": 1
+        }
+        rows = [dict(base, fy=2026), dict(base, fy=2027, value=12),
+                dict(base, fy=2027, value=13)]
+        BUILD.warnings.clear()
+        BUILD.validate_market_series("series", rows)
+        joined = "\n".join(BUILD.warnings)
+        self.assertEqual(1, joined.count("동일 기간 중복"))
+        self.assertNotIn("series_id 중복", joined)
+
+    def test_market_validator_rejects_monthly_value_labeled_as_fy(self):
+        row = {
+            "series_id": "monthly_as_fy", "market": "EV", "application": "전체",
+            "system_type": None, "geography_raw": "미국", "geography": "미국",
+            "parent_geography": "북미", "geography_level": "국가",
+            "metric": "판매대수", "fy": 2026, "period": "FY", "value": 81,
+            "unit": "천대", "value_type": "실적", "series_class": "월간·누적",
+            "subsegment_raw": "BEV", "basis": "2026년 5월 미국 BEV 판매량",
+            "source_kind": "조사기관", "extraction_method": "본문",
+            "value_precision": "정확", "page": 10,
+        }
+        BUILD.warnings.clear()
+        BUILD.validate_market_series("monthly", [row])
+        self.assertIn("월간 수치를 period=FY로 저장 금지", "\n".join(BUILD.warnings))
+
+    def test_market_company_index_writer_creates_separate_headers(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            BUILD.write_market_company_indexes(tmp, [])
+            market_path = os.path.join(tmp, "market_series.csv")
+            review_path = os.path.join(tmp, "market_series_review.csv")
+            company_path = os.path.join(tmp, "company_volume_series.csv")
+            self.assertTrue(os.path.exists(market_path))
+            self.assertTrue(os.path.exists(review_path))
+            self.assertTrue(os.path.exists(company_path))
+            with open(market_path, encoding="utf-8") as f:
+                self.assertIn("market,application,system_type", f.readline())
+            with open(company_path, encoding="utf-8") as f:
+                header = f.readline()
+            self.assertIn("metric,metric_raw", header)
+            self.assertIn("raw_value,raw_unit", header)
+            self.assertIn("house,source_pdf,series_id", header)
+            self.assertIn("facility_raw,ownership_type,jv_name_raw,jv_partner_raw,capacity_basis", header)
+
+    def test_report_catalog_keeps_publication_metadata_and_source_file(self):
+        report = {
+            "report_id": "2026-02-26_KB증권_LGES", "date": "2026-02-26",
+            "house": "KB증권", "coverage": "LGES", "report_type": "기업",
+            "analyst": "테스트 애널리스트",
+        }
+        manifest = [{
+            "report_id": report["report_id"], "date": report["date"],
+            "house": report["house"], "coverage": "LGES", "report_type": "기업",
+            "file": "KB증권_LG에너지솔루션_미국 ESS 전망_20260226.pdf", "pages": 3,
+        }]
+        with tempfile.TemporaryDirectory() as tmp:
+            BUILD.write_report_catalog(tmp, [report], manifest)
+            with open(os.path.join(tmp, "report_catalog.csv"), encoding="utf-8") as f:
+                row = next(csv.DictReader(f))
+        self.assertEqual("미국 ESS 전망", row["report_title"])
+        self.assertEqual("테스트 애널리스트", row["analyst"])
+        self.assertEqual(manifest[0]["file"], row["source_file"])
+        self.assertEqual("inbox/" + manifest[0]["file"], row["source_path"])
+
+    def test_p1_latest_selector_limits_to_2026_and_routes_exceptions(self):
+        def candidate(report_id, page, application="전체", source_group="inbox",
+                      risk_flags=""):
+            return {
+                "source_group": source_group, "source_file": report_id + ".pdf",
+                "source_ids": report_id, "page": str(page), "page_count": "10",
+                "priority": "P1", "candidate_type": "시장", "markets": "ESS",
+                "applications": application, "geographies": "미국",
+                "metrics": "수요", "units": "GWh", "risk_flags": risk_flags,
+                "score": "12", "visual_review_status": "대기",
+            }
+
+        candidates = [
+            candidate("2026-07-01_A증권_LGES", 1),
+            candidate("2026-05-01_A증권_LGES", 1, "데이터센터"),
+            candidate("2026-04-01_A증권_LGES", 1),
+            candidate("2026-06-01_A증권_산업", 3),
+            candidate("2026-02-01_A증권_산업", 5),
+            candidate("2026-03-01_B증권_산업", 6),
+            candidate("2025-11-01_A증권_산업", 8, "상업·산업용(C&I)"),
+            candidate("2024-01-01_B증권_산업", 2),
+            candidate("LGES", 4, source_group="actuals"),
+        ]
+        catalog = {
+            "2026-07-01_A증권_LGES": {
+                "house": "A증권", "coverage": "LGES", "date": "2026-07-01",
+                "report_title": "최신 기업",
+            },
+            "2026-05-01_A증권_LGES": {
+                "house": "A증권", "coverage": "LGES", "date": "2026-05-01",
+                "report_title": "이전 기업",
+            },
+            "2026-04-01_A증권_LGES": {
+                "house": "A증권", "coverage": "LGES", "date": "2026-04-01",
+                "report_title": "구형 기업",
+            },
+            "2026-06-01_A증권_산업": {
+                "house": "A증권", "coverage": "산업", "date": "2026-06-01",
+                "report_title": "최신 산업",
+            },
+            "2026-02-01_A증권_산업": {
+                "house": "A증권", "coverage": "산업", "date": "2026-02-01",
+                "report_title": "같은 하우스 이전 산업",
+            },
+            "2026-03-01_B증권_산업": {
+                "house": "B증권", "coverage": "산업", "date": "2026-03-01",
+                "report_title": "다른 하우스 최신 산업",
+            },
+            "2025-11-01_A증권_산업": {
+                "house": "A증권", "coverage": "산업", "date": "2025-11-01",
+                "report_title": "이전 산업",
+            },
+            "2024-01-01_B증권_산업": {
+                "house": "B증권", "coverage": "산업", "date": "2024-01-01",
+                "report_title": "최신이지만 구형",
+            },
+        }
+        results, _, selected = P1_SELECTOR.classify_candidates(candidates, catalog)
+        classes = {(row["source_ids"], row["page"]): row["reclassification"]
+                   for row in results}
+        self.assertEqual(3, len(set(selected.values())))
+        self.assertEqual("최신 유효", classes[("2026-07-01_A증권_LGES", "1")])
+        self.assertEqual("추가 검토", classes[("2026-05-01_A증권_LGES", "1")])
+        self.assertEqual("중복·구형 제외", classes[("2026-04-01_A증권_LGES", "1")])
+        self.assertEqual("최신 유효", classes[("2026-06-01_A증권_산업", "3")])
+        self.assertEqual("중복·구형 제외", classes[("2026-02-01_A증권_산업", "5")])
+        self.assertEqual("최신 유효", classes[("2026-03-01_B증권_산업", "6")])
+        self.assertEqual("연도 범위 제외", classes[("2025-11-01_A증권_산업", "8")])
+        self.assertEqual("연도 범위 제외", classes[("2024-01-01_B증권_산업", "2")])
+        self.assertEqual("회사공시 별도", classes[("LGES", "4")])
+
+    def test_quant_backfill_merges_by_report_id_without_leaking_id_into_row(self):
+        reports = [{"report_id": "pilot"}]
+        backfill = {
+            "company_volume_series": [
+                {"report_id": "pilot", "series_id": "capacity", "value": 50}
+            ]
+        }
+        BUILD.warnings.clear()
+        BUILD.merge_quant_backfill(reports, backfill)
+        self.assertEqual(
+            [{"series_id": "capacity", "value": 50}],
+            reports[0]["company_volume_series"],
+        )
+
+    def test_quant_backfill_keeps_actuals_company_source_separate(self):
+        reports = [{"report_id": "pilot"}]
+        row = {
+            "report_id": "actuals_2025_1Q_SK온", "date": "2025-04-30",
+            "house": "SK이노베이션", "source_group": "actuals",
+            "source_file": "SK이노베이션_실적발표_1Q25 국문_F.pdf",
+            "series_id": "capacity", "value": 7,
+        }
+        BUILD.warnings.clear()
+        standalone = BUILD.merge_quant_backfill(
+            reports, {"company_volume_series": [row]}
+        )
+        self.assertNotIn("company_volume_series", reports[0])
+        self.assertEqual(1, len(standalone))
+        self.assertEqual("actuals_2025_1Q_SK온", standalone[0]["report_id"])
+        self.assertEqual(
+            [{"series_id": "capacity", "value": 7}],
+            standalone[0]["company_volume_series"],
+        )
+        self.assertEqual([], BUILD.warnings)
+
+    def test_quant_backfill_dataset_passes_quant_schema_validation(self):
+        path = os.path.join(ROOT, "projects", "market-data", "quant_backfill.json")
+        with open(path, encoding="utf-8") as f:
+            backfill = json.load(f)
+        market_rows = backfill["market_series"]
+        self.assertTrue(market_rows)
+        keys = [(row["report_id"], row["series_id"], row["fy"])
+                for row in market_rows]
+        self.assertEqual(len(keys), len(set(keys)))
+        BUILD.warnings.clear()
+        report_ids = {row["report_id"] for row in market_rows}
+        for report_id in report_ids:
+            rows = [{key: value for key, value in row.items() if key != "report_id"}
+                    for row in market_rows if row["report_id"] == report_id]
+            BUILD.validate_market_series(report_id, rows)
+        company_rows = backfill["company_volume_series"]
+        company_keys = [(row["report_id"], row["series_id"], row["fy"], row["period"])
+                        for row in company_rows]
+        self.assertEqual(len(company_keys), len(set(company_keys)))
+        metadata = {"report_id", "date", "house", "source_group", "source_file"}
+        for report_id in {row["report_id"] for row in company_rows}:
+            rows = [{key: value for key, value in row.items() if key not in metadata}
+                    for row in company_rows if row["report_id"] == report_id]
+            BUILD.validate_company_volume_series(report_id, rows)
+        disclosed_totals = {
+            "2023-09-12_IBK투자증권_산업": {
+                2022: 15, 2023: 40, 2024: 80, 2025: 160,
+                2026: 216, 2027: 249, 2028: 249,
+            },
+            "2026-06-29_LS증권_SK온": {
+                2025: 111, 2026: 179, 2027: 179, 2028: 224,
+            },
+            "2023-07-06_대신증권_산업": {
+                2023: 55, 2024: 100, 2025: 197, 2026: 260,
+            },
+        }
+        for report_id, expected in disclosed_totals.items():
+            rows = [row for row in company_rows if row["report_id"] == report_id]
+            actual = {fy: sum(row["value"] for row in rows if row["fy"] == fy)
+                      for fy in expected}
+            self.assertEqual(expected, actual)
+        self.assertEqual([], BUILD.warnings)
+
+    def test_europe_bess_application_breakdown_preserves_source_mismatch(self):
+        path = os.path.join(ROOT, "projects", "market-data", "quant_backfill.json")
+        with open(path, encoding="utf-8") as f:
+            rows = json.load(f)["market_series"]
+        report_id = "2026-05-17_유진투자증권_산업"
+        total = next(row for row in rows
+                     if row["report_id"] == report_id
+                     and row["series_id"] == "p14_europe_bess_new_installation"
+                     and row["fy"] == 2025)
+        applications = [row for row in rows
+                        if row["report_id"] == report_id and row["fy"] == 2025
+                        and row["series_id"] in {
+                            "p14_europe_residential_bess_installation",
+                            "p14_europe_ci_bess_installation",
+                            "p14_europe_utility_bess_installation",
+                        }]
+        self.assertEqual(32, total["value"])
+        self.assertAlmostEqual(29.7, sum(row["value"] for row in applications))
+        self.assertTrue(all("강제 보정하지 않음" in row["scope_note"]
+                            for row in applications))
+
+    def test_legacy_market_migration_connects_safe_annual_series(self):
+        report = {
+            "report_id": "pilot", "date": "2026-07-31", "house": "테스트",
+            "demand_forecasts": [
+                {"region": "미국", "application": "ESS", "metric": "수요량",
+                 "fy": 2027, "value": 12, "value_prev": None, "unit": "GWh",
+                 "basis": "미국 데이터센터 UPS 수요 전망", "page": 5},
+                {"region": "미국", "application": "ESS", "metric": "수요량",
+                 "fy": 2030, "value": 30, "value_prev": None, "unit": "GWh",
+                 "basis": "미국 데이터센터 UPS 수요 전망", "page": 5},
+            ]
+        }
+        migrated, review = MARKET_MIGRATION.migrate_legacy_demands(report)
+        self.assertEqual([], review)
+        self.assertEqual(2, len(migrated))
+        self.assertEqual(1, len({row["series_id"] for row in migrated}))
+        self.assertTrue(all(row["geography"] == "미국" for row in migrated))
+        self.assertTrue(all(row["parent_geography"] == "북미" for row in migrated))
+        self.assertTrue(all(row["application"] == "데이터센터" for row in migrated))
+        self.assertTrue(all(row["system_type"] == "UPS" for row in migrated))
+        self.assertTrue(all(row["extraction_method"] == "원천불명" for row in migrated))
+
+    def test_legacy_market_migration_preserves_installation_and_ev_subsegment(self):
+        report = {
+            "report_id": "dimensions", "date": "2026-07-31", "house": "테스트",
+            "demand_forecasts": [
+                {"region": "글로벌", "application": "ESS", "metric": "수요량",
+                 "fy": 2030, "value": 300, "value_prev": None, "unit": "GWh",
+                 "basis": "글로벌 BESS 신규 설치용량 전망 차트", "page": 8},
+                {"region": "미국", "application": "EV", "metric": "판매대수",
+                 "fy": 2027, "value": 2000, "value_prev": None, "unit": "천대",
+                 "basis": "미국 BEV 판매대수 전망 표", "page": 9},
+            ]
+        }
+        migrated, review = MARKET_MIGRATION.migrate_legacy_demands(report)
+        self.assertEqual([], review)
+        self.assertEqual("설치에너지", migrated[0]["metric"])
+        self.assertEqual("차트", migrated[0]["extraction_method"])
+        self.assertEqual("BEV", migrated[1]["subsegment_raw"])
+        self.assertEqual("서브세그먼트", migrated[1]["series_class"])
+
+    def test_legacy_market_migration_does_not_label_monthly_data_as_fy(self):
+        report = {
+            "report_id": "monthly", "date": "2026-06-08", "house": "테스트",
+            "demand_forecasts": [
+                {"region": "미국", "application": "EV", "metric": "판매대수",
+                 "fy": 2026, "value": 81, "value_prev": None, "unit": "천대",
+                 "basis": "2026년 5월 미국 BEV 판매량", "page": 10},
+            ]
+        }
+        migrated, review = MARKET_MIGRATION.migrate_legacy_demands(report)
+        self.assertEqual([], migrated)
+        self.assertEqual(1, len(review))
+        self.assertIn("월간·누적 자료는 period 재확인 필요", review[0]["review_reasons"])
+
+    def test_legacy_market_migration_routes_ambiguous_rows_to_review(self):
+        report = {
+            "report_id": "review", "date": "2026-07-31", "house": "테스트",
+            "demand_forecasts": [
+                {"region": "글로벌", "application": "EV", "metric": "실적치",
+                 "fy": 2025, "value": 100, "value_prev": None, "unit": "GWh",
+                 "basis": "글로벌 EV 배터리", "page": 2},
+                {"region": "글로벌", "application": "로봇", "metric": "수요량",
+                 "fy": 2030, "value": 10, "value_prev": None, "unit": "GWh",
+                 "basis": "휴머노이드 로봇 수요", "page": 3},
+            ]
+        }
+        migrated, review = MARKET_MIGRATION.migrate_legacy_demands(report)
+        self.assertEqual([], migrated)
+        self.assertEqual(2, len(review))
+        reasons = "\n".join(row["review_reasons"] for row in review)
+        self.assertIn("실적치는 원문 지표 재확인 필요", reasons)
+        self.assertIn("EV·ESS 외 application: 로봇", reasons)
+
+    def test_legacy_market_migration_does_not_average_duplicate_values(self):
+        base = {"region": "글로벌", "application": "EV", "metric": "수요량",
+                "fy": 2030, "value_prev": None, "unit": "GWh",
+                "basis": "글로벌 EV 배터리 수요", "page": 7}
+        report = {
+            "report_id": "duplicate", "date": "2026-07-31", "house": "테스트",
+            "demand_forecasts": [dict(base, value=100), dict(base, value=120)]
+        }
+        migrated, review = MARKET_MIGRATION.migrate_legacy_demands(report)
+        self.assertEqual([], migrated)
+        self.assertEqual(2, len(review))
+        self.assertTrue(all(row["review_reasons"] == "같은 시리즈·기간에 복수 값 존재"
+                            for row in review))
+
+    def test_all_legacy_demand_rows_are_reconciled_without_guessing(self):
+        migrated_total = review_total = source_total = 0
+        for name in os.listdir(os.path.join(ROOT, ".staging")):
+            if not name.endswith(".json") or name == "manifest.json":
+                continue
+            data = load_staging(name)
+            if not isinstance(data, dict) or not data.get("report_id"):
+                continue
+            migrated, review = MARKET_MIGRATION.migrate_legacy_demands(data)
+            source_total += len(data.get("demand_forecasts", []) or [])
+            migrated_total += len(migrated)
+            review_total += len(review)
+            BUILD.warnings.clear()
+            BUILD.validate_market_series(data["report_id"], migrated)
+            self.assertEqual([], BUILD.warnings, data["report_id"])
+        self.assertEqual(1294, source_total)
+        self.assertEqual(765, migrated_total)
+        self.assertEqual(529, review_total)
+        self.assertEqual(source_total, migrated_total + review_total)
+
+    def test_2026_market_semantic_duplicate_guard_is_strict(self):
+        base = {
+            "market": "ESS", "application": "전체", "system_type": "BESS",
+            "geography": "글로벌", "metric": "설치에너지", "fy": 2026,
+            "period": "FY", "value": 100, "unit": "GWh",
+        }
+        report = {
+            "report_id": "duplicate", "date": "2026-07-31",
+            "market_series": [dict(base, series_id="explicit")],
+            "_legacy_market_series": [dict(base, series_id="legacy", legacy_row=1)],
+        }
+        with self.assertRaisesRegex(RuntimeError, "market_series 의미상 중복"):
+            BUILD.validate_market_semantic_duplicates(report)
+
+        report["date"] = "2025-07-31"
+        BUILD.validate_market_semantic_duplicates(report)
+
+    def test_p1_industry_migration_gate_is_reconciled(self):
+        report_ids = {
+            "2026-05-17_유진투자증권_산업",
+            "2026-06-08_하나증권_산업",
+        }
+        with open(os.path.join(ROOT, "index", "market_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            market = [row for row in csv.DictReader(f)
+                      if row["report_id"] in report_ids]
+        with open(os.path.join(ROOT, "index", "market_series_review.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            review = [row for row in csv.DictReader(f)
+                      if row["report_id"] in report_ids]
+        with open(os.path.join(ROOT, "index", "company_volume_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            company = [row for row in csv.DictReader(f)
+                       if row["report_id"] in report_ids]
+
+        self.assertEqual(143, len(market))
+        self.assertEqual(82, len(review))
+        self.assertEqual(11, len(company))
+        semantic_fields = ("report_id", "market", "application", "system_type",
+                           "geography", "metric", "fy", "period", "value", "unit")
+        semantic_keys = [tuple(row[field] for field in semantic_fields) for row in market]
+        self.assertEqual(len(semantic_keys), len(set(semantic_keys)))
+
+        us_bess = [row for row in market
+                   if row["series_id"] == "p15_us_bess_new_installation"]
+        self.assertEqual(["51", "67", "85", "98", "115", "130"],
+                         [row["value"] for row in us_bess])
+        self.assertTrue(all(row["geography"] == "미국" for row in us_bess))
+        self.assertEqual({"LGES": 4, "삼성SDI": 4, "SK온": 3},
+                         dict(Counter(row["company"] for row in company)))
+
+        decisions = BUILD.load_market_review_decisions()
+        self.assertEqual(85, len(decisions))
+        by_report = Counter(report_id for report_id, _ in decisions)
+        self.assertEqual(50, by_report["2026-05-17_유진투자증권_산업"])
+        self.assertEqual(35, by_report["2026-06-08_하나증권_산업"])
+        eugene_metrics = Counter(
+            decision["actual_metric"] for (report_id, _), decision in decisions.items()
+            if report_id == "2026-05-17_유진투자증권_산업"
+        )
+        self.assertEqual(
+            {"판매대수": 35, "침투율": 6, "설치에너지": 3, "수요량": 6},
+            dict(eugene_metrics),
+        )
+        hana = [decision for (report_id, _), decision in decisions.items()
+                if report_id == "2026-06-08_하나증권_산업"]
+        self.assertTrue(all(item["decision_status"] == "연간 인덱스 보류"
+                            for item in hana))
+        self.assertTrue(all(row["actual_metric"] and row["decision_status"]
+                            for row in review))
+
+        with open(os.path.join(ROOT, "projects", "market-data", "quant_backfill.json"),
+                  encoding="utf-8-sig") as f:
+            backfill = json.load(f)["market_series"]
+        linked = [row for row in backfill
+                  if row.get("report_id") == "2026-05-17_유진투자증권_산업"
+                  and row.get("legacy_row")]
+        self.assertEqual(list(range(100, 106)) + list(range(112, 124)),
+                         sorted(row["legacy_row"] for row in linked))
+
+    def test_p1_lges_batch1_is_reconciled(self):
+        target_pages = {
+            ("2026-07-31_DB증권_LGES", "1"),
+            ("2026-05-04_DS투자증권_LGES", "1"),
+            ("2026-07-31_IBK투자증권_LGES", "1"),
+            ("2026-07-30_KB증권_LGES", "1"),
+            ("2026-06-02_LS증권_LGES", "9"),
+            ("2026-06-02_LS증권_LGES", "12"),
+            ("2026-07-31_iM증권_LGES", "1"),
+            ("2026-07-31_iM증권_LGES", "3"),
+            ("2026-05-04_교보증권_LGES", "1"),
+            ("2026-05-06_대신증권_LGES", "1"),
+            ("2026-05-06_대신증권_LGES", "4"),
+        }
+        with open(os.path.join(ROOT, "projects", "market-data", "candidate_reviews.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            reviews = [row for row in csv.DictReader(f)
+                       if (row["source_ids"], row["page"]) in target_pages]
+        self.assertEqual(11, len(reviews))
+        self.assertEqual({"채택": 8, "보류": 3},
+                         dict(Counter(row["review_status"] for row in reviews)))
+
+        with open(os.path.join(ROOT, "index", "market_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            market = list(csv.DictReader(f))
+        with open(os.path.join(ROOT, "index", "company_volume_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            company = list(csv.DictReader(f))
+        batch_market = [row for row in market
+                        if row["series_id"] in {
+                            "p3_global_ai_datacenter_ess_demand",
+                            "p4_us_bess_installation_demand",
+                        }]
+        batch_company = [row for row in company
+                         if (row["report_id"], row["source_page"]) in target_pages]
+        self.assertEqual(9, len(batch_market))
+        self.assertEqual(21, len(batch_company))
+        self.assertEqual(["12", "61", "272"],
+                         [row["value"] for row in batch_market
+                          if row["series_id"] == "p3_global_ai_datacenter_ess_demand"])
+        self.assertEqual(["51", "71", "95", "115", "138", "148"],
+                         [row["value"] for row in batch_market
+                          if row["series_id"] == "p4_us_bess_installation_demand"])
+        ibk = [row for row in batch_company
+               if row["report_id"] == "2026-07-31_IBK투자증권_LGES"]
+        self.assertEqual(10, len(ibk))
+        self.assertIn(("글로벌", "68"),
+                      {(row["geography"], row["value"]) for row in ibk})
+        self.assertGreaterEqual(len(market), 837)
+        self.assertGreaterEqual(len(company), 186)
+
+    def test_p1_lges_batch2_completes_latest_page_review(self):
+        target_pages = {
+            ("2026-07-31_메리츠증권_LGES", "1"),
+            ("2026-07-30_삼성증권_LGES", "2"),
+            ("2026-07-31_신영증권_LGES", "1"),
+            ("2026-07-31_신한투자증권_LGES", "1"),
+            ("2026-05-06_유안타증권_LGES", "1"),
+            ("2026-07-31_유진투자증권_LGES", "1"),
+            ("2026-07-31_유진투자증권_LGES", "2"),
+            ("2026-07-31_키움증권_LGES", "1"),
+            ("2026-07-31_하나증권_LGES", "1"),
+            ("2026-05-04_한화투자증권_LGES", "1"),
+        }
+        with open(os.path.join(ROOT, "projects", "market-data", "candidate_reviews.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            reviews = [row for row in csv.DictReader(f)
+                       if (row["source_ids"], row["page"]) in target_pages]
+        self.assertEqual(10, len(reviews))
+        self.assertEqual({"채택": 3, "보류": 7},
+                         dict(Counter(row["review_status"] for row in reviews)))
+        self.assertEqual(8, sum(int(row["extracted_row_count"])
+                                for row in reviews))
+
+        with open(os.path.join(ROOT, "index", "market_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            market = list(csv.DictReader(f))
+        with open(os.path.join(ROOT, "index", "company_volume_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            company = list(csv.DictReader(f))
+        batch_company = [row for row in company
+                         if (row["report_id"], row["source_page"]) in target_pages]
+        self.assertEqual(8, len(batch_company))
+        samsung = [row for row in batch_company
+                   if row["report_id"] == "2026-07-30_삼성증권_LGES"]
+        self.assertEqual(6, len(samsung))
+        self.assertEqual({("1Q", "EV", "0.4"), ("2Q", "EV", "0.3"),
+                          ("1Q", "ESS", "4.3"), ("2Q", "ESS", "5.4"),
+                          ("2Q", "합계", "5.7"), ("3Q", "합계", "9")},
+                         {(row["period"], row["market"], row["value"])
+                          for row in samsung})
+        self.assertGreaterEqual(len(market), 837)
+        self.assertGreaterEqual(len(company), 194)
+
+    def test_p1_sdi_batch1_is_reconciled(self):
+        target_pages = {
+            ("2026-04-01_DB증권_삼성SDI", "1"),
+            ("2026-07-31_IBK투자증권_삼성SDI", "1"),
+            ("2026-07-31_LS증권_삼성SDI", "1"),
+            ("2026-03-23_NH투자증권_삼성SDI", "5"),
+            ("2026-06-09_SK증권_삼성SDI", "1"),
+            ("2026-07-31_iM증권_삼성SDI", "1"),
+            ("2026-07-31_iM증권_삼성SDI", "3"),
+            ("2026-03-30_교보증권_삼성SDI", "1"),
+        }
+        with open(os.path.join(ROOT, "projects", "market-data", "candidate_reviews.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            reviews = [row for row in csv.DictReader(f)
+                       if (row["source_ids"], row["page"]) in target_pages]
+        self.assertEqual(8, len(reviews))
+        self.assertEqual({"채택": 4, "보류": 4},
+                         dict(Counter(row["review_status"] for row in reviews)))
+        self.assertEqual(34, sum(int(row["extracted_row_count"])
+                                 for row in reviews))
+
+        with open(os.path.join(ROOT, "index", "market_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            market = list(csv.DictReader(f))
+        with open(os.path.join(ROOT, "index", "company_volume_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            company = list(csv.DictReader(f))
+        batch_company = [row for row in company
+                         if (row["report_id"], row["source_page"]) in target_pages]
+        self.assertEqual(34, len(batch_company))
+        nh = [row for row in batch_company
+              if row["report_id"] == "2026-03-23_NH투자증권_삼성SDI"]
+        self.assertEqual(26, len(nh))
+        self.assertEqual(["57", "75", "96"],
+                         [row["value"] for row in nh
+                          if row["series_id"] == "p5_sdi_total_sales"])
+        self.assertIn(("북미", "29"),
+                      {(row["geography"], row["value"])
+                       for row in batch_company
+                       if row["report_id"] == "2026-07-31_IBK투자증권_삼성SDI"})
+        self.assertGreaterEqual(len(market), 837)
+        self.assertGreaterEqual(len(company), 228)
+
+    def test_p1_sdi_batch2_completes_latest_page_review(self):
+        target_pages = {
+            ("2026-05-06_대신증권_삼성SDI", "1"),
+            ("2026-05-21_버핏연구소_삼성SDI", "5"),
+            ("2026-07-31_삼성증권_삼성SDI", "3"),
+            ("2026-05-08_상상인증권_삼성SDI", "1"),
+            ("2026-06-24_유안타증권_삼성SDI", "1"),
+            ("2026-07-31_키움증권_삼성SDI", "1"),
+            ("2026-03-24_한화투자증권_삼성SDI", "1"),
+            ("2026-04-08_흥국증권_삼성SDI", "1"),
+        }
+        with open(os.path.join(ROOT, "projects", "market-data", "candidate_reviews.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            reviews = [row for row in csv.DictReader(f)
+                       if (row["source_ids"], row["page"]) in target_pages]
+        self.assertEqual(8, len(reviews))
+        self.assertEqual({"채택": 3, "보류": 5},
+                         dict(Counter(row["review_status"] for row in reviews)))
+        self.assertEqual(20, sum(int(row["extracted_row_count"])
+                                 for row in reviews))
+
+        with open(os.path.join(ROOT, "index", "market_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            market = list(csv.DictReader(f))
+        with open(os.path.join(ROOT, "index", "company_volume_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            company = list(csv.DictReader(f))
+        batch_company = [row for row in company
+                         if (row["report_id"], row["source_page"]) in target_pages]
+        self.assertEqual(20, len(batch_company))
+        samsung = [row for row in batch_company
+                   if row["report_id"] == "2026-07-31_삼성증권_삼성SDI"]
+        self.assertEqual(16, len(samsung))
+        self.assertEqual(["33", "33", "37", "37"],
+                         [row["value"] for row in samsung
+                          if row["series_id"] == "p3_sdi_spe1_capacity"])
+        self.assertEqual(["0", "4", "10", "25"],
+                         [row["value"] for row in samsung
+                          if row["series_id"] == "p3_sdi_spe1_sales"])
+        self.assertEqual({("JV", "StarPlus Energy 1", "Stellantis")},
+                         {(row["ownership_type"], row["jv_name_raw"],
+                           row["jv_partner_raw"]) for row in samsung
+                          if row["series_id"] == "p3_sdi_spe1_capacity"})
+        self.assertEqual(3, len([row for row in batch_company
+                                if row["report_id"] == "2026-05-06_대신증권_삼성SDI"]))
+        self.assertGreaterEqual(len(market), 837)
+        self.assertGreaterEqual(len(company), 248)
+
+    def test_p1_skon_batch_completes_latest_page_review(self):
+        target_pages = {
+            ("2026-07-03_BNK투자증권_SK온", "1"),
+            ("2026-07-31_IBK투자증권_SK온", "2"),
+            ("2026-07-30_KB증권_SK온", "1"),
+            ("2026-06-15_LS증권_SK온", "1"),
+            ("2026-06-15_LS증권_SK온", "9"),
+            ("2026-06-15_LS증권_SK온", "10"),
+            ("2026-07-31_LS증권_SK온", "4"),
+            ("2026-05-14_iM증권_SK온", "1"),
+            ("2026-07-31_iM증권_SK온", "1"),
+            ("2026-01-29_상상인증권_SK온", "1"),
+            ("2026-07-31_유진투자증권_SK온", "1"),
+            ("2026-07-31_유진투자증권_SK온", "4"),
+            ("2026-05-14_하나증권_SK온", "1"),
+        }
+        with open(os.path.join(ROOT, "projects", "market-data", "candidate_reviews.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            reviews = [row for row in csv.DictReader(f)
+                       if (row["source_ids"], row["page"]) in target_pages]
+        self.assertEqual(13, len(reviews))
+        self.assertEqual({"채택": 2, "보류": 11},
+                         dict(Counter(row["review_status"] for row in reviews)))
+        self.assertEqual(4, sum(int(row["extracted_row_count"])
+                                for row in reviews))
+
+        with open(os.path.join(ROOT, "index", "company_volume_series.csv"),
+                  encoding="utf-8-sig", newline="") as f:
+            company = list(csv.DictReader(f))
+        batch_company = [row for row in company
+                         if (row["report_id"], row["source_page"]) in target_pages]
+        self.assertEqual(4, len(batch_company))
+        sales = [row for row in batch_company
+                 if row["series_id"] == "p4_skon_global_ev_sales_05m"]
+        self.assertEqual(["14.2", "16.8", "15.8"],
+                         [row["value"] for row in sales])
+        self.assertTrue(all(row["period"] == "YTD" for row in sales))
+        capacity = [row for row in batch_company
+                    if row["series_id"] == "p10_skon_global_battery_capacity"]
+        self.assertEqual(1, len(capacity))
+        self.assertEqual(("179", "혼합", "2026-06-15"),
+                         (capacity[0]["value"], capacity[0]["ownership_type"],
+                          capacity[0]["as_of_date"]))
+        self.assertGreaterEqual(len(company), 252)
+
     def test_normalized_op_waterfall_uses_broker_ranges_without_double_counting(self):
         with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
                   encoding="utf-8") as f:
@@ -312,6 +1077,47 @@ class EarningsPipelineTest(unittest.TestCase):
             self.assertTrue(all(pred["op_est"] is not None for pred in event["preds"]))
             if event["period"] == "2Q":
                 self.assertEqual(q2_expected[event["company"]], event["n_houses"])
+
+    def test_dashboard_release_artifacts_and_source_volume_are_consistent(self):
+        with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
+                  encoding="utf-8") as f:
+            data = json.load(f)
+        with open(os.path.join(ROOT, "index", "report_catalog.csv"),
+                  encoding="utf-8") as f:
+            catalog = list(csv.DictReader(f))
+
+        self.assertEqual(data["meta"]["n_reports"], len(catalog))
+        self.assertTrue(all(row["source_exists"] == "Y" for row in catalog))
+        self.assertTrue(all(os.path.exists(os.path.join(ROOT, row["source_path"]))
+                            for row in catalog))
+        self.assertTrue(all(row["pages"] for row in catalog))
+        self.assertEqual(
+            data["meta"]["n_pages"],
+            sum(int(row["pages"]) for row in catalog),
+        )
+
+        with open(os.path.join(ROOT, "projects", "dashboard", "dashboard.html"),
+                  encoding="utf-8") as f:
+            dashboard = f.read()
+        with open(os.path.join(ROOT, "docs", "index.html"), encoding="utf-8") as f:
+            deployed = f.read()
+        self.assertEqual(dashboard, deployed)
+        self.assertIn("표준 MD 본문은 리포트 단위로 역추적 가능", dashboard)
+
+        for item in data["search"]:
+            for page in str(item.get("p") or "").replace("-", ",").split(","):
+                if page.strip():
+                    self.assertGreater(int(page.strip()), 0)
+
+        pending = [data]
+        while pending:
+            value = pending.pop()
+            if isinstance(value, dict):
+                pending.extend(value.values())
+            elif isinstance(value, list):
+                pending.extend(value)
+            elif isinstance(value, float):
+                self.assertTrue(math.isfinite(value))
 
 
 if __name__ == "__main__":
