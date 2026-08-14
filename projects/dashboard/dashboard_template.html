@@ -92,6 +92,19 @@ table.f3tb td{word-break:break-word}
 .chips button{border:1px solid var(--border);background:var(--chip);color:var(--ink2);
   padding:5px 11px;border-radius:14px;font:600 12px system-ui;cursor:pointer}
 .chips button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.data-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:12px 0 14px}
+.filter-step{min-width:0;padding:10px 11px;border:1px solid var(--border);border-radius:10px;background:color-mix(in srgb,var(--surface) 72%,var(--chip))}
+.filter-step>b{display:block;margin-bottom:7px;font-size:11.5px;color:var(--ink2)}
+.filter-step .chips{margin:0}
+.data-guardrail{padding:10px 12px;margin:8px 0 12px;border-radius:9px;border-left:3px solid var(--accent);background:var(--chip);font-size:12.5px;line-height:1.55;color:var(--ink2)}
+.data-guardrail b{color:var(--ink)}
+.source-link{color:var(--accent);font-weight:700;text-decoration:none;white-space:nowrap}
+.source-link:hover{text-decoration:underline}
+.source-meta{font-size:11px;color:var(--muted);line-height:1.45}
+.data-table td{min-width:72px}
+.data-table td.basis{min-width:210px;white-space:normal;color:var(--ink2);line-height:1.45}
+.data-table td.source{min-width:185px;white-space:normal}
+.data-empty{padding:22px 10px;text-align:center;color:var(--muted);font-size:13px}
 svg text{font:11px system-ui;fill:var(--muted)}
 svg .lbl{font:600 11px system-ui;fill:var(--ink2)}
 .tt{position:fixed;pointer-events:none;background:var(--ink);color:var(--page);
@@ -161,8 +174,8 @@ summary{cursor:pointer;color:var(--muted);font-size:12.5px}
 <aside class="sidebar">
   <div class="brand"><div class="brand-mark">🔋</div><div><b>K-배터리</b><small>리포트 인텔리전스</small></div></div>
   <div class="mobile-nav-tools">
-    <span class="nav-current">현재 <b id="navCurrent">개요</b><small id="navPosition">1 / 8</small></span>
-    <button class="nav-menu-toggle" id="navMenuToggle" type="button" aria-expanded="false" aria-controls="navMenu" onclick="toggleNavMenu()">전체 탭 8개 ▾</button>
+    <span class="nav-current">현재 <b id="navCurrent">개요</b><small id="navPosition">1 / 10</small></span>
+    <button class="nav-menu-toggle" id="navMenuToggle" type="button" aria-expanded="false" aria-controls="navMenu" onclick="toggleNavMenu()">전체 탭 10개 ▾</button>
   </div>
   <div class="nav-strip">
     <button class="nav-edge prev" id="navPrev" type="button" aria-label="이전 탭 보기" onclick="scrollNav(-1)">‹</button>
@@ -177,7 +190,7 @@ summary{cursor:pointer;color:var(--muted);font-size:12.5px}
   <div class="topbar"><h1>K-배터리 리포트 인텔리전스</h1><p class="sub" id="subline"></p></div>
   <div class="wrap">
     <div id="view"></div>
-    <p class="foot">표시 단위는 <b>억원</b>(축 레이블만 1조 이상 시 조 병기), 주가는 만원. 모든 영업이익 비교는 <b>AMPC 포함 기준</b>으로 통일합니다. AMPC 제외값만 공시한 리포트는 동일 리포트의 AMPC를 더해 비교 가능한 값으로 환산합니다. LGES 매출은 1Q26부터 AMPC 병합 표시(회사 IR 재작성 기준)이며 3사 매출 비교는 AMPC 제외 기준을 기본으로 사용합니다. 데이터 출처: 증권사 리포트(상단 표시 건수, 기업+산업) + 3사 회사 IR. 기업 분석 탭(②③⑤)은 기업 리포트만 사용하며 산업리포트는 ⑥탭(및 과거 추정 오차의 빈티지 분석, 출처 표기) 전용입니다. 모든 수치는 원문 페이지로 역추적 가능(battery-reports DB). 이 도구는 내부 분석용이며 투자 권유가 아닙니다.</p>
+    <p class="foot">표시 단위는 <b>억원</b>(축 레이블만 1조 이상 시 조 병기), 주가는 만원. 모든 영업이익 비교는 <b>AMPC 포함 기준</b>으로 통일합니다. AMPC 제외값만 공시한 리포트는 동일 리포트의 AMPC를 더해 비교 가능한 값으로 환산합니다. LGES 매출은 1Q26부터 AMPC 병합 표시(회사 IR 재작성 기준)이며 3사 매출 비교는 AMPC 제외 기준을 기본으로 사용합니다. 데이터 출처: 증권사 리포트(상단 표시 건수, 기업+산업) + 3사 회사 IR. 기업 분석 탭(②③⑤)은 기업 리포트만 사용하며 산업리포트의 정성 분석은 ⑥, 기업·산업리포트의 정량 시장·회사 데이터는 ⑦·⑧에서 확인합니다. 모든 수치는 원문 페이지로 역추적 가능(battery-reports DB). 이 도구는 내부 분석용이며 투자 권유가 아닙니다.</p>
   </div>
 </main>
 </div>
@@ -228,7 +241,8 @@ function axisY(g,x0,x1,y,v){g.append(sv("line",{x1:x0,x2:x1,y1:y,y2:y,stroke:"va
 
 /* ---------- 탭 ---------- */
 const TABS=[["overview","개요"],["f1","① 분기 실적"],["f6","② 전망 분포·이견"],["f4","③ 과거 추정 오차"],
- ["f2","④ 이슈별 3사 평가"],["f3","⑤ 증권사 전망 변화"],["f7","⑥ 산업 수요 전망"],["srch","🔍 검색"]];
+  ["f2","④ 이슈별 3사 평가"],["f3","⑤ 증권사 전망 변화"],["f7","⑥ 산업 수요 전망"],
+  ["market","⑦ 시장 데이터"],["company","⑧ 회사 데이터"],["srch","🔍 검색"]];
 let tab="overview", sel={f1:"LGES",f1c:"LGES",f1p:null,f1sr:"LGES",f1so:"LGES",f1w:"삼성SDI",f1srO:false,f1soO:false,f3:"LGES",f4:0,f6:"LGES",f6mode:"latest",f7s:null};
 let navMenuOpen=false,centerNavOnRender=true;
 function selectTab(id){tab=id;navMenuOpen=false;centerNavOnRender=true;render()}
@@ -259,7 +273,7 @@ function render(){
     b.onclick=()=>selectTab(id);nav.append(b)});
   renderNavMenu();syncMobileNav(centerNavOnRender);centerNavOnRender=false;
   const v=$("#view");v.innerHTML="";
-  ({overview:rOver,f1:rF1,f2:rF2,f3:rF3,f4:rF4,f6:rF6,f7:rF7,srch:rSearch})[tab](v);
+  ({overview:rOver,f1:rF1,f2:rF2,f3:rF3,f4:rF4,f6:rF6,f7:rF7,market:rMarket,company:rCompany,srch:rSearch})[tab](v);
 }
 $("#nav").addEventListener("scroll",updateNavEdges,{passive:true});
 window.addEventListener("resize",()=>requestAnimationFrame(updateNavEdges));
@@ -278,13 +292,15 @@ function rOver(v){
   v.append(t);
   // 처음 보는 사람을 위한 탭 가이드
   const g=el("div",{class:"card",style:"margin-top:20px"},`<h2>Overview</h2>${headMsg("K-배터리 3사에 대한 증권사의 실적 추정·전망·시각을 통합하여, 시장의 눈높이와 이견을 신속하게 파악하기 위한 분석 도구이다.")}
-   <p class="note">권장 열람 순서: <b>현재 실적(①)</b> → <b>미래 전망 분포(②)</b> → <b>과거 적중 검증(③)</b> → <b>이슈·시각·수요(④⑤⑥)</b>.</p>`);
+   <p class="note">권장 열람 순서: <b>현재 실적(①)</b> → <b>미래 전망 분포(②)</b> → <b>과거 적중 검증(③)</b> → <b>이슈·시각·수요(④⑤⑥)</b>. 보고서·Excel용 정량 조회는 <b>시장(⑦)</b>과 <b>회사(⑧)</b>를 사용합니다.</p>`);
   [["① 분기 실적","3사의 분기별 매출·영업이익 실적, 미발표 분기 전망(점선), <b>사업부문별 손익</b>을 제시한다."],
    ["② 전망 분포·이견","증권사별 영업이익 전망을 점으로 펼쳐, <b>흑자·적자 방향까지 갈리는지</b>와 최저·최고 추정의 근거를 확인한다."],
    ["③ 과거 추정 오차","발표 전 추정치가 실제 실적과 얼마나 달랐는지, 어느 증권사가 가장 근접했는지 검증한다."],
    ["④ 이슈별 3사 평가",`LFP·ESS·${helpTerm("AMPC")}·파우치 등 <b>이슈별</b>로 3사에 대한 증권사의 ${helpTerm("평가 방향")}을 비교한다.`],
    ["⑤ 증권사 전망 변화","증권사별 시각의 <b>시계열 변화</b>(목표주가·투자의견·평가 방향)를 추적한다."],
    ["⑥ 산업 수요 전망","산업 리포트 기반 EV·ESS <b>시장 수요</b> 전망과 그 변화를 정리한다."],
+   ["⑦ 시장 데이터","EV·ESS 시장을 <b>지역·Application·연도</b>별로 조회한다. 미국과 북미는 합산하지 않는다."],
+   ["⑧ 회사 데이터","3사의 <b>판매량·생산능력</b>을 용도·지역·JV 여부별로 조회한다."],
    ["🔍 검색","<b>키워드</b>로 전체 DB(이슈 평가·테마·수요 전망·MD 본문)를 검색한다. 정량·이슈 근거는 원문 페이지까지, MD 본문은 리포트까지 추적한다."]]
   .forEach(([a,b])=>g.append(el("div",{class:"qcard"},`<b>${a}</b><p>${b}</p>`)));
   v.append(g);
@@ -1212,6 +1228,106 @@ function rF7(v){
     if(!colR.children.length)colR.append(el("p",{class:"note"},"약세 논거 없음"));
     grid.append(colB,colR);c3.append(grid);v.append(c3);
   }
+}
+
+/* ---------- ⑦·⑧ 정량 시장·회사 데이터 ---------- */
+const DATA_COLORS=["var(--accent)","var(--lges)","var(--sdi)","var(--skon)","#8d84c9","#e87ba4","#2a9d8f","#777f8c"];
+const PERIOD_RANK={"1Q":1,"2Q":2,"3Q":3,"4Q":4,"FY":5,"YTD":6};
+function safeText(value){return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function uniqueValues(rows,key){return [...new Set(rows.map(r=>r[key]).filter(v=>v!==null&&v!==undefined&&v!==""))]}
+function chooseValue(key,values,preferred){if(!values.includes(sel[key]))sel[key]=values.includes(preferred)?preferred:values[0];return sel[key]}
+function sourceUrl(row){
+  if(!row.pdf)return null;
+  const path=row.pdf.split("/").map(encodeURIComponent).join("/"),firstPage=String(row.page||"").match(/\d+/)?.[0];
+  return `https://raw.githubusercontent.com/Jayk-resonance/K-battery-financials/main/${path}${firstPage?`#page=${firstPage}`:""}`;
+}
+function sourceEvidence(row){
+  const label=`${safeText(row.house)} · ${safeText(row.date)} · p.${safeText(row.page||"?")}`,url=sourceUrl(row);
+  return url?`<a class="source-link" href="${url}" target="_blank" rel="noopener">${label}</a>`:`<b>${label}</b>`;
+}
+function dataFilter(label,items,key,formatter){
+  const box=el("div",{class:"filter-step"},`<b>${label}</b>`),chips=el("div",{class:"chips"});
+  items.forEach(item=>{const b=el("button",{class:sel[key]===item?"on":""},formatter?formatter(item):item);
+    b.onclick=()=>{sel[key]=item;render()};chips.append(b)});box.append(chips);return box;
+}
+function periodLabel(row){return row.period==="FY"?String(row.fy):`${row.fy}.${row.period}`}
+function periodKey(row){return row.fy*10+(PERIOD_RANK[row.period]??7)}
+function dataValue(value,unit){return `${Number(value).toLocaleString(undefined,{maximumFractionDigits:2})}${unit||""}`}
+function dataSummary(rows){
+  const tiles=el("div",{class:"tiles"}),years=rows.map(r=>r.fy),sources=new Set(rows.map(r=>r.rid)),series=new Set(rows.map(r=>`${r.rid}|${r.series}`));
+  [[rows.length.toLocaleString(),"표시 값"],[sources.size.toLocaleString(),"근거 리포트"],[series.size.toLocaleString(),"독립 시계열"],[years.length?`${Math.min(...years)}~${Math.max(...years)}`:"–","대상 연도"]]
+    .forEach(([value,label])=>tiles.append(el("div",{class:"tile"},`<div class="v">${value}</div><div class="k">${label}</div>`)));
+  return tiles;
+}
+function dataSeriesChart(container,rows,mode){
+  if(!rows.length){container.append(el("div",{class:"data-empty"},"선택한 조건의 데이터가 없습니다."));return}
+  const groups={};rows.forEach(r=>(groups[`${r.rid}|${r.series}`]??=[]).push(r));
+  const ordered=Object.values(groups);
+  ordered.sort((a,b)=>b.reduce((m,r)=>r.date>m?r.date:m,"").localeCompare(a.reduce((m,r)=>r.date>m?r.date:m,"")));
+  const shown=ordered.slice(0,8),points=shown.flat();
+  const xRows=[...points].sort((a,b)=>periodKey(a)-periodKey(b)),xLabels=[...new Set(xRows.map(periodLabel))];
+  const vals=points.map(r=>r.value),max=Math.max(...vals),min=Math.min(0,...vals),W=Math.max(680,xLabels.length*74),H=330,L=68,R=22,T=18,B=48;
+  const X=row=>L+(xLabels.indexOf(periodLabel(row))/(Math.max(1,xLabels.length-1)))*(W-L-R),Y=value=>T+(max-value)/(max-min||1)*(H-T-B);
+  const svg=sv("svg",{viewBox:`0 0 ${W} ${H}`,width:"100%",style:`min-width:${Math.min(W,760)}px`});
+  for(let i=0;i<=4;i++){const value=min+(max-min)*(4-i)/4,y=Y(value);axisY(svg,L,W-R,y,Number(value.toFixed(1)).toLocaleString())}
+  xLabels.forEach((label,i)=>{const x=L+(i/(Math.max(1,xLabels.length-1)))*(W-L-R),t=sv("text",{x,y:H-17,"text-anchor":"middle"});t.textContent=label;svg.append(t)});
+  shown.forEach((series,index)=>{const arr=series.slice().sort((a,b)=>periodKey(a)-periodKey(b)),color=DATA_COLORS[index%DATA_COLORS.length];
+    if(arr.length>1)svg.append(sv("path",{d:arr.map((r,i)=>`${i?"L":"M"}${X(r)},${Y(r.value)}`).join(" "),fill:"none",stroke:color,"stroke-width":2,"stroke-opacity":.82}));
+    arr.forEach(r=>{const dot=sv("circle",{cx:X(r),cy:Y(r.value),r:4.3,fill:color,stroke:"var(--surface)","stroke-width":1.5});
+      dot.addEventListener("mousemove",e=>hover(e,`<b>${r.house}</b> · ${r.date} · p.${r.page||"?"}<br>${periodLabel(r)} · <b>${dataValue(r.value,r.unit)}</b><br>${r.basis||""}`));
+      dot.addEventListener("mouseleave",unhover);svg.append(dot)})});
+  const legend=el("div",{class:"legend"});shown.forEach((series,index)=>{const r=series[0],extra=mode==="company"?(r.facility?` · ${r.facility}`:""):(r.series_class!=="시장전체"?` · ${r.series_class}`:"");
+    legend.append(el("span",{},`<i style="background:${DATA_COLORS[index%DATA_COLORS.length]}"></i>${safeText(r.house)} ${safeText(r.date)}${safeText(extra)}`))});
+  container.append(svg,legend,el("p",{class:"note"},`각 선은 리포트별 독립 시계열이며 합산·평균하지 않습니다. 최신 발간 순 최대 8개 시계열 표시${ordered.length>8?` · 나머지 ${ordered.length-8}개는 아래 표에서 확인`:""}.`));
+}
+function regionGuardrail(rows){
+  const geo=rows[0]?.geo||"선택 지역";
+  return el("div",{class:"data-guardrail"},`<b>지역 중복 방지:</b> ${safeText(geo)} 값만 표시합니다. 미국은 북미에 포함되는 국가이지만, 미국값과 북미 전체값을 더하거나 자동 대체하지 않습니다.`)
+}
+function sourceMeta(row){return `리포트 ID ${safeText(row.rid)}<br>${safeText(row.source_kind)}${row.source_owner?` · 최초 출처 ${safeText(row.source_owner)}`:""}${row.precision?` · ${safeText(row.precision)}`:""}`}
+
+function rMarket(v){
+  const all=DATA.market_data?.rows||[],card=el("div",{class:"card"},`<h2>EV·ESS 시장 정량 데이터</h2>${headMsg("시장 전체와 세부 Application 전망을 지역·연도별로 조회합니다. 서로 다른 리포트의 값은 합산하거나 하나의 컨센서스로 만들지 않습니다.")}`);
+  if(!all.length){card.append(el("div",{class:"data-empty"},"시장 데이터가 없습니다."));v.append(card);return}
+  const filters=el("div",{class:"data-filters"});let rows=all;
+  const markets=uniqueValues(rows,"market").sort((a,b)=>["EV","ESS"].indexOf(a)-["EV","ESS"].indexOf(b));chooseValue("mdMarket",markets,"EV");filters.append(dataFilter("1. 시장",markets,"mdMarket"));rows=rows.filter(r=>r.market===sel.mdMarket);
+  const geos=uniqueValues(rows,"geo").sort((a,b)=>["글로벌","북미","미국","유럽","중국","한국","기타"].indexOf(a)-["글로벌","북미","미국","유럽","중국","한국","기타"].indexOf(b));chooseValue("mdGeo",geos,"글로벌");filters.append(dataFilter("2. 지역",geos,"mdGeo"));rows=rows.filter(r=>r.geo===sel.mdGeo);
+  const apps=uniqueValues(rows,"application").sort((a,b)=>(a==="전체"?-1:b==="전체"?1:a.localeCompare(b)));chooseValue("mdApp",apps,"전체");filters.append(dataFilter("3. Application",apps,"mdApp"));rows=rows.filter(r=>r.application===sel.mdApp);
+  const systems=["모두",...new Set(rows.map(r=>r.system||"미구분"))];chooseValue("mdSystem",systems,"모두");if(systems.length>2)filters.append(dataFilter("4. 시스템 형태",systems,"mdSystem"));if(sel.mdSystem!=="모두")rows=rows.filter(r=>(r.system||"미구분")===sel.mdSystem);
+  const metrics=uniqueValues(rows,"metric").sort();chooseValue("mdMetric",metrics,"수요량");filters.append(dataFilter(`${systems.length>2?"5":"4"}. 지표`,metrics,"mdMetric"));rows=rows.filter(r=>r.metric===sel.mdMetric);
+  const units=uniqueValues(rows,"unit").sort();chooseValue("mdUnit",units,"GWh");if(units.length>1)filters.append(dataFilter("단위",units,"mdUnit"));rows=rows.filter(r=>r.unit===sel.mdUnit);
+  const years=["전체",...uniqueValues(rows,"fy").sort((a,b)=>a-b)];chooseValue("mdYear",years,"전체");filters.append(dataFilter("대상 연도",years,"mdYear",x=>x==="전체"?"전체 연도":String(x)));if(sel.mdYear!=="전체")rows=rows.filter(r=>r.fy===sel.mdYear);
+  const types=["전체",...uniqueValues(rows,"value_type")];chooseValue("mdType",types,"전체");filters.append(dataFilter("값의 성격",types,"mdType"));if(sel.mdType!=="전체")rows=rows.filter(r=>r.value_type===sel.mdType);
+  card.append(filters,regionGuardrail(rows),dataSummary(rows));
+  const chart=el("div",{style:"margin-top:16px"},"<h3 style='font-size:13px;margin:0 0 6px'>리포트별 연도 추이</h3>");dataSeriesChart(chart,rows,"market");card.append(chart);
+  const details=el("details",{open:""},`<summary>근거 포함 전체 표 (${rows.length.toLocaleString()}행)</summary>`),table=el("table",{class:"data-table"});
+  table.append(el("tr",{},"<th>대상</th><th style='text-align:right'>값</th><th>구분</th><th>Application·시스템</th><th>기준</th><th>리포트·페이지</th>"));
+  rows.slice().sort((a,b)=>b.date.localeCompare(a.date)||a.fy-b.fy).slice(0,250).forEach(r=>table.append(el("tr",{},`<td><b>${periodLabel(r)}</b><div class="source-meta">${safeText(r.geo)} · ${safeText(r.geo_level)}</div></td><td class="num"><b>${dataValue(r.value,r.unit)}</b>${r.previous!=null?`<div class="source-meta">직전 ${dataValue(r.previous,r.unit)}</div>`:""}</td><td>${safeText(r.value_type)}<div class="source-meta">${safeText(r.series_class)}</div></td><td>${safeText(r.application)}${r.system?` · ${safeText(r.system)}`:""}</td><td class="basis">${safeText(r.basis)}${r.scope?`<div class="source-meta">범위: ${safeText(r.scope)}</div>`:""}</td><td class="source">${sourceEvidence(r)}<div class="source-meta">${sourceMeta(r)}</div></td>`)));
+  details.append(table);if(rows.length>250)details.append(el("p",{class:"note"},`화면은 최신 250행까지 표시합니다. 전체 ${rows.length.toLocaleString()}행은 index/market_series.csv에 보존되어 있습니다.`));card.append(details);v.append(card);
+}
+
+function rCompany(v){
+  const all=DATA.company_data?.rows||[],card=el("div",{class:"card"},`<h2>3사 판매량·생산능력 데이터</h2>${headMsg("회사별 판매량과 생산능력을 EV·ESS·지역·JV 여부로 나눠 조회합니다. 생산능력과 판매량, 총설비와 지분귀속 값은 서로 합산하지 않습니다.")}`);
+  if(!all.length){card.append(el("div",{class:"data-empty"},"회사 데이터가 없습니다."));v.append(card);return}
+  const filters=el("div",{class:"data-filters"});let rows=all;
+  const companies=uniqueValues(rows,"company").sort((a,b)=>["LGES","삼성SDI","SK온"].indexOf(a)-["LGES","삼성SDI","SK온"].indexOf(b));chooseValue("cdCompany",companies,"LGES");filters.append(dataFilter("1. 회사",companies,"cdCompany"));rows=rows.filter(r=>r.company===sel.cdCompany);
+  const metrics=uniqueValues(rows,"metric").sort((a,b)=>["생산능력","판매량"].indexOf(a)-["생산능력","판매량"].indexOf(b));chooseValue("cdMetric",metrics,"생산능력");filters.append(dataFilter("2. 지표",metrics,"cdMetric"));rows=rows.filter(r=>r.metric===sel.cdMetric);
+  const markets=uniqueValues(rows,"market").sort((a,b)=>["EV","ESS","합계"].indexOf(a)-["EV","ESS","합계"].indexOf(b));chooseValue("cdMarket",markets,markets.includes("ESS")?"ESS":"EV");filters.append(dataFilter("3. 용도",markets,"cdMarket",x=>x==="합계"?"합계(용도 미분리)":x));rows=rows.filter(r=>r.market===sel.cdMarket);
+  const geos=uniqueValues(rows,"geo").sort((a,b)=>["글로벌","북미","미국","유럽","중국","한국","헝가리","폴란드"].indexOf(a)-["글로벌","북미","미국","유럽","중국","한국","헝가리","폴란드"].indexOf(b));chooseValue("cdGeo",geos,geos.includes("미국")?"미국":geos[0]);filters.append(dataFilter("4. 지역",geos,"cdGeo"));rows=rows.filter(r=>r.geo===sel.cdGeo);
+  if(sel.cdMetric==="생산능력"){
+    const ownerships=["전체",...uniqueValues(rows,"ownership")];chooseValue("cdOwnership",ownerships,"전체");filters.append(dataFilter("5. JV 여부",ownerships,"cdOwnership",x=>x==="불명"?"원문상 불명":x));if(sel.cdOwnership!=="전체")rows=rows.filter(r=>r.ownership===sel.cdOwnership);
+    const bases=uniqueValues(rows,"capacity_basis");chooseValue("cdBasis",bases,"총설비");if(bases.length>1)filters.append(dataFilter("설비 기준",bases,"cdBasis"));if(sel.cdBasis)rows=rows.filter(r=>r.capacity_basis===sel.cdBasis);
+  }
+  const periods=["전체",...new Set(rows.slice().sort((a,b)=>periodKey(a)-periodKey(b)).map(periodLabel))];chooseValue("cdPeriod",periods,"전체");filters.append(dataFilter("대상 기간",periods,"cdPeriod"));if(sel.cdPeriod!=="전체")rows=rows.filter(r=>periodLabel(r)===sel.cdPeriod);
+  const types=["전체",...uniqueValues(rows,"value_type")];chooseValue("cdType",types,"전체");filters.append(dataFilter("값의 성격",types,"cdType"));if(sel.cdType!=="전체")rows=rows.filter(r=>r.value_type===sel.cdType);
+  card.append(filters,regionGuardrail(rows));
+  if(sel.cdMarket==="합계")card.append(el("div",{class:"data-guardrail"},"<b>용도 미분리:</b> 원문이 EV·ESS를 나누지 않은 값입니다. EV 또는 ESS 값과 더하지 않습니다."));
+  card.append(dataSummary(rows));
+  const chart=el("div",{style:"margin-top:16px"},"<h3 style='font-size:13px;margin:0 0 6px'>리포트·설비별 기간 추이</h3>");dataSeriesChart(chart,rows,"company");card.append(chart);
+  const details=el("details",{open:""},`<summary>근거 포함 전체 표 (${rows.length.toLocaleString()}행)</summary>`),table=el("table",{class:"data-table"});
+  table.append(el("tr",{},"<th>대상</th><th style='text-align:right'>값</th><th>설비·JV</th><th>용도·지역</th><th>기준</th><th>리포트·페이지</th>"));
+  rows.slice().sort((a,b)=>b.date.localeCompare(a.date)||periodKey(a)-periodKey(b)).slice(0,250).forEach(r=>{const jv=[r.ownership,r.jv_name,r.jv_partner].filter(Boolean).join(" · ");table.append(el("tr",{},`<td><b>${periodLabel(r)}</b><div class="source-meta">${safeText(r.value_type)}${r.as_of?` · 기준일 ${safeText(r.as_of)}`:""}</div></td><td class="num"><b>${dataValue(r.value,r.unit)}</b></td><td>${safeText(r.facility||"설비 미기재")}<div class="source-meta">${safeText(jv||"JV 해당 없음")}${r.capacity_basis?` · ${safeText(r.capacity_basis)}`:""}</div></td><td>${safeText(r.market)} · ${safeText(r.geo)}<div class="source-meta">${safeText(r.geo_level)}${r.system?` · ${safeText(r.system)}`:""}</div></td><td class="basis">${safeText(r.basis)}${r.scope?`<div class="source-meta">범위: ${safeText(r.scope)}</div>`:""}</td><td class="source">${sourceEvidence(r)}<div class="source-meta">${sourceMeta(r)}</div></td>`))});
+  details.append(table);card.append(details);v.append(card);
 }
 render();
 </script>
