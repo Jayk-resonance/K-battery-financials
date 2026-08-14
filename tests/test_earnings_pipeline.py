@@ -179,6 +179,18 @@ class EarningsPipelineTest(unittest.TestCase):
         self.assertIn("g.interpretation", template)
         self.assertNotIn("const F6GAP", template)
 
+    def test_dashboard_exposes_separate_market_and_company_data_tabs(self):
+        with open(os.path.join(ROOT, "projects", "dashboard", "dashboard_template.html"),
+                  encoding="utf-8") as f:
+            template = f.read()
+        for label in ("⑦ 시장 데이터", "⑧ 회사 데이터"):
+            self.assertIn(label, template)
+        self.assertIn("market:rMarket", template)
+        self.assertIn("company:rCompany", template)
+        self.assertIn("미국값과 북미 전체값을 더하거나 자동 대체하지 않습니다", template)
+        self.assertIn("groups[`${r.rid}|${r.series}`]", template)
+        self.assertNotIn("전체 탭 8개", template)
+
     def test_mobile_navigation_exposes_all_tabs_and_centers_selection(self):
         path = os.path.join(ROOT, "projects", "dashboard", "dashboard_template.html")
         with open(path, encoding="utf-8") as f:
@@ -1118,6 +1130,28 @@ class EarningsPipelineTest(unittest.TestCase):
                 pending.extend(value)
             elif isinstance(value, float):
                 self.assertTrue(math.isfinite(value))
+
+    def test_dashboard_market_company_data_keeps_sources_and_dimensions(self):
+        with open(os.path.join(ROOT, "projects", "dashboard", "data.json"),
+                  encoding="utf-8") as f:
+            data = json.load(f)
+        market = data["market_data"]
+        company = data["company_data"]
+
+        self.assertEqual("none", market["aggregation"])
+        self.assertEqual("none", company["aggregation"])
+        self.assertEqual(837, len(market["rows"]))
+        self.assertEqual(252, len(company["rows"]))
+        self.assertEqual({"미국", "북미"},
+                         {row["geo"] for row in market["rows"]
+                          if row["geo"] in {"미국", "북미"}})
+        self.assertTrue(all(row["pdf"] and row["page"] for row in market["rows"]))
+        self.assertTrue(all(row["pdf"] and row["page"] for row in company["rows"]))
+        self.assertTrue(all(row["unit"] == "GWh" for row in company["rows"]))
+        self.assertEqual({"판매량", "생산능력"},
+                         {row["metric"] for row in company["rows"]})
+        self.assertTrue(all(os.path.exists(os.path.join(ROOT, row["pdf"]))
+                            for row in market["rows"] + company["rows"]))
 
 
 if __name__ == "__main__":

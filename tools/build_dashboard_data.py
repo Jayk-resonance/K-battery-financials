@@ -738,6 +738,60 @@ for t in _load("themes.csv"):
 f7 = {"regimes": regimes, "demand": demand_rows, "themes": theme_rows,
       "n_reports": len(ind_reports)}
 
+# ---------- 정량 시장·회사 데이터 ----------
+report_catalog = {row["report_id"]: row for row in _load("report_catalog.csv")}
+
+
+def optional_number(value):
+    return float(value) if value not in ("", None) else None
+
+
+market_data_rows = []
+for row in _load("market_series.csv"):
+    source = report_catalog.get(row["report_id"], {})
+    market_data_rows.append({
+        "rid": row["report_id"], "date": row["date"], "house": row["house"],
+        "title": source.get("report_title") or row["report_id"],
+        "pdf": source.get("source_path") or None, "page": row.get("source_page") or None,
+        "series": row["series_id"], "market": row["market"],
+        "application": row["application"], "system": row.get("system_type") or None,
+        "geo": row["geography"], "parent_geo": row.get("parent_geography") or None,
+        "geo_level": row["geography_level"], "metric": row["metric"],
+        "fy": int(row["fy"]), "period": row["period"],
+        "value": float(row["value"]), "previous": optional_number(row.get("value_prev")),
+        "unit": row["unit"], "value_type": row["value_type"],
+        "series_class": row["series_class"], "basis": row["basis"],
+        "scope": row.get("scope_note") or None, "source_owner": row.get("source_owner") or None,
+        "source_kind": row["source_kind"], "precision": row["value_precision"],
+    })
+
+company_data_rows = []
+for row in _load("company_volume_series.csv"):
+    company_data_rows.append({
+        "rid": row["report_id"], "date": row["date"], "house": row["house"],
+        "pdf": row.get("source_pdf") or None, "page": row.get("source_page") or None,
+        "series": row["series_id"], "company": row["company"],
+        "company_type": row["company_type"], "facility": row.get("facility_raw") or None,
+        "ownership": row.get("ownership_type") or None,
+        "jv_name": row.get("jv_name_raw") or None,
+        "jv_partner": row.get("jv_partner_raw") or None,
+        "capacity_basis": row.get("capacity_basis") or None,
+        "market": row["market"], "application": row["application"],
+        "system": row.get("system_type") or None,
+        "geo": row["geography"], "parent_geo": row.get("parent_geography") or None,
+        "geo_level": row["geography_level"], "metric": row["metric"],
+        "fy": int(row["fy"]), "period": row["period"],
+        "value": float(row["value"]), "unit": row["unit"],
+        "time_basis": row.get("time_basis") or None,
+        "as_of": row.get("as_of_date") or None, "value_type": row["value_type"],
+        "basis": row["basis"], "scope": row.get("scope_note") or None,
+        "source_owner": row.get("source_owner") or None,
+        "source_kind": row["source_kind"], "precision": row["value_precision"],
+    })
+
+market_data = {"rows": market_data_rows, "aggregation": "none"}
+company_data = {"rows": company_data_rows, "aggregation": "none"}
+
 # 원본 PDF 총 페이지 수 (분석 볼륨 지표). 인제스트 시 검증한 카탈로그 값을 재사용한다.
 def total_pages():
     catalog = {row["report_id"]: row for row in _load("report_catalog.csv")}
@@ -814,6 +868,7 @@ data = {"meta": {"built_from": "K-battery-financials index v2", "n_reports": len
                  "note_basis": "영업이익은 AMPC 포함 기준으로 비교합니다. AMPC 제외값만 있는 경우 같은 리포트의 AMPC를 더한 환산값을 사용합니다. LGES 매출은 1Q26부터 AMPC 병합 표시(IR 재작성 기준)입니다."},
         "f1_quarterly": f1, "f2_stance": f2, "f3_views": f3,
         "f3_narratives": f3_narr, "f4_accuracy": f4, "f5_outliers": f5, "f6_dotplots": f6, "f7_industry": f7,
+        "market_data": market_data, "company_data": company_data,
         "search": build_search()}
 json.dump(data, open(f"{OUT}/data.json", "w", encoding="utf-8"), ensure_ascii=False)
 print(f"data.json 생성: {os.path.getsize(f'{OUT}/data.json')//1024}KB")
